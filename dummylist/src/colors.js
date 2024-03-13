@@ -102,12 +102,21 @@ const lightColors =
     surfaceContainer: '#eceef4',
     surfaceContainerHigh: '#e6e8ee',
     surfaceContainerHighest: '#e0e2e8',
-  };
+};
+
+const keyColors = 
+{
+    primary: "#0477BF",
+    secondary: "#F2B705",
+    tertiary: "#A6290D",
+    neutral: "#F2E2C4",
+}
   
 export default
 {
     lightColors,
-    darkColors
+    darkColors,
+    keyColors
 };
   
 

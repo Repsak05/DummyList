@@ -1,23 +1,19 @@
 // styles.js
 import { StyleSheet } from 'react-native';
-import colors, { lightColors, darkColors } from './colors.js';
+import colors, { lightColors, darkColors, keyColors } from './colors.js';
 
 export default StyleSheet.create({
- container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: colors.lightColors.Background,
-    
- },
- text: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    borderWidth: 5,
+    wrapper: 
+    {
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: colors.lightColors.background,
 
- },
+        width: "100%", 
+        height: "100%", 
+    },
 
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
  carouselItem: {
     width: 408, 
@@ -61,5 +57,44 @@ export default StyleSheet.create({
      width: 40,
      height: 40,
  },
+>>>>>>> Stashed changes
+=======
+    carouselContainer: 
+    {
+
+
+        width: "95%", 
+        height: 204, 
+
+        borderColor: colors.keyColors.tertiary,
+
+        borderWidth: 15,
+        
+        borderTopLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        borderTopRightRadius: 45,
+        borderBottomLeftRadius: 45,
+    },
+
+    text: 
+    {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+
+    carouselItem: 
+    {
+        width: "100%", 
+        height: "100%",
+
+        flex: 1,
+        justifyContent: 'end',
+    },
+
+    carouselTextBox:
+    {
+
+    }
 >>>>>>> Stashed changes
 });
