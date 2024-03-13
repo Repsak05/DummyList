@@ -10,17 +10,27 @@ import TaskIsCompleteComponent from'./src/components/TaskIsCompleteComponent.js'
 
 import Home from './src/screens/home.js';
 
+import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+  let [fontsLoaded] = useFonts({
+      Oswald_400Regular,
+      Oswald_500Medium,
+  });
+
+  if (!fontsLoaded) {
+      return null;
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
           name="MainScreen"
-          component={Home}
+          component={MainScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

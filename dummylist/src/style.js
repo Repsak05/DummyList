@@ -28,6 +28,8 @@ export default StyleSheet.create({
         width: "95%", 
         height: 204, 
 
+        backgroundColor: colors.lightColors.secondaryContainer,
+
         borderColor: colors.keyColors.tertiary,
 
         borderWidth: 15,
