@@ -13,13 +13,45 @@ export default StyleSheet.create({
         height: "100%", 
     },
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
- carouselItem: {
-    width: 408, 
-    height: 204, 
- }
-=======
+    // Carousel styles
+
+    carouselItem: {
+        width: 408, 
+        height: 204, 
+    },
+
+    
+    carouselContainer: 
+    {
+
+
+        width: "95%", 
+        height: 204, 
+
+        borderColor: colors.keyColors.tertiary,
+
+        borderWidth: 15,
+        
+        borderTopLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        borderTopRightRadius: 45,
+        borderBottomLeftRadius: 45,
+    },
+
+
+    carouselItem: 
+    {
+        width: "100%", 
+        height: "100%",
+
+        flex: 1,
+        justifyContent: 'end',
+    },
+
+    carouselTextBox:
+    {
+
+    },
 
  //FOllowing are being used in TaskComponents
  taskContainer: 
@@ -57,44 +89,6 @@ export default StyleSheet.create({
      width: 40,
      height: 40,
  },
->>>>>>> Stashed changes
-=======
-    carouselContainer: 
-    {
 
 
-        width: "95%", 
-        height: 204, 
-
-        borderColor: colors.keyColors.tertiary,
-
-        borderWidth: 15,
-        
-        borderTopLeftRadius: 0,
-        borderBottomRightRadius: 0,
-        borderTopRightRadius: 45,
-        borderBottomLeftRadius: 45,
-    },
-
-    text: 
-    {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-
-    carouselItem: 
-    {
-        width: "100%", 
-        height: "100%",
-
-        flex: 1,
-        justifyContent: 'end',
-    },
-
-    carouselTextBox:
-    {
-
-    }
->>>>>>> Stashed changes
 });

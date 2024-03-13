@@ -5,13 +5,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styles from './src/style'; 
 
-<<<<<<< Updated upstream
 import TaskNotCompleteComponent from './src/components/TaskNotCompleteComponent.js';
 import TaskIsCompleteComponent from'./src/components/TaskIsCompleteComponent.js';
-=======
+
 import TaskComponent from './src/components/TaskComponent.js';
 import Home from './src/screens/home.js';
->>>>>>> Stashed changes
 
 
 
@@ -20,7 +18,6 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-<<<<<<< Updated upstream
       <Stack.Navigator>
         <Stack.Screen
           name="MainScreen"
@@ -39,12 +36,6 @@ function MainScreen() {
         description="Eat a Raw Egg"
         membersCompletedTask={["Erik", "Paul"]}
         totalMembersInChallenge={6}
-=======
-    <Stack.Navigator >
-      <Stack.Screen
-        name="Home"
-        component={Home}
->>>>>>> Stashed changes
       />
       <TaskIsCompleteComponent
         description="Play Sport for 20 min"
