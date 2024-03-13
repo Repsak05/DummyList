@@ -45,9 +45,6 @@ function MainScreen() {
       <GoToLeaderboard
         placement="1"
         allPlayers={["Erik", "Paul", "Svend", "Henrik", "Søren", "Knud"]}
-        // description="Eat a Raw Egg"
-        // membersCompletedTask={["Erik", "Paul"]}
-        // totalMembersInChallenge={6}
       />
     </View>
   );

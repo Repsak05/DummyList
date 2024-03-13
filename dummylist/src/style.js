@@ -25,7 +25,6 @@ export default StyleSheet.create({
     {
 
 
-<<<<<<< Updated upstream
         width: "95%", 
         height: 204, 
 
@@ -73,12 +72,10 @@ export default StyleSheet.create({
         color: "#F6F6F6",
         fontSize: 25,
     },
-=======
  carouselItem: {
     width: 408, 
     height: 204, 
  },
->>>>>>> Stashed changes
 
  //Following are being used in TaskComponents
  taskContainer:{
@@ -117,9 +114,6 @@ export default StyleSheet.create({
  },
 
 
-<<<<<<< Updated upstream
-});
-=======
  //Styles primairly for GoToLeaderboard
   goToLeaderboardBackground: {
      height: "13.5%",
@@ -176,7 +170,6 @@ export default StyleSheet.create({
     display: "flex",
     justifyContent: "center",
   },
-
 });
 
->>>>>>> Stashed changes
+

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, Button, TextInput, Text, StyleSheet, TouchableHighlight, ImageBackground   } from 'react-native';
 import styles from '../style.js'; 
 
-
-
 export default function Home()
 {    
     return(

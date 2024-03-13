@@ -3,7 +3,9 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import style from "../style";
 
 
-export default function TaskComponent({description, membersCompletedTask, totalMembersInChallenge}) {
+export default function TaskIsCompleteComponent({description, membersCompletedTask, totalMembersInChallenge}) 
+{
+
     return (
         <View style={[style.taskContainer, { backgroundColor: "#F2B705" }]}>
             <View style={style.taskTextContainer}>
