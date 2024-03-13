@@ -8,7 +8,6 @@ import styles from './src/style';
 import TaskNotCompleteComponent from './src/components/TaskNotCompleteComponent.js';
 import TaskIsCompleteComponent from'./src/components/TaskIsCompleteComponent.js';
 
-import TaskComponent from './src/components/TaskComponent.js';
 import Home from './src/screens/home.js';
 
 
@@ -21,7 +20,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name="MainScreen"
-          component={MainScreen}
+          component={Home}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -36,6 +36,7 @@ export default StyleSheet.create({
         borderBottomRightRadius: 0,
         borderTopRightRadius: 45,
         borderBottomLeftRadius: 45,
+
     },
 
 
@@ -50,7 +51,24 @@ export default StyleSheet.create({
 
     carouselTextBox:
     {
+        width: "67%",
+        height: "32%",
+        backgroundColor: colors.lightColors.primary,
 
+        borderTopLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    carouselText:
+    {
+        fontFamily: "Oswald_500Medium",
+        color: "#F6F6F6",
+        fontSize: 25,
     },
 
  //FOllowing are being used in TaskComponents
