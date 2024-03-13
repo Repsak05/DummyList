@@ -7,6 +7,7 @@ import styles from './src/style';
 
 import TaskNotCompleteComponent from './src/components/TaskNotCompleteComponent.js';
 import TaskIsCompleteComponent from'./src/components/TaskIsCompleteComponent.js';
+import GoToLeaderboard from './src/components/GoToLeaderboard.js';
 
 import Home from './src/screens/home.js';
 
@@ -26,45 +27,27 @@ export default function App() {
       return null;
   }
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="MainScreen"
-          component={MainScreen}
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="MainScreen"
+            component={MainScreen}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
   );
 }
 
 function MainScreen() {
   return (
     <View style={{ flex: 1 }}>
-      <TaskNotCompleteComponent
-        description="Eat a Raw Egg"
-        membersCompletedTask={["Erik", "Paul"]}
-        totalMembersInChallenge={6}
-      />
-      <TaskIsCompleteComponent
-        description="Play Sport for 20 min"
-        membersCompletedTask={["John", "Alice", "Svend"]}
-        totalMembersInChallenge={8}
-      />
-      <TaskNotCompleteComponent
-        description="Eat A Raw Onion"
-        membersCompletedTask={["John", "Alice", "Svend"]}
-        totalMembersInChallenge={8}
-      />
-      <TaskNotCompleteComponent
-        description="Cut 10 cm of your hair"
-        membersCompletedTask={["John", "Alice", "Svend"]}
-        totalMembersInChallenge={8}
-      />
-      <TaskNotCompleteComponent
-        description="Don’t wear socks for a day"
-        membersCompletedTask={["John", "Alice", "Svend"]}
-        totalMembersInChallenge={8}
+      <GoToLeaderboard
+        placement="1"
+        allPlayers={["Erik", "Paul", "Svend", "Henrik", "Søren", "Knud"]}
+        // description="Eat a Raw Egg"
+        // membersCompletedTask={["Erik", "Paul"]}
+        // totalMembersInChallenge={6}
       />
     </View>
   );

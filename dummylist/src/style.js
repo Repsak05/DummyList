@@ -25,6 +25,7 @@ export default StyleSheet.create({
     {
 
 
+<<<<<<< Updated upstream
         width: "95%", 
         height: 204, 
 
@@ -72,10 +73,15 @@ export default StyleSheet.create({
         color: "#F6F6F6",
         fontSize: 25,
     },
+=======
+ carouselItem: {
+    width: 408, 
+    height: 204, 
+ },
+>>>>>>> Stashed changes
 
- //FOllowing are being used in TaskComponents
- taskContainer: 
- {
+ //Following are being used in TaskComponents
+ taskContainer:{
      flexDirection: 'row',
      alignItems: 'center',
      justifyContent: 'flex-start',
@@ -111,4 +117,66 @@ export default StyleSheet.create({
  },
 
 
+<<<<<<< Updated upstream
 });
+=======
+ //Styles primairly for GoToLeaderboard
+  goToLeaderboardBackground: {
+     height: "13.5%",
+     width: "90%",
+
+    //Border radius
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 5,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 30,
+
+    backgroundColor: "#F6F6F6",
+ 
+  },
+
+  displayColumn:{
+    display: "flex",
+    flexDirection: "column",
+  },
+
+  displayRow: {
+    display: "flex",
+    flexDirection: "row",
+  },
+
+  blackFontSize20: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#040F0F",
+    fontSize: 20,
+  },
+
+  blackFontSize13: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#040F0F",
+    fontSize: 13,
+  },
+  greyFontSize16: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#9e9e9e",
+    fontSize: 16,
+  },
+
+  widthHeight70 : {
+    width: 70,
+    height: 70,
+  },
+
+  centerVeritically : {
+    display: "flex",
+    alignItems: "center",
+  },
+
+  centerHorzontally : {
+    display: "flex",
+    justifyContent: "center",
+  },
+
+});
+
+>>>>>>> Stashed changes
