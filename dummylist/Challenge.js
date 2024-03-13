@@ -75,6 +75,8 @@ export default function Challenge() {
             </View>
         }
     }
+
+
     const [username, setUsername] = React.useState('');
     const [showLoginPage, setShowLoginPage] = useState(true);
     const [yourCharacter, setYourCharacter] = useState();
@@ -85,8 +87,6 @@ export default function Challenge() {
     const [showOverview, setShowOverview] = useState(false);
     const [showTasks, setShowTasks] = useState(false);
 
-
-
     const styles = StyleSheet.create({
         input: {
             height: 40,
@@ -95,7 +95,6 @@ export default function Challenge() {
             padding: 10,
         },
     });
-    
     
 
     function onSubmitEdit(parameter) {
@@ -209,7 +208,6 @@ export default function Challenge() {
                                 </View>
                             ))}
 
-                            <br/>
                         </View>)
                     )}
                 </>
