@@ -3,7 +3,18 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import style from "../style";
 
 
-export default function TaskComponent({description, membersCompletedTask, totalMembersInChallenge}) {
+import { useFonts, Oswald_400Regular, Oswald_500Medium, Oswald_600SemiBold } from '@expo-google-fonts/oswald';
+export default function TaskNotCompleteComponent({description, membersCompletedTask, totalMembersInChallenge}) {
+    let [fontsLoaded] = useFonts({
+        Oswald_400Regular,
+        Oswald_500Medium,
+        Oswald_600SemiBold,
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
+
     function handleImageClick(){
         console.log("Challenge clicked!")
     }
