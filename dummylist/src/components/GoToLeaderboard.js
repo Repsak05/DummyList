@@ -2,23 +2,10 @@ import React from "react";
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import style from "../style";
 
-import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
-
 export default function GoToLeaderboard({placement, allPlayers})
 {
-
     const profilePicture = require("../assets/icons/exampleProfilePicture.svg")
     const rightArrowPicture = require("../assets/icons/rightArrow.svg")
-    //Make fonts work:
-    let [fontsLoaded] = useFonts({
-        Oswald_400Regular,
-        Oswald_500Medium,
-    });
-
-    if (!fontsLoaded) {
-        return null;
-    }
-
 
     //The component itself
     function onClickGoToLeaderBoard(){

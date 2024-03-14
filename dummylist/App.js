@@ -5,8 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styles from './src/style'; 
 
-import TaskNotCompleteComponent from './src/components/TaskNotCompleteComponent.js';
-import TaskIsCompleteComponent from'./src/components/TaskIsCompleteComponent.js';
+import TaskComponent from './src/components/TaskComponent.js';
 import GoToLeaderboard from './src/components/GoToLeaderboard.js';
 
 import Home from './src/screens/home.js';
@@ -42,9 +41,22 @@ export default function App() {
 function MainScreen() {
   return (
     <View style={{ flex: 1 }}>
+      {/* <Home/> */}
+      <TaskComponent
+        description="Eat a nice Egg" 
+        membersCompletedTask={["Erik", "Paul"]}
+        totalMembersInChallenge = {6}
+        isCompleted={true}
+        />
+      <TaskComponent
+        description="Eat a nice Egg" 
+        membersCompletedTask={["Erik", "Paul"]}
+        totalMembersInChallenge = {6}
+        isCompleted={false}
+        />
       <GoToLeaderboard
         placement="1"
-        allPlayers={["Erik", "Paul", "Svend", "Henrik", "Søren", "Knud"]}
+        allPlayers={["Erik", "Paul", "fjami"]}
       />
     </View>
   );
