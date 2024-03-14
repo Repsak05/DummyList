@@ -10,6 +10,7 @@ import TaskComponent from './src/components/TaskComponent.js';
 import LeaderboardPlacement from './src/components/LeaderboardPlacement.js';
 import GoToLeaderboard from './src/components/GoToLeaderboard.js'; 
 import GoToTasks from './src/components/GoToTasks.js';
+import ChallengeTitleInformation from './src/components/ChallengeTitleInformation.js';
 
 //Screens
 import Home from './src/screens/Home.js';
@@ -46,6 +47,9 @@ function MainScreen() {
   return (
     <View style={{ flex: 1 }}>
       {/* <Home/> */}
+      <ChallengeTitleInformation
+        daysLeftTillChallengeEnds={3}
+        />
       <GoToTasks
         completeChallenges={["Eat an Egg", "Idk"]}
         allChallenges={["Eat an Egg", "Idk", "another", "another2"]}

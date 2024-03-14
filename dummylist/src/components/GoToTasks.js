@@ -14,7 +14,7 @@ export default function GoToTasks({completeChallenges, allChallenges})
 
     return(
         <View style={[style.goToLeaderboardBackground, style.displayRow, style.centerVeritically, style.centerHorzontally]} >
-            <View style={[style.displayColumn, {marginRight: "30%"}]}>
+            <View style={[style.displayColumn, {marginRight: 100, }]}>
                     <Text style={style.blackFontSize20}>Challenges done:</Text>
                     <View style={{position: 'relative'}}>
                         <View style={{borderRadius: 15, position: 'absolute', top: 0, left: 0, width: totalProgressBarWidth, height: setHeight, backgroundColor: "#F2E2C4"}} ></View>
