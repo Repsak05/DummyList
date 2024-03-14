@@ -13,11 +13,7 @@ export default StyleSheet.create({
         width: "95%", 
     },
 
-    // Carousel styles
-
-
-
-    
+    // Carousel styles    
     carouselContainer: 
     {
         width: "100%", 
@@ -129,10 +125,7 @@ export default StyleSheet.create({
         fontSize: 18,
     },
 
- //FOllowing are being used in TaskComponents
- taskContainer: 
- {
- //Following are being used in TaskComponents
+ //Following are being used in TaskComponents (&& in LeaderboardPlacement)
  taskContainer:{
      flexDirection: 'row',
      alignItems: 'center',
@@ -225,7 +218,14 @@ export default StyleSheet.create({
     display: "flex",
     justifyContent: "center",
   },
-}
+
+  //Being used in LeaderboardPlacement:
+  whiteFontSize31: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#F6F6F6",
+    fontSize: 31,
+  },
+
 });
 
 

@@ -5,10 +5,13 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styles from './src/style'; 
 
+//Components
 import TaskComponent from './src/components/TaskComponent.js';
-import GoToLeaderboard from './src/components/GoToLeaderboard.js';
+import GoToLeaderboard from './src/components/GoToLeaderboard.js'; 
+import LeaderboardPlacement from './src/components/LeaderboardPlacement.js';
 
-import Home from './src/screens/home.js';
+//Screens
+import Home from './src/screens/Home.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -30,8 +33,8 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name="MainScreen"
-          component={Home}
-          //options={{ headerShown: false }}
+          component={MainScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -42,6 +45,37 @@ function MainScreen() {
   return (
     <View style={{ flex: 1 }}>
       {/* <Home/> */}
+      <LeaderboardPlacement
+        useranme="Kasper"
+        placement={1}
+        challengesCompleted={["Eat an Egg", "Idk"]}
+        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
+        />
+      <LeaderboardPlacement
+        useranme="Kasper"
+        placement={2}
+        challengesCompleted={["Eat an Egg", "Idk"]}
+        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
+        />
+      <LeaderboardPlacement
+        useranme="Kasper"
+        placement={3}
+        challengesCompleted={["Eat an Egg", "Idk"]}
+        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
+        />
+      <LeaderboardPlacement
+        useranme="Kasper"
+        placement={4}
+        challengesCompleted={["Eat an Egg", "Idk"]}
+        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
+        />
+      <LeaderboardPlacement
+        useranme="Kasper"
+        placement={5}
+        challengesCompleted={["Eat an Egg", "Idk"]}
+        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
+        />
+
       <TaskComponent
         description="Eat a nice Egg" 
         membersCompletedTask={["Erik", "Paul"]}
