@@ -30,8 +30,8 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name="MainScreen"
-          component={MainScreen}
-          options={{ headerShown: false }}
+          component={Home}
+          //options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

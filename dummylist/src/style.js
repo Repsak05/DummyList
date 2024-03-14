@@ -8,29 +8,25 @@ export default StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: colors.lightColors.background,
-
-        width: "100%", 
-        height: "100%", 
+        alignSelf: 'center',
+        gap: 45,
+        width: "95%", 
     },
 
     // Carousel styles
 
-    carouselItem: {
-        width: 408, 
-        height: 204, 
-    },
+
 
     
     carouselContainer: 
     {
-
-
-        width: "95%", 
+        width: "100%", 
         height: 204, 
 
         backgroundColor: colors.lightColors.secondaryContainer,
 
         borderColor: colors.keyColors.tertiary,
+        overflow: "hidden",
 
         borderWidth: 15,
         
@@ -71,6 +67,59 @@ export default StyleSheet.create({
         fontFamily: "Oswald_500Medium",
         color: "#F6F6F6",
         fontSize: 25,
+    },
+
+    // Home Feed Botton
+    homeFeedContainer:
+    {
+        width: "100%", 
+        height: "175%", 
+
+        // TODO skal slettes
+        backgroundColor: colors.lightColors.secondaryContainer,
+
+        borderColor: colors.keyColors.tertiary,
+
+        borderWidth: 15,
+        
+        borderTopLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        borderTopRightRadius: 45,
+        borderBottomLeftRadius: 45,
+
+        overflow: "hidden",
+    },
+    homeFeedThumbnail:
+    {
+        width: "100%", 
+        height: "100%",
+
+        flex: 1,
+        justifyContent: 'end',
+    },
+    homeFeedTextBox:
+    {
+        width: "75%",
+        height: "20%",
+        backgroundColor: colors.lightColors.secondary,
+
+        borderTopLeftRadius: 0,
+        borderBottomRightRadius: 45,
+        borderTopRightRadius: 45,
+        borderBottomLeftRadius: 20,
+
+        justifyContent: 'center',
+        alignItems: 'center',
+
+        flexDirection: 'row',
+        gap:40,
+    },
+    homeFeedText:
+    {
+        width: "50%",
+        fontFamily: "Oswald_400Regular",
+        color: colors.lightColors.onSecondary,
+        fontSize: 18,
     },
 
  //FOllowing are being used in TaskComponents
