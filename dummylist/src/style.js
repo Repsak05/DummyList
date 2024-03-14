@@ -130,7 +130,7 @@ export default StyleSheet.create({
      flexDirection: 'row',
      alignItems: 'center',
      justifyContent: 'flex-start',
-     width: '80%',
+     width: '85.8%',
      height: "10%",
 
      //Border radius
@@ -202,6 +202,11 @@ export default StyleSheet.create({
     fontFamily: "Oswald_500Medium", 
     color: "#9e9e9e",
     fontSize: 16,
+  },
+  darkBlueFontSize13: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#001D34",
+    fontSize: 13,
   },
 
   widthHeight70 : {

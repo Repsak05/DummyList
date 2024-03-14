@@ -7,8 +7,9 @@ import styles from './src/style';
 
 //Components
 import TaskComponent from './src/components/TaskComponent.js';
-import GoToLeaderboard from './src/components/GoToLeaderboard.js'; 
 import LeaderboardPlacement from './src/components/LeaderboardPlacement.js';
+import GoToLeaderboard from './src/components/GoToLeaderboard.js'; 
+import GoToTasks from './src/components/GoToTasks.js';
 
 //Screens
 import Home from './src/screens/Home.js';
@@ -45,6 +46,10 @@ function MainScreen() {
   return (
     <View style={{ flex: 1 }}>
       {/* <Home/> */}
+      <GoToTasks
+        completeChallenges={["Eat an Egg", "Idk"]}
+        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
+        />
       <LeaderboardPlacement
         useranme="Kasper"
         placement={1}
