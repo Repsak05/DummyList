@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import style from "../style";
-import Challenge from "../../Challenge";
 
 export default function ChallengeLeaderboardTitleInformation({daysLeftTillChallengeEnds, isChallengeOrLeaderboard = true})
 {

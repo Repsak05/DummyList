@@ -125,6 +125,13 @@ export default StyleSheet.create({
         fontSize: 18,
     },
 
+    roundedCorners : {
+      borderTopLeftRadius: 30,
+      borderTopRightRadius: 5,
+      borderBottomLeftRadius: 5,
+      borderBottomRightRadius: 30,
+    },
+
  //Following are being used in TaskComponents (&& in LeaderboardPlacement)
  taskContainer:{
      flexDirection: 'row',
@@ -198,10 +205,21 @@ export default StyleSheet.create({
     color: "#040F0F",
     fontSize: 13,
   },
+  blackFontSize10: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#040F0F",
+    fontSize: 10,
+  },
+
   greyFontSize16: {
     fontFamily: "Oswald_500Medium", 
     color: "#9e9e9e",
     fontSize: 16,
+  },
+  greyFontSize10: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#9e9e9e",
+    fontSize: 10,
   },
   darkBlueFontSize13: {
     fontFamily: "Oswald_500Medium", 
