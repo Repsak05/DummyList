@@ -15,6 +15,8 @@ import ChallengeTitleInformation from './src/components/ChallengeLeaderboardTitl
 import ProfileAchievements from './src/components/ProfileAchievements.js';
 import ProfileUserInformation from './src/components/ProfileUserInformation.js';
 
+import Header from './src/components/Header.js';
+
 //Screens
 import Home from './src/screens/Home.js';
 
@@ -50,6 +52,9 @@ function MainScreen() {
   return (
     <View style={{ flex: 1 }}>
       {/* <Home/> */}
+      <Header
+        pageName={"De Ekstreme Bananer"}
+        />
       <ProfileUserInformation
         username={"Kasper"}
         email={"example@gmail.com"}
