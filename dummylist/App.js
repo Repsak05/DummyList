@@ -13,6 +13,7 @@ import GoToTasks from './src/components/GoToTasks.js';
 import ChallengeTitleInformation from './src/components/ChallengeLeaderboardTitleInformation.js';
 
 import ProfileAchievements from './src/components/ProfileAchievements.js';
+import ProfileUserInformation from './src/components/ProfileUserInformation.js';
 
 //Screens
 import Home from './src/screens/Home.js';
@@ -49,6 +50,10 @@ function MainScreen() {
   return (
     <View style={{ flex: 1 }}>
       {/* <Home/> */}
+      <ProfileUserInformation
+        username={"Kasper"}
+        email={"example@gmail.com"}
+        />
       <ProfileAchievements
         typeNumber={1}
         value={2}
