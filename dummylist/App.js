@@ -21,6 +21,7 @@ import Header from './src/components/Header.js';
 //Screens
 import Home from './src/screens/Home.js';
 import ChallengePage from './src/screens/ChallengePage.js';
+import LeaderboardPage from './src/screens/LeaderboardPage.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -42,7 +43,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name="MainScreen"
-          component={ChallengePage}
+          component={LeaderboardPage}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
@@ -90,31 +91,31 @@ function MainScreen() {
         allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
         />
       <LeaderboardPlacement
-        useranme="Kasper"
+        username="Kasper"
         placement={1}
         challengesCompleted={["Eat an Egg", "Idk"]}
         allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
         />
       <LeaderboardPlacement
-        useranme="Kasper"
+        username="Kasper"
         placement={2}
         challengesCompleted={["Eat an Egg", "Idk"]}
         allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
         />
       <LeaderboardPlacement
-        useranme="Kasper"
+        username="Kasper"
         placement={3}
         challengesCompleted={["Eat an Egg", "Idk"]}
         allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
         />
       <LeaderboardPlacement
-        useranme="Kasper"
+        username="Kasper"
         placement={4}
         challengesCompleted={["Eat an Egg", "Idk"]}
         allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
         />
       <LeaderboardPlacement
-        useranme="Kasper"
+        username="Kasper"
         placement={5}
         challengesCompleted={["Eat an Egg", "Idk"]}
         allChallenges={["Eat an Egg", "Idk", "another", "another2"]}

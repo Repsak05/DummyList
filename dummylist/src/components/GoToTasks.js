@@ -13,7 +13,7 @@ export default function GoToTasks({completeChallenges, allChallenges})
     }
 
     return(
-        <View style={[style.goToLeaderboardBackground, style.displayRow, style.centerVeritically, style.centerHorzontally, {alignSelf: "center"}]} >
+        <View style={[style.goToLeaderboardBackground, style.displayRow, style.centerVeritically, style.centerHorzontally, {alignSelf: "center", height: 124}]} >
             <View style={[style.displayColumn, {marginRight: 100, }]}>
                     <Text style={style.blackFontSize20}>Challenges done:</Text>
                     <View style={{position: 'relative'}}>
