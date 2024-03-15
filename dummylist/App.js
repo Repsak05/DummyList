@@ -10,7 +10,7 @@ import TaskComponent from './src/components/TaskComponent.js';
 import LeaderboardPlacement from './src/components/LeaderboardPlacement.js';
 import GoToLeaderboard from './src/components/GoToLeaderboard.js'; 
 import GoToTasks from './src/components/GoToTasks.js';
-import ChallengeTitleInformation from './src/components/ChallengeTitleInformation.js';
+import ChallengeTitleInformation from './src/components/ChallengeLeaderboardTitleInformation.js';
 
 //Screens
 import Home from './src/screens/Home.js';
@@ -49,6 +49,11 @@ function MainScreen() {
       {/* <Home/> */}
       <ChallengeTitleInformation
         daysLeftTillChallengeEnds={3}
+        isChallengeOrLeaderboard={true}
+        />
+      <ChallengeTitleInformation
+        daysLeftTillChallengeEnds={3}
+        isChallengeOrLeaderboard={false}
         />
       <GoToTasks
         completeChallenges={["Eat an Egg", "Idk"]}

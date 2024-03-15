@@ -13,13 +13,13 @@ export default function GoToTasks({completeChallenges, allChallenges})
     }
 
     return(
-        <View style={[style.goToLeaderboardBackground, style.displayRow, style.centerVeritically, style.centerHorzontally]} >
+        <View style={[style.goToLeaderboardBackground, style.displayRow, style.centerVeritically, style.centerHorzontally, {alignSelf: "center"}]} >
             <View style={[style.displayColumn, {marginRight: 100, }]}>
                     <Text style={style.blackFontSize20}>Challenges done:</Text>
                     <View style={{position: 'relative'}}>
                         <View style={{borderRadius: 15, position: 'absolute', top: 0, left: 0, width: totalProgressBarWidth, height: setHeight, backgroundColor: "#F2E2C4"}} ></View>
                         <View style={{borderRadius: 15, position: 'absolute', top: edgdeOnProgressBarSize, left: edgdeOnProgressBarSize, width: (totalProgressBarWidth/allChallenges.length*completeChallenges.length)-2*edgdeOnProgressBarSize, height: setHeight-2*edgdeOnProgressBarSize, backgroundColor: "#0477BF"}}></View>
-                        <Text style={[style.darkBlueFontSize13, {position: 'absolute', top: 0, left: "50%"}]}>{completeChallenges.length}/{allChallenges.length}</Text>
+                        <Text style={[style.darkBlueFontSize13, {position: 'absolute', top: 0, left: "68%"}]}>{completeChallenges.length}/{allChallenges.length}</Text>
                     </View>
             </View>
 

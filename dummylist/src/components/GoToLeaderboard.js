@@ -15,7 +15,7 @@ export default function GoToLeaderboard({placement, allPlayers})
 
     return(
         <View
-            style={[style.goToLeaderboardBackground, style.displayRow, style.centerVeritically, style.centerHorzontally]} >
+            style={[style.goToLeaderboardBackground, style.displayRow, style.centerVeritically, style.centerHorzontally, {alignSelf: "center"}]} >
 
             <Image style={[style.widthHeight70,{ marginRight: 10, borderRadius: 15}]} source={profilePicture} />
 

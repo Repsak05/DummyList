@@ -12,7 +12,7 @@ export default function LeaderboardPlacement({useranme, placement, challengesCom
         "#001223",
     ]
     return (
-        <View style={[style.taskContainer, {backgroundColor: backgroundColorPlacement[placement-1]}]}>
+        <View style={[style.taskContainer, {alignSelf: "center", backgroundColor: backgroundColorPlacement[placement-1]}]}>
             <Image style={[style.taskImg,{marginRight: 15, width: 50, height: 50}]} source={require("../assets/icons/exampleProfilePicture.svg")} />
             <View style={style.taskTextContainer}>
                 <Text style={style.taskMainText}>@{useranme}</Text>
