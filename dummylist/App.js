@@ -17,8 +17,10 @@ import ProfileUserInformation from './src/components/ProfileUserInformation.js';
 
 import Header from './src/components/Header.js';
 
+
 //Screens
 import Home from './src/screens/Home.js';
+import ChallengePage from './src/screens/ChallengePage.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -40,7 +42,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name="MainScreen"
-          component={MainScreen}
+          component={ChallengePage}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

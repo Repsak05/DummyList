@@ -9,7 +9,7 @@ export default function TaskComponent({description, membersCompletedTask, totalM
     }
 
     return (
-        <View style={[style.taskContainer, {alignSelf: "center", backgroundColor: !isCompleted ? "#001D34" : "#F2B705" }]}>
+        <View style={[style.taskContainer, {height: 94, alignSelf: "center", backgroundColor: !isCompleted ? "#001D34" : "#F2B705" }]}>
             <View style={style.taskTextContainer}>
                 <Text style={style.taskMainText}>{description}</Text>
                 <Text style={style.taskSmallText}>Done by {membersCompletedTask.length}/{totalMembersInChallenge} people</Text>
