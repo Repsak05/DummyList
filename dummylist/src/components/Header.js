@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 
-export default function Header({pageName})
+export default function Header({pageName, navigation})
 {
     const profilePicture = require("../assets/icons/exampleProfilePicture.svg");
     
@@ -10,11 +10,14 @@ export default function Header({pageName})
     function goBack()
     {
         console.log("Go back button has been clicked!")
+        navigation.navigate('Home')
+        
     }
-
+    
     function goToProfile()
     {
         console.log("Go to profile button has been clicked")
+        navigation.navigate('ProfilePage')
     }
 
     return(

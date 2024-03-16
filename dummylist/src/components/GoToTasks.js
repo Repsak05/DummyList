@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import style from "../style";
 
-export default function GoToTasks({completeChallenges, allChallenges})
+export default function GoToTasks({completeChallenges, allChallenges, navigation})
 {
     const setHeight = 20;
     const totalProgressBarWidth = 200;
@@ -10,6 +10,8 @@ export default function GoToTasks({completeChallenges, allChallenges})
 
     function onClickGoToTasks(){
         console.log("Should go to Task page now")
+        navigation.navigate('ChallengePage')
+
     }
 
     return(

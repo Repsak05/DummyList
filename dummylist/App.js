@@ -22,6 +22,7 @@ import Header from './src/components/Header.js';
 import Home from './src/screens/Home.js';
 import ChallengePage from './src/screens/ChallengePage.js';
 import LeaderboardPage from './src/screens/LeaderboardPage.js';
+import ProfilePage from './src/screens/ProfilePage.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -41,8 +42,23 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{ headerShown: false }}
+          />
         <Stack.Screen
-          name="MainScreen"
+          name="ProfilePage"
+          component={ProfilePage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChallengePage"
+          component={ChallengePage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="LeaderboardPage"
           component={LeaderboardPage}
           options={{ headerShown: false }}
         />

@@ -12,7 +12,7 @@ export default function ProfileUserInformation({username, email})
     const levelCurrent = 9;
 
     return(
-        <View style={[style.roundedCorners, {padding: "10%", backgroundColor: "#F8F9FF", width: "90%", height: "13.5%", alignSelf: "center", alignItems: "center", justifyContent: "space-between", flexDirection: "row", }]}>
+        <View style={[style.roundedCorners, {padding: "10%", backgroundColor: "#F8F9FF", width: "90%", height: 124, alignSelf: "center", alignItems: "center", justifyContent: "space-between", flexDirection: "row", }]}>
             <View style={{flexDirection: "column"}}>
                 <Text style={style.blackFontSize20}>@{username}</Text>
                 <Text style={style.greyFontSize16}>{email}</Text>

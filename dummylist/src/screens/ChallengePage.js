@@ -7,7 +7,7 @@ import GoToLeaderboard from "../components/GoToLeaderboard";
 import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderboardTitleInformation";
 import TaskComponent from "../components/TaskComponent";
 
-export default function ChallengePage()
+export default function ChallengePage({navigation})
 {
     //Following should be parameters (information in the database):
     const challengeGroupName = "De Ekstreme Bananer";
@@ -23,11 +23,11 @@ export default function ChallengePage()
         <View style={{flex: 1, flexDirection: "column", backgroundColor: "#FFDF9D"}}>
             <View>
                 <View style={{marginTop: 55,}}>
-                    <Header pageName={challengeGroupName}/>
+                    <Header navigation={navigation} pageName={challengeGroupName}/>
                 </View>
 
                 <View style={{marginVertical: 21}}>
-                    <GoToLeaderboard placement={4} allPlayers={["Me", "Myself", "I", "Another", "Random Guy"]}/>
+                    <GoToLeaderboard navigation={navigation}placement={4} allPlayers={["Me", "Myself", "I", "Another", "Random Guy"]}/>
                 </View>
             </View>
 
