@@ -16,7 +16,7 @@ import ProfileAchievements from './src/components/ProfileAchievements.js';
 import ProfileUserInformation from './src/components/ProfileUserInformation.js';
 
 import Header from './src/components/Header.js';
-
+import CameraComponent from './src/components/CameraComponent.js';
 
 //Screens
 import Home from './src/screens/Home.js';
@@ -44,7 +44,7 @@ export default function App() {
       <Stack.Navigator>
           <Stack.Screen
             name="Home"
-            component={Home}
+            component={CameraComponent}
             options={{ headerShown: false }}
           />
         <Stack.Screen
