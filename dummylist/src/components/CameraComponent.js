@@ -29,6 +29,7 @@ export default function CameraComponent()
         if(cameraRef)
         {
             try{
+                console.log(image)
                 const data = await cameraRef.current.takePictureAsync();
                 console.log(data)
                 setImage(data.uri);
@@ -38,28 +39,48 @@ export default function CameraComponent()
         }
     }
 
+    async function postPicture()
+    {
+        if(image)
+        {
+            try{
+                //Save image and post it on feed + give challenge points
+            } catch(err){
+                console.log(err)
+            }
+        }
+        console.log("Post picture button pressed!")
+    }
+
     if(hasCameraPermission == false){
         return <Text> No acces to camera. Please change it in your settings.</Text>
     }
 
     return(
         <View style={{flex: 1, }}>
-            <Camera
-                style={[style.roundedCorners, {flex: 1, margin: 10, marginTop: "30%", backgroundColor: "#378"}]}
-                type={type}
-                flashMode={flash}
-                ref={cameraRef}
-                >
-                <Text>Hello</Text>
+            {!image ? 
+                <Camera style={[style.roundedCorners, {flex: 1, margin: 10, backgroundColor: "#378"}]}
+                    type={type}
+                    flashMode={flash}
+                    ref={cameraRef}
+                    >
+                </Camera>  
+                
+                : <Image source={{uri: image}} style={[style.roundedCorners, {flex: 1, margin: 10, backgroundColor: "#1708"}]}/>
+            }
 
-            </Camera>
+            {!image ?
+                <View style={{paddingBottom: 40, flexDirection: "row", alignSelf: "center"}}>
+                    <ButtonCamera source={require("../assets/icons/flashIcon.svg")} onPress={() => setFlash(flash === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on :  Camera.Constants.FlashMode.off )} />
+                    <ButtonCamera source={require("../assets/icons/takePictureButtonIcon.svg")} onPress={takePicture}/>
+                    <ButtonCamera source={require("../assets/icons/changeCameraTypeIcon.svg")} onPress={() => setType(type === CameraType.back ? CameraType.front : CameraType.back)} />
+                </View>
 
-
-            <View style={{paddingBottom: 40, flexDirection: "row", alignSelf: "center"}}>
-                <ButtonCamera source={require("../assets/icons/flashIcon.svg")} />
-                <ButtonCamera source={require("../assets/icons/takePictureButtonIcon.svg")} onPress={takePicture}/>
-                <ButtonCamera source={require("../assets/icons/changeCameraTypeIcon.svg")} />
-            </View>
+                : <View style={{paddingBottom: 40, flexDirection: "row", alignSelf: "center", justifyContent: 'space-between', paddingHorizontal: 50}}>                    
+                    <ButtonCamera source={require("../assets/icons/sendIcon.png")} onPress={postPicture} imageStyle={{width: 40, height: 40}} />
+                    <ButtonCamera source={require("../assets/icons/deleteIcon.svg")} onPress={() => setImage(null)} imageStyle={{width: 40, height: 40}} />
+                </View>
+            }
         </View>
     )
 }

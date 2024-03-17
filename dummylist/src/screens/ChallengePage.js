@@ -19,6 +19,12 @@ export default function ChallengePage({navigation})
         ["Don't wear Socks for a Day"   ,["Søren", "Igor"]          , 5,    false]
     ];
 
+    function handleImageClick(description)
+    {
+        console.log("Challenge clicked -> Go to take photo/video!")
+        navigation.navigate('CameraPage', { title: description });
+    }
+
     return(
         <View style={{flex: 1, flexDirection: "column", backgroundColor: "#FFDF9D"}}>
             <View>
@@ -40,7 +46,13 @@ export default function ChallengePage({navigation})
                 <View style={{marginTop: 21}}>
                     {allTasksInChallenge.map(arr => (
                         <View key={arr[0]}>
-                            <TaskComponent description={arr[0]} membersCompletedTask={arr[1]} totalMembersInChallenge={arr[2]} isCompleted={arr[3]}/>
+                            <TaskComponent 
+                                description={arr[0]} 
+                                membersCompletedTask={arr[1]} 
+                                totalMembersInChallenge={arr[2]} 
+                                isCompleted={arr[3]} 
+                                onPress={() => handleImageClick(arr[0])}
+                            />
                         </View>
                     ))}
                 </View>

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default function ButtonCamera({source, onPress})
+export default function ButtonCamera({source, onPress, imageStyle})
 {
     return(
         <TouchableOpacity onPress={onPress} style={style.buttonPicture}>
-            <Image source={source}/>
+            <Image source={source} style={imageStyle}/>
         </TouchableOpacity>
     )
 }
@@ -16,4 +16,5 @@ const style = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+
 })
