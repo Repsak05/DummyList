@@ -39,10 +39,10 @@ export default function CameraComponent() {
     async function startRecording() {
         if (cameraRef) {
             try {
-                console.log('Recording started. v..' + isRecording); // Log when recording starts
+                console.log('Recording started. v..' + isRecording); 
                 setIsRecording(true);
                 const data = await cameraRef.current.recordAsync();
-                console.log('Recording started. v2..' + isRecording + " | " + data.uri); // Log when recording starts
+                console.log('Recording started. v2..' + isRecording + " | " + data.uri); 
                 setVideoUri(data.uri);
             } catch (err) {
                 console.log(err);
@@ -53,11 +53,11 @@ export default function CameraComponent() {
     async function stopRecording() {
         if (cameraRef) {
             try {
-                console.log('Recording stopped...' + isRecording); // Log when recording stops
+                console.log('Recording stopped...' + isRecording); 
                 setIsLoading(true);
                 setIsRecording(false);
                 const data = await cameraRef.current.stopRecording();
-                console.log('Recording stopped v2...' + isRecording); // Log when recording stops
+                console.log('Recording stopped v2...' + isRecording); 
                 setVideoUri(data.uri);
             } catch (err) {
                 console.log(err);
@@ -87,12 +87,18 @@ export default function CameraComponent() {
         <View style={{ flex: 1 }}>
             {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
             {!image && !videoUri ? (
-                <Camera
-                    style={[style.roundedCorners, { flex: 1, margin: 10, backgroundColor: '#378' }]}
-                    type={type}
-                    flashMode={flash}
-                    ref={cameraRef}>
-                </Camera>
+                <TouchableOpacity style={{flex: 1}}
+                    onPressIn={() => {console.log("In"); startRecording();}}
+                    onPressOut ={() => {console.log("out"); stopRecording();}}
+                    activeOpacity={0.9}>
+                        
+                    <Camera
+                        style={[style.roundedCorners, { flex: 1, margin: 10, backgroundColor: '#378' }]}
+                        type={type}
+                        flashMode={flash}
+                        ref={cameraRef}>
+                    </Camera>
+                </TouchableOpacity>
             ) : (
                 <>
                 {/* Display video/image after getting it */}
@@ -114,16 +120,8 @@ export default function CameraComponent() {
                     <ButtonCamera source={require('../assets/icons/flashIcon.svg')} onPress={() => setFlash(flash === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off)} />
                     <View style={{ flexDirection: 'row' }}>
                         <ButtonCamera source={require('../assets/icons/takePictureButtonIcon.svg')} onPress={takePicture} />
-                        {videoUri ? (
+                        {videoUri && (
                             <ButtonCamera source={require('../assets/icons/sendIcon.png')} onPress={postMedia} imageStyle={{ width: 40, height: 40 }} />
-                        ) : (
-                            <>
-                                {isRecording ? (
-                                    <ButtonCamera source={require('../assets/splash.png')} onPress={stopRecording} imageStyle={{ width: 40, height: 40 }} />
-                                ) : (
-                                    <ButtonCamera source={require('../assets/splash.png')} onPress={startRecording} imageStyle={{ width: 40, height: 40 }} />
-                                )}
-                            </>
                         )}
                     </View>
                     <ButtonCamera source={require('../assets/icons/changeCameraTypeIcon.svg')} onPress={() => setType(type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back)} />
