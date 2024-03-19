@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-export default function ButtonCamera({source, onPress, imageStyle})
+export default function ButtonCamera({source, onPress, onLongPress, onPressOut, imageStyle, })
 {
     return(
-        <TouchableOpacity onPress={onPress} style={style.buttonPicture}>
+        <TouchableOpacity onPress={onPress} onLongPress={onLongPress} onPressOut={onPressOut} style={style.buttonPicture}>
             <Image source={source} style={imageStyle}/>
         </TouchableOpacity>
     )

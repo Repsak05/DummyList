@@ -16,6 +16,7 @@ export default function CameraComponent() {
     const [videoUri, setVideoUri] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const cameraRef = useRef(null);
+    
 
     useEffect(() => {
         (async () => {
@@ -87,18 +88,14 @@ export default function CameraComponent() {
         <View style={{ flex: 1 }}>
             {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
             {!image && !videoUri ? (
-                <TouchableOpacity style={{flex: 1}}
-                    onPressIn={() => {console.log("In"); startRecording();}}
-                    onPressOut ={() => {console.log("out"); stopRecording();}}
-                    activeOpacity={0.9}>
-                        
+                <View style={{flex: 1, margin: 15, backgroundColor: "#A6290D"}}>
                     <Camera
-                        style={[style.roundedCorners, { flex: 1, margin: 10, backgroundColor: '#378' }]}
+                        style={{ flex: 1, margin: isRecording ? 10 : 0, backgroundColor: '#378' }}
                         type={type}
                         flashMode={flash}
                         ref={cameraRef}>
                     </Camera>
-                </TouchableOpacity>
+                </View> 
             ) : (
                 <>
                 {/* Display video/image after getting it */}
@@ -119,7 +116,12 @@ export default function CameraComponent() {
                 <View style={{ paddingBottom: 40, flexDirection: 'row', alignSelf: 'center', justifyContent: 'space-between', paddingHorizontal: 50 }}>
                     <ButtonCamera source={require('../assets/icons/flashIcon.svg')} onPress={() => setFlash(flash === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off)} />
                     <View style={{ flexDirection: 'row' }}>
-                        <ButtonCamera source={require('../assets/icons/takePictureButtonIcon.svg')} onPress={takePicture} />
+                        <ButtonCamera
+                            source={require('../assets/icons/takePictureButtonIcon.svg')}
+                            onPress={takePicture}
+                            onLongPress={startRecording}
+                            onPressOut={stopRecording}
+                        />
                         {videoUri && (
                             <ButtonCamera source={require('../assets/icons/sendIcon.png')} onPress={postMedia} imageStyle={{ width: 40, height: 40 }} />
                         )}
