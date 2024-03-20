@@ -14,6 +14,7 @@ import ChallengeTitleInformation from './src/components/ChallengeLeaderboardTitl
 
 import ProfileAchievements from './src/components/ProfileAchievements.js';
 import ProfileUserInformation from './src/components/ProfileUserInformation.js';
+import ProfileChallengesOverview from './src/components/ProfileChallengesOverview.js';
 
 import Header from './src/components/Header.js';
 import CameraComponent from './src/components/CameraComponent.js';
@@ -44,8 +45,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-            name="CameraPage"
-            component={CameraPage}
+            name="ProfileChallengesOverview"
+            component={ProfilePage}
             options={{ headerShown: false }}
           />
         <Stack.Screen
