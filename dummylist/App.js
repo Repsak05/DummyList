@@ -19,6 +19,8 @@ import ProfileChallengesOverview from './src/components/ProfileChallengesOvervie
 import Header from './src/components/Header.js';
 import CameraComponent from './src/components/CameraComponent.js';
 
+import FeedInformation from './src/components/FeedInformation.js';
+
 //Screens
 import Home from './src/screens/Home.js';
 import ChallengePage from './src/screens/ChallengePage.js';
@@ -45,8 +47,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-            name="ProfileChallengesOverview"
-            component={ProfilePage}
+            name="FeedInformation"
+            component={FeedInformation}
             options={{ headerShown: false }}
           />
         <Stack.Screen
