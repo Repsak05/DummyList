@@ -14,7 +14,7 @@ export default function CameraPage({navigation, route})
         <View style={{}}>
             
             <View style={{marginTop: 55}}>
-                <Header navigation={navigation} pageName={title || "Camera"}/>
+                <Header navigation={navigation} pageName={`"${title}"` || "Camera"}/>
             </View>
 
             <View style={[style.roundedCorners, {height: 800}]}>

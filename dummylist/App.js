@@ -50,6 +50,11 @@ export default function App() {
             options={{ headerShown: false }}
           />
         <Stack.Screen
+          name="CameraPage"
+          component={CameraPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name="Home"
           component={Home}
           options={{ headerShown: false }}

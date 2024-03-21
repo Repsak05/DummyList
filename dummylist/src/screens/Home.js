@@ -10,7 +10,7 @@ export default function Home({navigation})
     return(
         <View style={styles.wrapper}>
             <View style={{width: "100%", marginTop: 55, }}>
-                <Header pageName={"Home"} navigation={navigation}/>
+                <Header pageName={"Home"} navigation={navigation} isOnHomePage={true}/>
             </View>
 
 

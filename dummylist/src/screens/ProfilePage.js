@@ -14,7 +14,7 @@ export default function ProfilePage({navigation})
             <Image style={{ width: "100%", height: 341}} source={require("../assets/icons/exampleProfilePicture.svg")}/>
             
             <View style={{position: "absolute", top: 55, left: 0, width: "100%"}}>
-                <Header pageName={" "} navigation={navigation}/>
+                <Header pageName={" "} navigation={navigation} isOnProfilePage={true}/>
             </View>
 
 
