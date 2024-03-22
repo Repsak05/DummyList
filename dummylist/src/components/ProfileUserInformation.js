@@ -2,6 +2,7 @@ import React from "react";
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import style from "../style";
 
+import ProgressBarTemplate from "./progressBarTemplate";
 export default function ProfileUserInformation({username, email})
 {
     //Extra values: Parameters
@@ -18,11 +19,8 @@ export default function ProfileUserInformation({username, email})
                 <Text style={style.greyFontSize16}>{email}</Text>
             </View>
 
-            <View style={{position: "relative"}}>
-                <View style={{borderRadius: 15, position: "absolute", top: 0, right: 0, backgroundColor: "#F2E2C4", width: widthProgressbar, height: setHeight}}>
-                    <View style={{borderRadius: 15, position: "relative", top: 0, left: 0, backgroundColor: "#0477BF", width: (widthProgressbar/xpToLevelUp*xpCurrent), height: setHeight}}></View>
-                    <Text style={[style.blackFontSize10, {position: "absolute", left: "40%", top: "10%", }]}>Level {levelCurrent}</Text>
-                </View>
+            <View style={{marginLeft: 40}}>
+                <ProgressBarTemplate setWidth={widthProgressbar} height={setHeight} currentXp={xpCurrent} maxXp={xpToLevelUp} text={"Level " + levelCurrent} textStyle={style.blackFontSize10}/>
             </View>
         </View>
     )

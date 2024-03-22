@@ -20,6 +20,7 @@ import Header from './src/components/Header.js';
 import CameraComponent from './src/components/CameraComponent.js';
 
 import progressBarTemplate from './src/components/progressBarTemplate.js';
+import InputFieldWithBlueOutline from './src/components/InputFieldWithBlueOutline.js';
 // import FeedInformation from './src/components/FeedInformation.js';
 // import FeedLikedBy from './src/components/FeedLikedBy.js';
 
@@ -50,8 +51,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-            name="progressBarTemplate"
-            component={progressBarTemplate}
+            name="InputFieldWithBlueOutline"
+            component={InputFieldWithBlueOutline}
             options={{ headerShown: false }}
           />
         <Stack.Screen
