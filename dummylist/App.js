@@ -19,7 +19,8 @@ import ProfileChallengesOverview from './src/components/ProfileChallengesOvervie
 import Header from './src/components/Header.js';
 import CameraComponent from './src/components/CameraComponent.js';
 
-import FeedInformation from './src/components/FeedInformation.js';
+// import FeedInformation from './src/components/FeedInformation.js';
+// import FeedLikedBy from './src/components/FeedLikedBy.js';
 
 //Screens
 import Home from './src/screens/Home.js';
@@ -27,6 +28,7 @@ import ChallengePage from './src/screens/ChallengePage.js';
 import LeaderboardPage from './src/screens/LeaderboardPage.js';
 import ProfilePage from './src/screens/ProfilePage.js';
 import CameraPage from './src/screens/CameraPage.js';
+import FeedPage from './src/screens/FeedPage.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -47,8 +49,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-            name="FeedInformation"
-            component={FeedInformation}
+            name="FeedPage"
+            component={FeedPage}
             options={{ headerShown: false }}
           />
         <Stack.Screen
