@@ -18,7 +18,7 @@ export default function FeedPage()
 
             <FeedInformation username={"Kanlee"} profileImage={"../assets/icons/exampleProfilePicture.svg"} title={"Eat a Raw Onion"}/>
             <FeedLikedBy  peopleWhoLikedThePost={[
-              exampleImage, exampleImage, exampleImage, exampleImage, exampleImage, exampleImage
+              exampleImage, exampleImage, exampleImage, exampleImage, exampleImage, exampleImage, exampleImage, exampleImage, exampleImage
             ]}/>
         </View>
     )
