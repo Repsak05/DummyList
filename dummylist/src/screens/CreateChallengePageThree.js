@@ -7,7 +7,7 @@ import ProgressBarTemplate from "../components/progressBarTemplate.js";
 import InputFieldWithBlueOutline from "../components/InputFieldWithBlueOutline.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 
-
+import SwitchButton from "../components/SwitchButton.js";
 export default function CreateChallengePageThree({navigation})
 {
     function createPreviousFunction()
@@ -132,6 +132,8 @@ export default function CreateChallengePageThree({navigation})
                 <NextPreviousButton text={"Create Challenge"} onPress={createPreviousFunction}/>
             </View>
         </View>
+
+
     )
 }
 
