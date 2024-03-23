@@ -257,6 +257,21 @@ export default StyleSheet.create({
     color: "#001D34",
     fontSize: 13,
   },
+  darkGreenFontSize13: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#00201F",
+    fontSize: 13,
+  },
+  redFontSize16: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#3A0A02",
+    fontSize: 16,
+  },
+  redFontSize16Regular: {
+    fontFamily: "Oswald_400Regular", 
+    color: "#3A0A02",
+    fontSize: 16,
+  },
 
   widthHeight70 : {
     width: 70,

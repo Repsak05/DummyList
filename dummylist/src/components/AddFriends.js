@@ -17,21 +17,21 @@ export default function AddFriends({name, image, hasLine = true, showLevel = fal
         const addingVal = amountOfMutualFriends ? amountOfMutualFriends + " Mutual Friends": "No Mutual Friends";
         stringContaining += addingVal
     }
-    if(showTimeAgo)
+    if (showTimeAgo && timeAgo !== undefined) 
     {
-        stringContaining += " • " + timeAgo;
+        stringContaining += " • " + timeAgo + " ago";
     }
 
     return(
         <View style={{flexDirection: "column",}}>
-            <View style={{flexDirection: "row", paddingLeft: 55, paddingBottom: 8}}>
+            <View style={{flexDirection: "row", paddingLeft: 50, paddingBottom: 8}}>
                 <Image source={image} style={{alignSelf: "center", width: 40, height: 40, borderRadius: 5, marginRight: 18}}/>
                 <View style={{flexDirection: "column"}}>
                     <Text style={style.blackFontSize20}>@{name}</Text>
                     <Text style={style.greyFontSize13}>{stringContaining}</Text>
                 </View>
 
-                    <View  style={{flex: 1, flexDirection: "row-reverse", marginRight: "15%", alignItems: "center"}}>
+                    <View  style={{flex: 1, flexDirection: "row-reverse", marginRight: "10%", alignItems: "center"}}>
                         {showAddFriend && (
                             <Pressable onPress={onPressAddFriend} style={{borderRadius: 5, width: 70, height: 29, backgroundColor: "#D3EC9E", alignItems: "center", justifyContent: "center"}}>
                                 <Text style={[style.blackFontSize13, {textAlign: "center"}]}>Add Friend</Text>
@@ -62,7 +62,7 @@ export default function AddFriends({name, image, hasLine = true, showLevel = fal
                     style={{
                         alignSelf: "center",
                         borderBottomColor: "#9e9e9e",
-                        borderBottomWidth: 3,
+                        borderBottomWidth: 1,
                         width: "90%",
                     }}
                 />
