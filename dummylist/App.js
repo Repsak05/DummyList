@@ -32,6 +32,7 @@ import ProfilePage from './src/screens/ProfilePage.js';
 import CameraPage from './src/screens/CameraPage.js';
 import FeedPage from './src/screens/FeedPage.js';
 import CreateChallengePageOne from './src/screens/CreateChallengePageOne.js';
+import CreateChallengePageTwo from './src/screens/CreateChallengePageTwo.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -51,6 +52,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+            name="CreateChallengePageTwo"
+            component={CreateChallengePageTwo}
+            options={{ headerShown: false }}
+          />
         <Stack.Screen
             name="CreateChallengePageOne"
             component={CreateChallengePageOne}

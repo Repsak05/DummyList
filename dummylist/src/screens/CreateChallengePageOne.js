@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { View, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image   } from 'react-native';
 import styles from '../style.js'; 
 
@@ -7,9 +7,8 @@ import ProgressBarTemplate from "../components/progressBarTemplate.js";
 import InputFieldWithBlueOutline from "../components/InputFieldWithBlueOutline.js";
 import ChooseGameModeTypeBoxes from "../components/ChooseGameModeTypeBoxes.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
-// import TaskComponent from "../components/TaskComponent.js"; -> ___Create new component (More generalizable)
 
-export default function CreateChallengePageOne()
+export default function CreateChallengePageOne({navigation})
 {
 
     function chosenGameMode()
@@ -24,7 +23,7 @@ export default function CreateChallengePageOne()
     return(
         <View> 
             <View style={{marginTop: 55, marginBottom: 17}}>
-                <Header pageName={"Create Challenge"}/>
+                <Header navigation={navigation} pageName={"Create Challenge"}/>
             </View>
 
             <View style={{alignSelf: "center", marginBottom: 127}}>
@@ -33,7 +32,7 @@ export default function CreateChallengePageOne()
 
             <InputFieldWithBlueOutline  startingValue="Enter Challenge Name"/>
 
-            <View style={{marginTop: 20, marginBottom: 15, flexDirection: "column", }}>
+            <View style={{marginTop: 20, flexDirection: "column", }}>
                 <View style={{flexDirection: "row", marginBottom: 12, justifyContent: "space-around"}}>
                     <ChooseGameModeTypeBoxes onPress={chosenGameMode} colorType={1} image={require("../assets/icons/fastestWins.png")} title={"Fastest Wins"} subtitle={"Be the First to Complete All Tasks"}/>
                     <ChooseGameModeTypeBoxes onPress={chosenGameMode} colorType={2} image={require("../assets/icons/bingoIcon.png")} title={"Bingo"} subtitle={"Play on a Bingo Board"}/>
@@ -43,7 +42,7 @@ export default function CreateChallengePageOne()
                     <ChooseGameModeTypeBoxes onPress={chosenGameMode} colorType={4} image={require("../assets/icons/longListIcon.png")} title={"Long List"} subtitle={"Complete as Many as Possible"}/>
                 </View>
             </View>
-            <View style={{paddingHorizontal: 30, justifyContent: "space-between", flexDirection: "row"}}>
+            <View style={{paddingHorizontal: 30, justifyContent: "space-between", flexDirection: "row", marginTop: 15}}>
                 <NextPreviousButton text={"Previous"} onPress={nextPreviousFunction}/>
                 <NextPreviousButton text={"Next"} onPress={nextPreviousFunction}/>
             </View>
