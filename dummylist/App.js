@@ -31,6 +31,7 @@ import LeaderboardPage from './src/screens/LeaderboardPage.js';
 import ProfilePage from './src/screens/ProfilePage.js';
 import CameraPage from './src/screens/CameraPage.js';
 import FeedPage from './src/screens/FeedPage.js';
+import CreateChallengePageOne from './src/screens/CreateChallengePageOne.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -51,8 +52,13 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-            name="InputFieldWithBlueOutline"
-            component={InputFieldWithBlueOutline}
+            name="CreateChallengePageOne"
+            component={CreateChallengePageOne}
+            options={{ headerShown: false }}
+          />
+        <Stack.Screen
+            name="FeedPage"
+            component={FeedPage}
             options={{ headerShown: false }}
           />
         <Stack.Screen
