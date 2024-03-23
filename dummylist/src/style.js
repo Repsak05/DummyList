@@ -194,6 +194,11 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
 
+  blackFontSize64: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#040F0F",
+    fontSize: 64,
+  },
   blackFontSize25: {
     fontFamily: "Oswald_500Medium", 
     color: "#040F0F",

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image   } from 'react-native';
-import styles from '../style.js'; 
+import style from '../style.js'; 
 
 import Header from "../components/Header.js";
 import ProgressBarTemplate from "../components/progressBarTemplate.js";
@@ -43,7 +43,7 @@ export default function CreateChallengePageOne({navigation})
                 </View>
             </View>
             <View style={{paddingHorizontal: 30, justifyContent: "space-between", flexDirection: "row", marginTop: 15}}>
-                <NextPreviousButton text={"Previous"} onPress={nextPreviousFunction}/>
+                <NextPreviousButton text={"Cancel"} onPress={nextPreviousFunction}/>
                 <NextPreviousButton text={"Next"} onPress={nextPreviousFunction}/>
             </View>
         </View>

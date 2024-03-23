@@ -1,6 +1,6 @@
 import React from "react";
 import { View, ScrollView, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image   } from 'react-native';
-import styles from '../style.js'; 
+import style from '../style.js'; 
 
 import Header from "../components/Header.js";
 import ProgressBarTemplate from "../components/progressBarTemplate.js";
