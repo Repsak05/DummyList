@@ -2,21 +2,19 @@ import React, { useRef, useState, useEffect } from "react";
 import { View, ScrollView, Text, StyleSheet, Dimensions, TouchableOpacity, Pressable, Image } from 'react-native';
 import style from '../style.js'; 
 
-export default function SwitchButton({textOne = "Friendship", textTwo = "Challenges", onPress})
+export default function SwitchButton({textOne = "Friendship", textTwo = "Challenges", onPressLeft, onPressRight})
 {
     const [isSetToLeft, setIsSetToLeft] = useState(true);
 
-
-
     return(
         <View style={{width: "90%", flexDirection: "row", height: 38, width: 370, borderRadius: 5, backgroundColor: "#32618D", alignItems: "center", justifyContent: "space-around", alignSelf: "center"}}>
-            <Pressable onPress={() => {setIsSetToLeft(true); onPress}}>
+            <Pressable onPress={() => { setIsSetToLeft(true); onPressLeft(); }}>
                 <Text style={[isSetToLeft ? styles.isPressedText : styles.isNotPressedText, styles.allText]}>
                     {textOne}
                 </Text>
             </Pressable>
 
-            <Pressable onPress={() => {setIsSetToLeft(false); onPress}}>
+            <Pressable onPress={() => { setIsSetToLeft(false); onPressRight(); }}>
                 <Text style={[isSetToLeft ? styles.isNotPressedText : styles.isPressedText, styles.allText]}>
                     {textTwo}
                 </Text>

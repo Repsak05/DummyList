@@ -44,7 +44,7 @@ export default function CreateChallengePageTwo({navigation})
             <ScrollView style={{maxHeight: 370}}>
                 {allAddedFriends.map(arr => (
                     <View key={arr[0]} style={{marginBottom: 11}}>
-                        <AddFriends name={arr[0]} level={arr[1]} image={arr[2]}/>
+                        <AddFriends name={arr[0]} showLevel={true} level={arr[1]} image={arr[2]}/>
                     </View>
                 ))}
             </ScrollView>
