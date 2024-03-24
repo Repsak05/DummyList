@@ -35,6 +35,7 @@ import CreateChallengePageOne from './src/screens/CreateChallengePageOne.js';
 import CreateChallengePageTwo from './src/screens/CreateChallengePageTwo.js';
 import CreateChallengePageThree from './src/screens/CreateChallengePageThree.js';
 import FriendPage from './src/screens/FriendsPage.js';
+import AllFriendsPage from './src/screens/AllFriendsPage.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -54,6 +55,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+            name="AllFriendsPage"
+            component={AllFriendsPage}
+            options={{ headerShown: false }}
+          />
         <Stack.Screen
             name="FriendPage"
             component={FriendPage}
