@@ -13,10 +13,11 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
         if(isOnHomePage){
             console.log("Go To Socials Page!")
             //Navigate to social's page!
+            navigation.navigate("FriendPage")
 
         } else {
             console.log("Go back button has been clicked!")
-            navigation.navigate('Home')
+            navigation.navigate("Home")
         }
         
     }
@@ -29,7 +30,7 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
 
         } else {
             console.log("Go to profile button has been clicked")
-            navigation.navigate('ProfilePage')
+            navigation.navigate("ProfilePage")
         }
     }
 

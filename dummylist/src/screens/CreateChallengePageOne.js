@@ -16,9 +16,17 @@ export default function CreateChallengePageOne({navigation})
         console.log("GameMode has been chosen!");
     }
 
-    function nextPreviousFunction()
+    function nextFunction()
     {
-        console.log("Go to next or previous!");
+        console.log("Go to next!");
+        navigation.navigate("CreateChallengePageTwo")
+    }
+    
+    function previousFunction()
+    {
+        console.log("Go to Previos!");
+        navigation.navigate("Home")
+
     }
     return(
         <View> 
@@ -43,8 +51,8 @@ export default function CreateChallengePageOne({navigation})
                 </View>
             </View>
             <View style={{paddingHorizontal: 30, justifyContent: "space-between", flexDirection: "row", marginTop: 15}}>
-                <NextPreviousButton text={"Cancel"} onPress={nextPreviousFunction}/>
-                <NextPreviousButton text={"Next"} onPress={nextPreviousFunction}/>
+                <NextPreviousButton text={"Cancel"} onPress={previousFunction}/>
+                <NextPreviousButton text={"Next"} onPress={nextFunction}/>
             </View>
         </View>
     )

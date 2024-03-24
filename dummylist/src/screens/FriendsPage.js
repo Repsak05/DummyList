@@ -47,6 +47,7 @@ export default function FriendPage({navigation})
     {
         //Navigate to new page
         console.log('"See all" has been pressed')
+        navigation.navigate("AllFriendsPage")
     }
     return(
         <View style={{flex: 1}}>

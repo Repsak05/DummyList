@@ -9,9 +9,15 @@ import NextPreviousButton from "../components/NextPreviousButton.js";
 
 export default function CreateChallengePageThree({navigation})
 {
-    function createPreviousFunction()
+    function createFunction()
     {
-        console.log("Create or Previous clicked:");
+        console.log("Create clicked:");
+    }
+    
+    function previousFunction()
+    {
+        console.log("Previous clicked:");
+        navigation.navigate("CreateChallengePageTwo")
     }
 
     function difficultyChosen(difficulty)
@@ -127,12 +133,10 @@ export default function CreateChallengePageThree({navigation})
             </View>
 
             <View style={{paddingHorizontal: 30, justifyContent: "space-between", flexDirection: "row", marginTop: 15}}>
-                <NextPreviousButton text={"Previous"} onPress={createPreviousFunction}/>
-                <NextPreviousButton text={"Create Challenge"} onPress={createPreviousFunction}/>
+                <NextPreviousButton text={"Previous"} onPress={previousFunction}/>
+                <NextPreviousButton text={"Create Challenge"} onPress={createFunction}/>
             </View>
         </View>
-
-
     )
 }
 

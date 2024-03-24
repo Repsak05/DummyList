@@ -55,6 +55,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
             name="AllFriendsPage"
             component={AllFriendsPage}
@@ -90,11 +95,7 @@ export default function App() {
           component={CameraPage}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="ProfilePage"
           component={ProfilePage}

@@ -131,6 +131,12 @@ export default StyleSheet.create({
       borderBottomLeftRadius: 5,
       borderBottomRightRadius: 30,
     },
+    roundedCornersOpposite : {
+      borderTopLeftRadius: 5,
+      borderTopRightRadius: 30,
+      borderBottomLeftRadius: 30,
+      borderBottomRightRadius: 5,
+    },
 
  //Following are being used in TaskComponents (&& in LeaderboardPlacement)
  taskContainer:{
@@ -241,6 +247,11 @@ export default StyleSheet.create({
     fontFamily: "Oswald_500Medium", 
     color: "#9e9e9e",
     fontSize: 10,
+  },
+  whiteFontSize25: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#F6F6F6",
+    fontSize: 25,
   },
   whiteFontSize16: {
     fontFamily: "Oswald_500Medium", 

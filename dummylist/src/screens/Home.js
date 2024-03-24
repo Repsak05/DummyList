@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { View, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image   } from 'react-native';
+import { View, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image, ScrollView } from 'react-native';
 import styles from '../style.js'; 
 
-import CarouselItem from "../components/CarouselItem.js";
 import Header from "../components/Header.js";
+import CarouselItem from "../components/CarouselItem.js";
+import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 
 export default function Home({navigation})
 {    
@@ -13,8 +14,9 @@ export default function Home({navigation})
                 <Header pageName={"Home"} navigation={navigation} isOnHomePage={true}/>
             </View>
 
-
-            <CarouselItem navigation={navigation}></CarouselItem>
+            <CreateChallengeComponent navigation={navigation} />
+            <CarouselItem navigation={navigation} />
+    
 
             <View style={styles.homeFeedContainer}>
                 <Pressable onPress={() => console.log('Open feed')} style={{width: "100%", height: "100%"}}>
@@ -29,3 +31,9 @@ export default function Home({navigation})
         </View>
     )
 }
+
+const stylesl = StyleSheet.create({
+    container: {
+      
+    },
+  });

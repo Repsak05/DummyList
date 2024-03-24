@@ -10,9 +10,16 @@ import AddFriends from "../components/AddFriends.js";
 
 export default function CreateChallengePageTwo({navigation})
 {
-    function nextPreviousFunction()
+    function nextFunction()
     {
-        console.log("Go to next or previous!");
+        console.log("Go to next!");
+        navigation.navigate("CreateChallengePageThree")
+    }
+
+    function previousFunction()
+    {
+        console.log("Previous Clicked")
+        navigation.navigate("CreateChallengePageOne")
     }
 
     //Should be changed to be a parameter (together with image)
@@ -50,8 +57,8 @@ export default function CreateChallengePageTwo({navigation})
             </ScrollView>
 
             <View style={{paddingHorizontal: 30, justifyContent: "space-between", flexDirection: "row", marginTop: 15}}>
-                <NextPreviousButton text={"Previous"} onPress={nextPreviousFunction}/>
-                <NextPreviousButton text={"Next"} onPress={nextPreviousFunction}/>
+                <NextPreviousButton text={"Previous"} onPress={previousFunction}/>
+                <NextPreviousButton text={"Next"} onPress={nextFunction}/>
             </View>
         </View>
     )
