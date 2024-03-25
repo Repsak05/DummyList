@@ -21,7 +21,7 @@ export default function FeedLikedBy({peopleWhoLikedThePost})
     const shownLikedPosts = returnNumberOfElementsFromArray(peopleWhoLikedThePost, showAmountOfLikedBy);
 
     return (
-        <View style={{marginLeft: 29, padding: 10, flexDirection: "row", }}>
+        <View style={{marginLeft: 19, padding: 10, flexDirection: "row", }}>
             <Text style={[style.blackFontSize16]}>Liked by:</Text>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", marginTop: 5, marginLeft: 10 }}>
                 {shownLikedPosts.map((element, index) => (

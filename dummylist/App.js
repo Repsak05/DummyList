@@ -56,6 +56,11 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
       <Stack.Screen
+            name="FeedPage"
+            component={FeedPage}
+            options={{ headerShown: false }}
+          />
+      <Stack.Screen
           name="Home"
           component={Home}
           options={{ headerShown: false }}
@@ -85,11 +90,7 @@ export default function App() {
             component={CreateChallengePageOne}
             options={{ headerShown: false }}
           />
-        <Stack.Screen
-            name="FeedPage"
-            component={FeedPage}
-            options={{ headerShown: false }}
-          />
+
         <Stack.Screen
           name="CameraPage"
           component={CameraPage}

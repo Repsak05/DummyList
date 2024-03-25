@@ -19,7 +19,7 @@ export default function Home({navigation})
     
 
             <View style={styles.homeFeedContainer}>
-                <Pressable onPress={() => console.log('Open feed')} style={{width: "100%", height: "100%"}}>
+                <Pressable onPress={() => {console.log('Open feed'); navigation.navigate("FeedPage")}} style={{width: "100%", height: "100%"}}>
                     <ImageBackground source={require('../assets/images/test_image_1.jpg')} style={styles.homeFeedThumbnail}>
                         <View style={styles.homeFeedTextBox}>
                             <Text style={styles.homeFeedText}>Check here what your friends are up to</Text>

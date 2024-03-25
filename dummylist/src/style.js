@@ -125,6 +125,12 @@ export default StyleSheet.create({
         fontSize: 18,
     },
 
+    roundedCornersExtremeOpposite : {
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 42,
+      borderBottomLeftRadius: 42,
+      borderBottomRightRadius: 10,
+    },
     roundedCorners : {
       borderTopLeftRadius: 30,
       borderTopRightRadius: 5,
