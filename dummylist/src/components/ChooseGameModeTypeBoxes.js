@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 
-export default function ChooseGameModeTypeBoxes({colorType, image, title, subtitle, onPress, setWidth = 200, setHeight = 78})
+export default function ChooseGameModeTypeBoxes({colorType, image, title, subtitle, onPress, setWidth = 200, setHeight = 78, addStyle})
 {
     let bgColor = "#127"
     switch(colorType)
@@ -25,7 +25,7 @@ export default function ChooseGameModeTypeBoxes({colorType, image, title, subtit
     }
 
     return(
-        <Pressable onPress={() => onPress(title)} style={[style.roundedCorners, {backgroundColor: bgColor, flexDirection: "row", justifyContent: "center", alignItems: "center", alignSelf: "center", height: setHeight, width: setWidth}]}>
+        <Pressable onPress={() => onPress(title)} style={[style.roundedCorners, addStyle, {backgroundColor: bgColor, flexDirection: "row", justifyContent: "center", alignItems: "center", alignSelf: "center", height: setHeight, width: setWidth}]}>
             <Image source={image} style={{width: 45, height: 45}}/>
             <View style={{flexDirection: "column", marginLeft: 10}}>
                 <Text style={style.blackFontSize13}>{title}</Text>

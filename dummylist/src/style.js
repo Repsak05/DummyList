@@ -200,6 +200,14 @@ export default StyleSheet.create({
     flexDirection: "row",
   },
 
+  isNotPicked : {
+    opacity: 0.4
+  },  
+
+  isPicked : {
+      opacity: 1
+  },
+
   blackFontSize64: {
     fontFamily: "Oswald_500Medium", 
     color: "#040F0F",

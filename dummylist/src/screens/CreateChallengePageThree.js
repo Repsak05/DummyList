@@ -9,7 +9,7 @@ import NextPreviousButton from "../components/NextPreviousButton.js";
 export default function CreateChallengePageThree({navigation, route})
 {
     const { allCurrentChallengeValues } = route.params
-    const [allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues);
+    const [ allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues);
 
     function changeChallengeValues(value, name)
     {
@@ -18,7 +18,6 @@ export default function CreateChallengePageThree({navigation, route})
             [name] : value
         })
     }
-
 
     function createFunction()
     {
@@ -134,13 +133,13 @@ export default function CreateChallengePageThree({navigation, route})
             <View style={{flexDirection: "column"}}>
                 <Text style={[style.blackFontSize20, {paddingLeft: 17}]}>Choose Task Difficulty</Text>
                 <View style={{flexDirection: "row", justifyContent: "space-around"}}>
-                    <Pressable onPress={() => changeChallengeValues("low", "taskDifficulty")}>
+                    <Pressable style={allChallengeValues.taskDifficulty == "low" || allChallengeValues.taskDifficulty == "" ? style.isPicked : style.isNotPicked} onPress={() => changeChallengeValues("low", "taskDifficulty")}>
                         <Image source={require("../assets/icons/lowDifficultyIcon.svg")} style={{width: 100, height: 100}}/>
                     </Pressable>
-                    <Pressable onPress={() => changeChallengeValues("medium", "taskDifficulty")}>
+                    <Pressable style={allChallengeValues.taskDifficulty == "medium" || allChallengeValues.taskDifficulty == "" ? style.isPicked : style.isNotPicked} onPress={() => changeChallengeValues("medium", "taskDifficulty")}>
                         <Image source={require("../assets/icons/mediumDifficultyIcon.svg")} style={{width: 100, height: 100}}/>
                     </Pressable>
-                    <Pressable onPress={() => changeChallengeValues("high", "taskDifficulty")}>
+                    <Pressable style={allChallengeValues.taskDifficulty == "high" || allChallengeValues.taskDifficulty == "" ? style.isPicked : style.isNotPicked} onPress={() => changeChallengeValues("high", "taskDifficulty")}>
                         <Image source={require("../assets/icons/highDifficultyIcon.svg")} style={{width: 100, height: 100}}/>
                     </Pressable>
                 </View>
