@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, ScrollView, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image   } from 'react-native';
 import style from '../style.js'; 
 
@@ -8,19 +8,35 @@ import InputFieldWithBlueOutline from "../components/InputFieldWithBlueOutline.j
 import NextPreviousButton from "../components/NextPreviousButton.js";
 import AddFriends from "../components/AddFriends.js";
 
-export default function CreateChallengePageTwo({navigation})
+export default function CreateChallengePageTwo({navigation, route})
 {
+
+    const { allChallengeValues } = route.params;
+    const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState(allChallengeValues)
+
+    function addFriendsToChallenge(friend) {
+        setAllCurrentChallengeValues({
+            ...allCurrentChallengeValues,
+            friends: [...allCurrentChallengeValues.friends, friend]
+        });
+    }
+
     function nextFunction()
     {
         console.log("Go to next!");
-        navigation.navigate("CreateChallengePageThree")
+        navigation.navigate("CreateChallengePageThree", {
+            allCurrentChallengeValues
+        });
     }
 
     function previousFunction()
     {
         console.log("Previous Clicked")
-        navigation.navigate("CreateChallengePageOne")
+        navigation.navigate("CreateChallengePageOne", {
+            allCurrentChallengeValues
+        });
     }
+
 
     //Should be changed to be a parameter (together with image)
     const allAddedFriends = [ 
@@ -51,7 +67,7 @@ export default function CreateChallengePageTwo({navigation})
             <ScrollView style={{maxHeight: 370}}>
                 {allAddedFriends.map(arr => (
                     <View key={arr[0]} style={{marginBottom: 11}}>
-                        <AddFriends name={arr[0]} showLevel={true} level={arr[1]} image={arr[2]}/>
+                        <AddFriends name={arr[0]} showLevel={true} level={arr[1]} image={arr[2]} showAddFriend={true} onPressAddFriend={() => addFriendsToChallenge(arr[0])}/>
                     </View>
                 ))}
             </ScrollView>

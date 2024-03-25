@@ -25,7 +25,7 @@ export default function ChooseGameModeTypeBoxes({colorType, image, title, subtit
     }
 
     return(
-        <Pressable onPress={onPress} style={[style.roundedCorners, {backgroundColor: bgColor, flexDirection: "row", justifyContent: "center", alignItems: "center", alignSelf: "center", height: setHeight, width: setWidth}]}>
+        <Pressable onPress={() => onPress(title)} style={[style.roundedCorners, {backgroundColor: bgColor, flexDirection: "row", justifyContent: "center", alignItems: "center", alignSelf: "center", height: setHeight, width: setWidth}]}>
             <Image source={image} style={{width: 45, height: 45}}/>
             <View style={{flexDirection: "column", marginLeft: 10}}>
                 <Text style={style.blackFontSize13}>{title}</Text>

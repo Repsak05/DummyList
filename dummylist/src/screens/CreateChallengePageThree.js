@@ -4,25 +4,34 @@ import style from '../style.js';
 
 import Header from "../components/Header.js";
 import ProgressBarTemplate from "../components/progressBarTemplate.js";
-import InputFieldWithBlueOutline from "../components/InputFieldWithBlueOutline.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 
-export default function CreateChallengePageThree({navigation})
+export default function CreateChallengePageThree({navigation, route})
 {
+    const { allCurrentChallengeValues } = route.params
+    const [allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues);
+
+    function changeChallengeValues(value, name)
+    {
+        setAllChallengeValues({
+            ...allChallengeValues,
+            [name] : value
+        })
+    }
+
+
     function createFunction()
     {
         console.log("Create clicked:");
+        console.log(allChallengeValues);
     }
     
     function previousFunction()
     {
         console.log("Previous clicked:");
-        navigation.navigate("CreateChallengePageTwo")
-    }
-
-    function difficultyChosen(difficulty)
-    {
-        console.log("You've chosen this difficulty: " + difficulty)
+        navigation.navigate("CreateChallengePageTwo",{
+            allChallengeValues
+        })
     }
 
     //All values that can be scrolled through:
@@ -49,6 +58,11 @@ export default function CreateChallengePageThree({navigation})
     const scrollViewRef = useRef(null);
     const [containerWidth, setContainerWidth] = useState(null);
     const [contentWidth, setContentWidth] = useState(null);
+
+    useEffect(() => {
+        changeChallengeValues(middleNumber, "amountOfTasks")
+    },[middleNumber])
+
 
     useEffect(() => {
         // Measure the width of the container
@@ -120,13 +134,13 @@ export default function CreateChallengePageThree({navigation})
             <View style={{flexDirection: "column"}}>
                 <Text style={[style.blackFontSize20, {paddingLeft: 17}]}>Choose Task Difficulty</Text>
                 <View style={{flexDirection: "row", justifyContent: "space-around"}}>
-                    <Pressable onPress={() => difficultyChosen("low")}>
+                    <Pressable onPress={() => changeChallengeValues("low", "taskDifficulty")}>
                         <Image source={require("../assets/icons/lowDifficultyIcon.svg")} style={{width: 100, height: 100}}/>
                     </Pressable>
-                    <Pressable onPress={() => difficultyChosen("medium")}>
+                    <Pressable onPress={() => changeChallengeValues("medium", "taskDifficulty")}>
                         <Image source={require("../assets/icons/mediumDifficultyIcon.svg")} style={{width: 100, height: 100}}/>
                     </Pressable>
-                    <Pressable onPress={() => difficultyChosen("high")}>
+                    <Pressable onPress={() => changeChallengeValues("high", "taskDifficulty")}>
                         <Image source={require("../assets/icons/highDifficultyIcon.svg")} style={{width: 100, height: 100}}/>
                     </Pressable>
                 </View>
