@@ -14,10 +14,19 @@ export default function CreateChallengePageTwo({navigation, route})
     const { allChallengeValues } = route.params;
     const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState(allChallengeValues)
 
-    function addFriendsToChallenge(friend) {
+    function addFriendsToChallenge(friend) 
+    {
         setAllCurrentChallengeValues({
             ...allCurrentChallengeValues,
             friends: [...allCurrentChallengeValues.friends, friend]
+        });
+    }
+
+    function removeNameFromChallenge(name) 
+    {
+        setAllCurrentChallengeValues({
+            ...allCurrentChallengeValues,
+            friends: allCurrentChallengeValues.friends.filter(friend => friend !== name)
         });
     }
 
@@ -35,6 +44,20 @@ export default function CreateChallengePageTwo({navigation, route})
         navigation.navigate("CreateChallengePageOne", {
             allCurrentChallengeValues
         });
+    }
+
+    function displayFriendsInChallengeCorrectly(arr) 
+    {
+        const isFriendAdded = allCurrentChallengeValues.friends.includes(arr[0]);
+
+        return (
+            <AddFriends name={arr[0]} showLevel={true} level={arr[1]} image={arr[2]} 
+                showCancelFriend={isFriendAdded}
+                showAddFriend={!isFriendAdded}
+                onPressCancel={() => removeNameFromChallenge(arr[0])}
+                onPressAddFriend={() => addFriendsToChallenge(arr[0])}
+            />
+        );
     }
 
 
@@ -67,7 +90,7 @@ export default function CreateChallengePageTwo({navigation, route})
             <ScrollView style={{maxHeight: 370}}>
                 {allAddedFriends.map(arr => (
                     <View key={arr[0]} style={{marginBottom: 11}}>
-                        <AddFriends name={arr[0]} showLevel={true} level={arr[1]} image={arr[2]} showAddFriend={true} onPressAddFriend={() => addFriendsToChallenge(arr[0])}/>
+                        {displayFriendsInChallengeCorrectly(arr)}
                     </View>
                 ))}
             </ScrollView>

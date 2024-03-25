@@ -113,22 +113,25 @@ export default function CreateChallengePageThree({navigation, route})
                 <ProgressBarTemplate currentXp={3} maxXp={3} text={"3/3"} setWidth={400}/>
             </View>
 
-            <ScrollView
-                ref={scrollViewRef}
-                horizontal={true}
-                style={{ marginBottom: 50, }}
-                onScroll={calculateMiddleNumber}
-                scrollEventThrottle={16}
-                onContentSizeChange={onContentSizeChange}
-            >
-                <View style={{ flexDirection: "row", marginBottom: 20}}>
-                    {options.map((val, index) => (
-                        <TouchableOpacity key={index} style={{ paddingHorizontal: 15 }}>
-                            <Text style={[style.blackFontSize64, val === middleNumber ? styles.highlightedText : null]}>{val}</Text>
-                        </TouchableOpacity>
-                    ))}
-                </View>
-            </ScrollView>
+            <View>
+                <Text style={[style.blackFontSize20, {paddingLeft: 17}]}>Choose Task Difficulty</Text>
+                <ScrollView
+                    ref={scrollViewRef}
+                    horizontal={true}
+                    style={{ marginBottom: 50, }}
+                    onScroll={calculateMiddleNumber}
+                    scrollEventThrottle={16}
+                    onContentSizeChange={onContentSizeChange}
+                >
+                    <View style={{ flexDirection: "row", marginBottom: 20}}>
+                        {options.map((val, index) => (
+                            <TouchableOpacity key={index} style={{ paddingHorizontal: 15 }}>
+                                <Text style={[style.blackFontSize64, val === middleNumber ? styles.highlightedText : null]}>{val}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                </ScrollView>
+            </View>
 
             <View style={{flexDirection: "column"}}>
                 <Text style={[style.blackFontSize20, {paddingLeft: 17}]}>Choose Task Difficulty</Text>
