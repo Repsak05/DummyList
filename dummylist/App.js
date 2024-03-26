@@ -37,6 +37,7 @@ import CreateChallengePageThree from './src/screens/CreateChallengePageThree.js'
 import FriendsPage from './src/screens/FriendsPage.js';
 import AllFriendsPage from './src/screens/AllFriendsPage.js';
 import InvitedChallengesPage from './src/screens/InvitedChallengesPage.js';
+import AcceptChallengeOverviewPage from './src/screens/AcceptChallengeOverviewPage.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -56,6 +57,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+            name="AcceptChallengeOverviewPage"
+            component={AcceptChallengeOverviewPage}
+            options={{ headerShown: false }}
+          />
         <Stack.Screen
             name="InvitedChallengesPage"
             component={InvitedChallengesPage}

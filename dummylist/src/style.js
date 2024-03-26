@@ -131,6 +131,12 @@ export default StyleSheet.create({
       borderBottomLeftRadius: 42,
       borderBottomRightRadius: 10,
     },
+    roundedCornersSmall : {
+      borderTopLeftRadius: 15,
+      borderTopRightRadius: 5,
+      borderBottomLeftRadius: 5,
+      borderBottomRightRadius: 15,
+    },
     roundedCorners : {
       borderTopLeftRadius: 30,
       borderTopRightRadius: 5,
@@ -230,6 +236,11 @@ export default StyleSheet.create({
     fontSize: 20,
   },
 
+  blackFontSize16Medium: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#040F0F",
+    fontSize: 16,
+  },
   blackFontSize16: {
     fontFamily: "Oswald_400Regular", 
     color: "#040F0F",

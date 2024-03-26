@@ -29,6 +29,9 @@ export default function InvitedChallengesPage({navigation})
     {
         console.log("Navigate to invited challenge")
         console.table(arr)
+       
+        //Should give params to navigate:
+        navigation.navigate("AcceptChallengeOverviewPage")
     }
 
     return(
