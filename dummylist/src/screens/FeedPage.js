@@ -7,7 +7,6 @@ import FeedInformation from "../components/FeedInformation";
 import FeedLikedBy from "../components/FeedLikedBy";
 
 export default function FeedPage({ navigation }) {
-    const { height: screenHeight } = Dimensions.get('window');
     const exampleImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4YoVyIWSCe7lLdwBFj3HAwPM-wUdrH5BI8w&s"; // Change later
     const yourProfilePicture = "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?cs=srgb&dl=pexels-suliman-sallehi-1704488.jpg&fm=jpg";
 

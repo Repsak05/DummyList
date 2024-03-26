@@ -56,15 +56,15 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
       <Stack.Screen
-            name="FeedPage"
-            component={FeedPage}
-            options={{ headerShown: false }}
-          />
-      <Stack.Screen
           name="Home"
           component={Home}
           options={{ headerShown: false }}
         />
+      <Stack.Screen
+            name="FeedPage"
+            component={FeedPage}
+            options={{ headerShown: false }}
+          />
         <Stack.Screen
             name="AllFriendsPage"
             component={AllFriendsPage}

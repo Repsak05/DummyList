@@ -17,9 +17,6 @@ export default function ProfilePage({navigation})
                 <Header pageName={" "} navigation={navigation} isOnProfilePage={true}/>
             </View>
 
-
-
-
             <View style={{marginTop: 28}}>
                 <ProfileUserInformation username={"Kasper"} email={"example@gmail.com"}/>
             </View>

@@ -9,16 +9,23 @@ import CreateChallengeComponent from "../components/CreateChallengeComponent.js"
 export default function Home({navigation})
 {    
     return(
-        <View style={styles.wrapper}>
-            <View style={{width: "100%", marginTop: 55, }}>
+        <View>
+            <View style={[{width: "100%", marginTop: 55, marginBottom: 29 }]}>
                 <Header pageName={"Home"} navigation={navigation} isOnHomePage={true}/>
             </View>
 
-            <CreateChallengeComponent navigation={navigation} />
-            <CarouselItem navigation={navigation} />
+
+            <View style={[styles.wrapper, {flexDirection: 'row', overflow: "scroll", marginBottom: 41 }]}>
+                <View style={{width: "100%"}}>
+                    <CreateChallengeComponent navigation={navigation} />
+                </View>
+                <View style={{width: "100%"}}>
+                    <CarouselItem navigation={navigation} />
+                </View>
+            </View>
     
 
-            <View style={styles.homeFeedContainer}>
+            <View style={[styles.homeFeedContainer, styles.wrapper]}>
                 <Pressable onPress={() => {console.log('Open feed'); navigation.navigate("FeedPage")}} style={{width: "100%", height: "100%"}}>
                     <ImageBackground source={require('../assets/images/test_image_1.jpg')} style={styles.homeFeedThumbnail}>
                         <View style={styles.homeFeedTextBox}>
@@ -31,9 +38,3 @@ export default function Home({navigation})
         </View>
     )
 }
-
-const stylesl = StyleSheet.create({
-    container: {
-      
-    },
-  });
