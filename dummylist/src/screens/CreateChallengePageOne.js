@@ -16,6 +16,7 @@ export default function CreateChallengePageOne({navigation, route})
         challengeName: "",
         gameMode: "",
         friends: [],
+        startingTime: 24,
         amountOfTasks: 5,
         taskDifficulty: ""
     })

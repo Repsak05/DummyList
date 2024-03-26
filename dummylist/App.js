@@ -50,11 +50,16 @@ export default function App() {
   });
 
   if (!fontsLoaded) {
-      return null;
+    return null;
   }
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen
+            name="CreateChallengePageOne"
+            component={CreateChallengePageOne}
+            options={{ headerShown: false }}
+          />
       <Stack.Screen
           name="Home"
           component={Home}
@@ -83,11 +88,6 @@ export default function App() {
         <Stack.Screen
             name="CreateChallengePageTwo"
             component={CreateChallengePageTwo}
-            options={{ headerShown: false }}
-          />
-        <Stack.Screen
-            name="CreateChallengePageOne"
-            component={CreateChallengePageOne}
             options={{ headerShown: false }}
           />
 

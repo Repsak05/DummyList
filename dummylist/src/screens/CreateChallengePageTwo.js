@@ -8,12 +8,21 @@ import InputFieldWithBlueOutline from "../components/InputFieldWithBlueOutline.j
 import NextPreviousButton from "../components/NextPreviousButton.js";
 import AddFriends from "../components/AddFriends.js";
 
+import SliderComponent from "../components/SliderComponent.js";
+
 export default function CreateChallengePageTwo({navigation, route})
 {
 
     const { allChallengeValues } = route.params;
     const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState(allChallengeValues)
 
+    function updateStartingTime(val)
+    {
+        setAllCurrentChallengeValues({
+            ...allChallengeValues,
+            startingTime: val
+        })
+    }
     function addFriendsToChallenge(friend) 
     {
         setAllCurrentChallengeValues({
@@ -87,13 +96,17 @@ export default function CreateChallengePageTwo({navigation, route})
                 <InputFieldWithBlueOutline  startingValue="Add Your Friends..."/>
             </View>
 
-            <ScrollView style={{maxHeight: 370}}>
+            <ScrollView style={{maxHeight: 300}}>
                 {allAddedFriends.map(arr => (
                     <View key={arr[0]} style={{marginBottom: 11}}>
                         {displayFriendsInChallengeCorrectly(arr)}
                     </View>
                 ))}
             </ScrollView>
+
+            <Text style={[style.blackFontSize20, {paddingLeft: 17, marginTop: 17}]}>Select Starting Time</Text>
+            <SliderComponent onChange={(value) => updateStartingTime(Math.round(value))}/>
+
 
             <View style={{paddingHorizontal: 30, justifyContent: "space-between", flexDirection: "row", marginTop: 15}}>
                 <NextPreviousButton text={"Previous"} onPress={previousFunction}/>
