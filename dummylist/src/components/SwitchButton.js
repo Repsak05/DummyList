@@ -2,9 +2,9 @@ import React, { useRef, useState, useEffect } from "react";
 import { View, ScrollView, Text, StyleSheet, Dimensions, TouchableOpacity, Pressable, Image } from 'react-native';
 import style from '../style.js'; 
 
-export default function SwitchButton({textOne = "Friendship", textTwo = "Challenges", onPressLeft, onPressRight})
+export default function SwitchButton({textOne = "Friendship", textTwo = "Challenges", onPressLeft, onPressRight, startingStateIsLeft})
 {
-    const [isSetToLeft, setIsSetToLeft] = useState(true);
+    const [isSetToLeft, setIsSetToLeft] = useState(startingStateIsLeft);
 
     return(
         <View style={{width: "90%", flexDirection: "row", height: 38, width: 370, borderRadius: 5, backgroundColor: "#32618D", alignItems: "center", justifyContent: "space-around", alignSelf: "center"}}>

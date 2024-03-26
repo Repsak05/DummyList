@@ -15,7 +15,7 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
         if(isOnHomePage){
             console.log("Go To Socials Page!")
             //Navigate to social's page!
-            navigation.navigate("FriendPage")
+            navigation.navigate("FriendsPage")
 
         } else {
             console.log("Go back button has been clicked!")
@@ -42,11 +42,13 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
                 <Image style={{width: 45, height: 45}} source={mostLeftPicture}/>
 
 
-                {hasNotifications && (
+                {hasNotifications && isOnHomePage 
+                ? (
                     <View style={{position: "absolute", right: -0, top: -12}}>
                         <Notification amounts={hasNotifications}/>
                     </View>
-                )}
+                
+                ): <></>}
             </Pressable>
             <Text style={style.blackFontSize20}>{pageName}</Text>
 

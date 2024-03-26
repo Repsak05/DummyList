@@ -8,7 +8,7 @@ import InputFieldWithBlueOutline from "../components/InputFieldWithBlueOutline.j
 import AddFriends from "../components/AddFriends.js";
 import FriendOverviewComponent from "../components/FriendOverviewComponent.js";
 
-export default function FriendPage({navigation})
+export default function FriendsPage({navigation})
 {
 
     function handlePressLeft()
@@ -19,6 +19,7 @@ export default function FriendPage({navigation})
     function handlePressRight()
     {
         console.log("Right has been pressed!");
+        navigation.navigate("InvitedChallengesPage")
         //Navigate to challenges requests
     }
      
@@ -56,7 +57,7 @@ export default function FriendPage({navigation})
             </View>
             
             <ScrollView>
-                <SwitchButton onPressLeft={handlePressLeft} onPressRight={handlePressRight}/>
+                <SwitchButton startingStateIsLeft={true} onPressLeft={handlePressLeft} onPressRight={handlePressRight}/>
 
                 <View style={{marginTop: 17, marginBottom: 41}}>
                     <Text style={[style.blackFontSize25, {marginBottom: 5, textAlign: "center"}]}>Connect with Friends</Text>

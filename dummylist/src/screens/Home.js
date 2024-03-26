@@ -6,8 +6,8 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 
-export default function Home({navigation})
-{    
+export default function Home({navigation})  //TODO: Ajust carouselItem's value: isPlacedInTheMiddle={true/false} (Depending on placement in array)
+{   
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
 
     useEffect(() => { //Ensures correct amountOfNotifications
@@ -24,12 +24,15 @@ export default function Home({navigation})
             </View>
 
 
-            <View style={[styles.wrapper, {flexDirection: 'row', overflow: "scroll", marginBottom: 41 }]}>
+            <View style={[styles.wrapper, {flexDirection: 'row', overflow: "scroll", marginBottom: 12 }]}>
                 <View style={{width: "100%"}}>
                     <CreateChallengeComponent navigation={navigation} />
                 </View>
                 <View style={{width: "100%"}}>
-                    <CarouselItem navigation={navigation} />
+                    <CarouselItem title={"De Ekstreme Bananer"} navigation={navigation} isPlacedInTheMiddle={true} />
+                </View>
+                <View style={{width: "100%"}}>
+                    <CarouselItem title={"Home 404"} navigation={navigation} isPlacedInTheMiddle={false} />
                 </View>
             </View>
     
