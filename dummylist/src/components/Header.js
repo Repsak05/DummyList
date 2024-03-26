@@ -2,7 +2,9 @@ import React from "react";
 import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 
-export default function Header({pageName, navigation, isOnHomePage = false, isOnProfilePage = false})
+import Notification from "./Notification";
+
+export default function Header({pageName, navigation, isOnHomePage = false, isOnProfilePage = false, hasNotifications = 0})
 {
     const mostLeftPicture = isOnHomePage ? require("../assets/icons/socialIcon.png") : require("../assets/icons/arrowBack.svg");
     const mostRightPicture = isOnProfilePage ? require("../assets/icons/settingsIcon.png") : require("../assets/icons/exampleProfilePicture.svg");
@@ -38,6 +40,13 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
         <View style={{paddingHorizontal: 30, justifyContent: "space-between", alignItems: "center", flexDirection: "row", }}>
             <Pressable onPress={() => goBack()}>
                 <Image style={{width: 45, height: 45}} source={mostLeftPicture}/>
+
+
+                {hasNotifications && (
+                    <View style={{position: "absolute", right: -0, top: -12}}>
+                        <Notification amounts={hasNotifications}/>
+                    </View>
+                )}
             </Pressable>
             <Text style={style.blackFontSize20}>{pageName}</Text>
 

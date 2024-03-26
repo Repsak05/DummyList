@@ -8,10 +8,19 @@ import CreateChallengeComponent from "../components/CreateChallengeComponent.js"
 
 export default function Home({navigation})
 {    
+    const [amountOfNotifications, setAmountOfNotifications] = useState(0);
+
+    useEffect(() => { //Ensures correct amountOfNotifications
+        if(amountOfNotifications == 0)
+        {
+            setAmountOfNotifications(false)
+        }
+    }, [amountOfNotifications])
+
     return(
         <View>
-            <View style={[{width: "100%", marginTop: 55, marginBottom: 29 }]}>
-                <Header pageName={"Home"} navigation={navigation} isOnHomePage={true}/>
+            <View style={[{width: "100%", marginTop: 55, marginBottom: 29,}]}>
+                <Header pageName={"Home"} navigation={navigation} isOnHomePage={true} hasNotifications={amountOfNotifications}/>
             </View>
 
 
