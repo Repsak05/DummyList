@@ -19,10 +19,11 @@ export default function CreateChallengePageTwo({navigation, route})
     function updateStartingTime(val)
     {
         setAllCurrentChallengeValues({
-            ...allChallengeValues,
+            ...allCurrentChallengeValues,
             startingTime: val
         })
     }
+    
     function addFriendsToChallenge(friend) 
     {
         setAllCurrentChallengeValues({

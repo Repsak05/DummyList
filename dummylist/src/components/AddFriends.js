@@ -1,9 +1,11 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 
 export default function AddFriends({name, image, hasLine = true, showLevel = false, level, showMutualFriends = false, amountOfMutualFriends, showTimeAgo = false, timeAgo, showAddFriend = false, onPressAddFriend, showAcceptFriend = false, onPressAcceptFriend, onPressDenyFriend, showCancelFriend = false, onPressCancel})
 {
+    const [hasAddedFriend, setHasAddedFriend] = useState(false); //Currently being used for animations
+
     let stringContaining = "";
     if(showLevel)
     {
@@ -33,8 +35,15 @@ export default function AddFriends({name, image, hasLine = true, showLevel = fal
 
                     <View  style={{flex: 1, flexDirection: "row-reverse", marginRight: "10%", alignItems: "center"}}>
                         {showAddFriend && (
-                            <Pressable onPress={onPressAddFriend} style={{borderRadius: 5, width: 70, height: 29, backgroundColor: "#D3EC9E", alignItems: "center", justifyContent: "center"}}>
-                                <Text style={[style.blackFontSize13, {textAlign: "center"}]}>Add Friend</Text>
+                            <Pressable onPress={() => {onPressAddFriend(); setHasAddedFriend(true)}} style={{borderRadius: 5, width: hasAddedFriend ? 105 : 70, height: 29, backgroundColor: "#D3EC9E", alignItems: "center", justifyContent: "center"}}>
+                                { hasAddedFriend ? (
+                                    <View style={{flexDirection: "row", justifyContent: "space-between", marginHorizontal: 3, alignItems: "center"}}>
+                                        <Image style={{with: 18, height: 18}} source={require("../assets/icons/checkmarkDarkIcon.svg")}/>
+                                        <Text style={[style.blackFontSize13, {textAlign: "center"}]}> Friend added</Text>
+                                    </View>
+                                ): (
+                                    <Text style={[style.blackFontSize13, {textAlign: "center"}]}>Add Friend</Text>
+                                )}
                             </Pressable>
                         )}
                         {showAcceptFriend && (

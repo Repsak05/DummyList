@@ -36,7 +36,7 @@ export default function InvitedChallengesPage({navigation})
 
     return(
         <View>
-            <View style={[{width: "100%", marginTop: 55, marginBottom: 29,}]}>
+            <View style={[{width: "100%", marginTop: 55, marginBottom: 20,}]}>
                 <Header pageName={"Challenges"} navigation={navigation}/>
             </View>
 

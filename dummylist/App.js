@@ -50,13 +50,28 @@ export default function App() {
       Oswald_400Regular,
       Oswald_500Medium,
   });
-
+  
   if (!fontsLoaded) {
     return null;
   }
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      <Stack.Screen
+          name="FriendsPage"
+          component={FriendsPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+              name="FeedPage"
+              component={FeedPage}
+              options={{ headerShown: false }}
+            />
+        <Stack.Screen
+          name="ProfilePage"
+          component={ProfilePage}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
             name="AcceptChallengeOverviewPage"
             component={AcceptChallengeOverviewPage}
@@ -77,19 +92,9 @@ export default function App() {
             component={CreateChallengePageOne}
             options={{ headerShown: false }}
           />
-      <Stack.Screen
-            name="FeedPage"
-            component={FeedPage}
-            options={{ headerShown: false }}
-          />
         <Stack.Screen
             name="AllFriendsPage"
             component={AllFriendsPage}
-            options={{ headerShown: false }}
-          />
-        <Stack.Screen
-            name="FriendsPage"
-            component={FriendsPage}
             options={{ headerShown: false }}
           />
         <Stack.Screen
@@ -109,11 +114,6 @@ export default function App() {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen
-          name="ProfilePage"
-          component={ProfilePage}
-          options={{ headerShown: false }}
-        />
         <Stack.Screen
           name="ChallengePage"
           component={ChallengePage}

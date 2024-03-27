@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { View, ScrollView, Text, StyleSheet, Dimensions, TouchableOpacity, Pressable, Image } from 'react-native';
 import style from '../style.js'; 
 
@@ -10,6 +10,8 @@ import FriendOverviewComponent from "../components/FriendOverviewComponent.js";
 
 export default function FriendsPage({navigation})
 {
+    const [searchUsername, setSearchUsername] = useState("");
+    const [hasFoundUser, setHasFoundUser] = useState(false);
 
     function handlePressLeft()
     {
@@ -22,8 +24,16 @@ export default function FriendsPage({navigation})
         navigation.navigate("InvitedChallengesPage")
         //Navigate to challenges requests
     }
-     
-    const searchedFriend = ["Peter", require("../assets/icons/exampleProfilePicture2.svg"), 5]
+    
+    const allUsers = [ //Being used to search for friends
+        ["Peter",   require("../assets/icons/exampleProfilePicture2.svg"),  3,],
+        ["Poul",    require("../assets/icons/exampleProfilePicture2.svg"),  6,],
+        ["Henrik",  require("../assets/icons/exampleProfilePicture2.svg"),  2,], 
+        ["Erik", require("../assets/icons/exampleProfilePicture2.svg"), 9],
+        ["Knud", require("../assets/icons/exampleProfilePicture2.svg"), 29],
+        ["Søren", require("../assets/icons/exampleProfilePicture2.svg"), 40],  
+        ["Emil", require("../assets/icons/exampleProfilePicture2.svg"), 40],   
+    ]
 
     const allFriendRequests = [
         ["Peter",   require("../assets/icons/exampleProfilePicture2.svg"),  3,  "1 h"],
@@ -50,6 +60,27 @@ export default function FriendsPage({navigation})
         console.log('"See all" has been pressed')
         navigation.navigate("AllFriendsPage")
     }
+
+    useEffect(() => {
+        // Ensures that hasFoundUser is always up to date
+        let wasUsernameFoundInLoop = false;
+
+        if(!searchUsername){
+            setHasFoundUser(false);
+            return;
+        } 
+
+        for (let i = 0; i < allUsers.length; i++) 
+        {
+            if (allUsers[i][0].toLowerCase().includes(searchUsername.toLowerCase())) {
+                wasUsernameFoundInLoop = true;
+                break;
+            }
+        }
+        setHasFoundUser(wasUsernameFoundInLoop);
+
+    }, [searchUsername, allUsers]);
+    
     return(
         <View style={{flex: 1}}>
             <View style={{marginTop: 55, marginBottom: 20}}>
@@ -61,10 +92,19 @@ export default function FriendsPage({navigation})
 
                 <View style={{marginTop: 17, marginBottom: 41}}>
                     <Text style={[style.blackFontSize25, {marginBottom: 5, textAlign: "center"}]}>Connect with Friends</Text>
-                    <InputFieldWithBlueOutline startingValue="Enter Friend's name..."/>
+                    <InputFieldWithBlueOutline onChange={(e) => setSearchUsername(e.target.value)} startingValue="Enter Friend's name..."/>
                 </View>
 
-                <AddFriends hasLine={false} name={searchedFriend[0]} showMutualFriends={true} amountOfMutualFriends={searchedFriend[2]} showAddFriend={true} onPressAddFriend={() => console.log("Added Friend")}  image={searchedFriend[1]} />
+                { allUsers.map((arr, index) => (
+                    <View key={index}>
+                        {arr[0].toLowerCase().includes(searchUsername.toLowerCase()) && !!searchUsername && (
+                            <AddFriends hasLine={false} name={arr[0]} showMutualFriends={true} amountOfMutualFriends={arr[2]} showAddFriend={true} onPressAddFriend={() => {console.log("Added Friend");}}  image={arr[1]} />
+                        )}
+                    </View>
+                ))}
+                {!hasFoundUser && (
+                    <Text style={{textAlign: "center"}}>No User with Username: "{searchUsername}" was Found</Text>
+                )}
 
                 <View style={{flexDirection: "column", marginTop: 17}}>
                     <Text style={[style.blackFontSize25, {textAlign: "center", marginBottom: 9}]} >Friend Requests ({allFriendRequests.length})</Text>

@@ -8,6 +8,14 @@ export default function SliderComponent({onChange}) {
     const [sliderValue, setSliderValue] = useState(24);
     console.warn = () => {}; //Stops annoying warnings
 
+
+    function handleSliderChange(value) 
+    {
+        const newValue = Math.max(value, 1); //Handles bug: So value can't Less than minValue
+        setSliderValue(newValue);
+        onChange(newValue);
+    }
+
     return (
         <View style={{ alignItems: "center" }}>
             <Text style={[style.blackFontSize20, {backgroundColor: "#D0E4FF", borderRadius: 10, paddingHorizontal: 10}]}>
@@ -16,7 +24,7 @@ export default function SliderComponent({onChange}) {
             <Slider
                 style={{ width: 380, height: 50 }}
                 value={sliderValue}
-                onValueChange={(value) => {setSliderValue(value); onChange(value);}}
+                onValueChange={(value) => {handleSliderChange(value)}}
                 minimumValue={1}
                 maximumValue={72}
                 minimumTrackTintColor="#000000"
