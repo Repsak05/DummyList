@@ -38,6 +38,7 @@ import FriendsPage from './src/screens/FriendsPage.js';
 import AllFriendsPage from './src/screens/AllFriendsPage.js';
 import InvitedChallengesPage from './src/screens/InvitedChallengesPage.js';
 import AcceptChallengeOverviewPage from './src/screens/AcceptChallengeOverviewPage.js';
+import LoadingPage from './src/screens/LoadingPage.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -57,6 +58,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      <Stack.Screen
+          name="LoadingPage"
+          component={LoadingPage}
+          options={{ headerShown: false }}
+        />
       <Stack.Screen
           name="FriendsPage"
           component={FriendsPage}
