@@ -11,7 +11,7 @@ export default function ProfileChallengesOverview()
                 <Text style={style.blackFontSize25}>Challenges</Text>
                 <View style={{marginTop: 1, flexWrap: "wrap",}}>
                     {/* Missing images */}
-                    <View style={[style.roundedCorners, {flexDirection: "row", flexWrap: "wrap"}]}>
+                    <View style={[style.roundedCorners, {flexDirection: "row", flexWrap: "wrap", overflow: "hidden", backgroundColor: "#73821"}]}>
                         {allChallenges.map(imgSource => (
                             <View key={imgSource} style={{backgroundColor: "#173578", width: 40, height: 40, marginBottom: 5, marginRight: 5}}>
                                 <Text>{imgSource}</Text>
