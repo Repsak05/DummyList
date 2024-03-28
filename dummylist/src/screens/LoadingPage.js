@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Animated, Easing, Pressable } from 'react-native';
-import style from '../style'; // Importing style object
+import style from '../style';
 
+import EnterInformationLogInComponent from '../components/EnterInformationLogInComponent';
 export default function LoadingPage({navigation}) {
   const [isLoading, setIsLoading] = useState(true);
   const [styleIndex, setStyleIndex] = useState(0);
@@ -16,7 +17,7 @@ export default function LoadingPage({navigation}) {
   };
 
   const colors = ["#0477BF", "#F2B705", "#A6290D", "#F2E2C4", "#A6290D", "#F2B705",];
-  const stylesArray = [
+  const stylesArray = [ //BorderRadius: TR, TL, BR, BL
     [50, 50, 50 ,50],
     [50, 50, 50 ,0],
     [50, 50, 0 ,0],
@@ -36,14 +37,14 @@ export default function LoadingPage({navigation}) {
 
       return () => clearInterval(intervalId); 
     }
-  }, [isLoading]); // Dependency array
+  }, [isLoading]);
 
   useEffect(() => {
     if (prevStyleIndexRef.current !== styleIndex) {
       animateStyle();
       prevStyleIndexRef.current = styleIndex;
     }
-  }, [styleIndex]); // Dependency array
+  }, [styleIndex]);
 
   const animateStyle = () => {
     Animated.parallel([
@@ -76,9 +77,11 @@ export default function LoadingPage({navigation}) {
             height: 84
         }]} />
 
-        <Pressable onPress={() => {navigation.navigate("Home")}} style={{marginTop: 40, borderRadius: 10, backgroundColor: "#999", paddingHorizontal: 10 }}>
+        <Pressable onPress={() => {navigation.navigate("LogInPage")}} style={{marginTop: 40, borderRadius: 10, backgroundColor: "#999", paddingHorizontal: 10 }}>
             <Text>Start Using The App </Text>
         </Pressable>
+
+       
     </View>
   );
 }

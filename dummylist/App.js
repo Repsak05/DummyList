@@ -39,6 +39,7 @@ import AllFriendsPage from './src/screens/AllFriendsPage.js';
 import InvitedChallengesPage from './src/screens/InvitedChallengesPage.js';
 import AcceptChallengeOverviewPage from './src/screens/AcceptChallengeOverviewPage.js';
 import LoadingPage from './src/screens/LoadingPage.js';
+import LogInPage from './src/screens/LogInPage.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -58,21 +59,26 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen
-          name="LoadingPage"
-          component={LoadingPage}
-          options={{ headerShown: false }}
-        />
-      <Stack.Screen
-          name="FriendsPage"
-          component={FriendsPage}
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen
+            name="LoadingPage"
+            component={LoadingPage}
+            options={{ headerShown: false }}
+          />
+        <Stack.Screen
+            name="LogInPage"
+            component={LogInPage}
+            options={{ headerShown: false }}
+          />
+        <Stack.Screen
+            name="FriendsPage"
+            component={FriendsPage}
+            options={{ headerShown: false }}
+          />
         <Stack.Screen
               name="FeedPage"
               component={FeedPage}
               options={{ headerShown: false }}
-            />
+        />
         <Stack.Screen
           name="ProfilePage"
           component={ProfilePage}
@@ -93,14 +99,15 @@ export default function App() {
             component={Home}
             options={{ headerShown: false }}
           />
+
         <Stack.Screen
             name="CreateChallengePageOne"
             component={CreateChallengePageOne}
             options={{ headerShown: false }}
           />
         <Stack.Screen
-            name="AllFriendsPage"
-            component={AllFriendsPage}
+            name="CreateChallengePageTwo"
+            component={CreateChallengePageTwo}
             options={{ headerShown: false }}
           />
         <Stack.Screen
@@ -108,9 +115,10 @@ export default function App() {
             component={CreateChallengePageThree}
             options={{ headerShown: false }}
           />
+
         <Stack.Screen
-            name="CreateChallengePageTwo"
-            component={CreateChallengePageTwo}
+            name="AllFriendsPage"
+            component={AllFriendsPage}
             options={{ headerShown: false }}
           />
 
