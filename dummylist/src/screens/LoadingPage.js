@@ -77,7 +77,7 @@ export default function LoadingPage({navigation}) {
             height: 84
         }]} />
 
-        <Pressable onPress={() => {navigation.navigate("LogInPage")}} style={{marginTop: 40, borderRadius: 10, backgroundColor: "#999", paddingHorizontal: 10 }}>
+        <Pressable onPress={() => {navigation.navigate("WelcomePage")}} style={{marginTop: 40, borderRadius: 10, backgroundColor: "#999", paddingHorizontal: 10 }}>
             <Text>Start Using The App </Text>
         </Pressable>
 

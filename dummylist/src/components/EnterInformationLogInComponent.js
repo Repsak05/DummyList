@@ -7,10 +7,10 @@ export default function EnterInformationLogInComponent({image, imageTwo, onPress
     return(
         <View style={{flexDirection: "column", width: "100%"}}>
             <View style={{flexDirection: "row", justifyContent: imageTwo ? "space-between" : null}}>
-                <View style={{flexDirection: "row"}}>
+                <View style={{flexDirection: "row", marginLeft: 20}}>
                     <Image style={{height: 29}}source={image}/>
                     <TextInput
-                        style={[style.blackFontSize16, {marginLeft: 10}]}
+                        style={[style.blackFontSize16, {marginLeft: 10, paddingLeft: 10}]}
                         onChange={onChange}
                         placeholder={placeholder}
                         secureTextEntry={typePassword}
@@ -18,7 +18,7 @@ export default function EnterInformationLogInComponent({image, imageTwo, onPress
                 </View>
                 {!!imageTwo && (
                     <Pressable onPress={onPressImageTwo}>
-                        <Image style={{width: 30, height: 30}} source={imageTwo}/>
+                        <Image style={{width: 30, }} source={imageTwo}/>
                     </Pressable>
                 )}
             </View>

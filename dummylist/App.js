@@ -39,7 +39,10 @@ import AllFriendsPage from './src/screens/AllFriendsPage.js';
 import InvitedChallengesPage from './src/screens/InvitedChallengesPage.js';
 import AcceptChallengeOverviewPage from './src/screens/AcceptChallengeOverviewPage.js';
 import LoadingPage from './src/screens/LoadingPage.js';
+
 import LogInPage from './src/screens/LogInPage.js';
+import SignUpPageOne from './src/screens/SignUpPageOne.js';
+import WelcomePage from './src/screens/WelcomePage.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 
@@ -62,6 +65,16 @@ export default function App() {
         <Stack.Screen
             name="LoadingPage"
             component={LoadingPage}
+            options={{ headerShown: false }}
+          />
+        <Stack.Screen
+            name="WelcomePage"
+            component={WelcomePage}
+            options={{ headerShown: false }}
+          />
+        <Stack.Screen
+            name="SignUpPageOne"
+            component={SignUpPageOne}
             options={{ headerShown: false }}
           />
         <Stack.Screen

@@ -225,6 +225,11 @@ export default StyleSheet.create({
     color: "#040F0F",
     fontSize: 64,
   },
+  blackFontSize40: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#040F0F",
+    fontSize: 40,
+  },
   blackFontSize25: {
     fontFamily: "Oswald_500Medium", 
     color: "#040F0F",
