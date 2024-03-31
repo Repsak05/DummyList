@@ -21,7 +21,7 @@ export default function WelcomePage({navigation})
                     </Pressable>
 
 
-                    <Pressable onPress={() => navigation.navigate("SignUpPageOne")} style={[style.roundedCornersSmall, {width: "90%", backgroundColor: "#FFFFFF", paddingVertical: 3, marginBottom: 10, borderWidth: 3, borderColor: colors.keyColors.primary}]}>
+                    <Pressable onPress={() => navigation.navigate("SignUpPage")} style={[style.roundedCornersSmall, {width: "90%", backgroundColor: "#FFFFFF", paddingVertical: 3, marginBottom: 10, borderWidth: 3, borderColor: colors.keyColors.primary}]}>
                         <Text style={[style.blackFontSize20, {textAlign: "center"}]}>Sign Up</Text>
                     </Pressable>
 

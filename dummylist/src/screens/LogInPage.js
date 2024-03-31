@@ -6,6 +6,7 @@ import colors from "../colors.js";
 import EnterInformationLogInComponent from "../components/EnterInformationLogInComponent.js";
 import BackgroundTopForStartingPage from "../components/BackgroundTopForStartingPage.js";
 import BackgroundBottomForStartingPage from "../components/BackgroundBottomForStartingPage.js";
+import SignUpPageOne from "./SignUpPage.js";
 
 
 export default function LogInPage({navigation})
@@ -54,7 +55,7 @@ export default function LogInPage({navigation})
 
                 <View style={{flexDirection: "row", marginTop: 15}}>
                     <Text style={[style.blackFontSize16, {}]}>Don't have an Account? </Text>
-                    <Pressable onPress={() => {console.log("Navigate to sing up page"); }}>
+                    <Pressable onPress={() => {console.log("Navigate to sing up page"); navigation.navigate("SignUpPage")}}>
                         <Text style={[style.blackFontSize16, {textDecorationLine: "underline", fontWeight: "bold"}]}>Sign Up</Text>
                     </Pressable>
                 </View>

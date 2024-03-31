@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Pressable, Image, TextInput } from 'react-native';
 import style from '../style.js'; 
 
-export default function EnterInformationLogInComponent({image, imageTwo, onPressImageTwo, placeholder = "Username", onChange, typePassword = false})
+export default function EnterInformationLogInComponent({image, imageTwo, onPressImageTwo, placeholder = "Username", value, onChange, typePassword = false})
 {
     return(
         <View style={{flexDirection: "column", width: "100%"}}>
@@ -14,6 +14,7 @@ export default function EnterInformationLogInComponent({image, imageTwo, onPress
                         onChange={onChange}
                         placeholder={placeholder}
                         secureTextEntry={typePassword}
+                        value={value}
                         />
                 </View>
                 {!!imageTwo && (

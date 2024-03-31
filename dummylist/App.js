@@ -41,7 +41,7 @@ import AcceptChallengeOverviewPage from './src/screens/AcceptChallengeOverviewPa
 import LoadingPage from './src/screens/LoadingPage.js';
 
 import LogInPage from './src/screens/LogInPage.js';
-import SignUpPageOne from './src/screens/SignUpPageOne.js';
+import SignUpPage from './src/screens/SignUpPage.js';
 import WelcomePage from './src/screens/WelcomePage.js';
 
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
@@ -73,8 +73,8 @@ export default function App() {
             options={{ headerShown: false }}
           />
         <Stack.Screen
-            name="SignUpPageOne"
-            component={SignUpPageOne}
+            name="SignUpPage"
+            component={SignUpPage}
             options={{ headerShown: false }}
           />
         <Stack.Screen
