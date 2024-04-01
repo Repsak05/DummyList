@@ -15,17 +15,42 @@ export default function SignUpPage({navigation})
     const [typeTextSecure, setTypeTextSecure] = useState(true)
     const [currentState, setCurrentState] = useState(1);
 
+    const [displayUsernameAlredyInUse, setDisplayUsernameAlredyInUse] = useState(false)
+    const [displayNotAllInformationEntered, setDisplayNotAllInformationEntered] = useState(false)
+    const allUsernames = ["Per", "Knud", "Erik", "Henrik", "Poul"]
 
+    function isUsernameInUse(enteredUsername)
+    {
+        for (let i = 0; i<allUsernames.length; i++)
+        {
+            if(allUsernames[i].toLowerCase() == enteredUsername.toLowerCase()) return true;
+        }
+        return false;
+    }
 
     function goToNextPage()
     {
-        //___Ensure that username all entered information is valid
-        if (currentState == 3) 
-        {
-            navigation.navigate("Home")
-        }
         console.log(`Username: ${username} | Email: ${email} | Password: ${password}`);
+        
+        //___Ensures that username all entered information is valid
+        if(currentState == 1 && isUsernameInUse(username))
+        {
+            console.log("Username alredy taken");
+            setDisplayUsernameAlredyInUse(true);
+            return;
+        }  
+        
+        if (currentState == 3 && username && email && password) {
+            navigation.navigate("Home")
+            return
+        } else if (currentState == 3) {
+            console.log("Please enter all information, before creating account")
+            setDisplayNotAllInformationEntered(true);
+            return
+        }
+
         setCurrentState(currentState + 1);
+        setDisplayUsernameAlredyInUse(false);
     }
 
     function goBack()
@@ -54,7 +79,7 @@ export default function SignUpPage({navigation})
                                 placeholder={"Username"}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
-                            )}
+                        )}
                         {currentState == 2 && (
                             <EnterInformationLogInComponent
                                 value={email}
@@ -76,18 +101,24 @@ export default function SignUpPage({navigation})
                         )}
 
                         <View style={{justifyContent: "space-between", flexDirection: "row", marginTop: 15}}>
-                            <Pressable onPress={() => goBack()} style={{justifyContent: "center", alignItems: "center", borderRadius: 5, backgroundColor: colors.keyColors.secondary, paddingHorizontal: 20, paddingVertical: 5}}>
+                            <Pressable onPress={() => {goBack(); setDisplayNotAllInformationEntered(false);}} style={{justifyContent: "center", alignItems: "center", borderRadius: 5, backgroundColor: colors.keyColors.secondary, paddingHorizontal: 20, paddingVertical: 5}}>
                                 <Text style={[style.blackFontSize13, {}]}>Back</Text>
                             </Pressable>
-                            <Pressable onPress={() => goToNextPage()} style={{justifyContent: "center", alignItems: "center", borderRadius: 5, backgroundColor: colors.keyColors.primary, paddingHorizontal: 20, paddingVertical: 5}}>
+                            {displayUsernameAlredyInUse && (
+                                <Text style={[style.redFontSize16, {color: "#ff0800"}]}>Username alredy in use</Text>
+                                )}
+                            {displayNotAllInformationEntered && (
+                                <Text style={[style.redFontSize16, {color: "#ff0800"}]}>Enter required values</Text>
+                            )}
+                            <Pressable onPress={() => {goToNextPage()}} style={{justifyContent: "center", alignItems: "center", borderRadius: 5, backgroundColor: colors.keyColors.primary, paddingHorizontal: 20, paddingVertical: 5}}>
                                 <Text style={[style.blackFontSize13, {}]}>{currentState == 3 ? "Create" : "Next"}</Text>
                             </Pressable>
                         </View>
                     </View>
                 </View>
             </View>
+            
             <BackgroundBottomForStartingPage/>
-
         </View>
     )
 }

@@ -14,14 +14,46 @@ export default function LogInPage({navigation})
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("")
     const [typeTextSecure, setTypeTextSecure] = useState(true)
+    const [displayWrongInformation, setDisplayWrongInformation] = useState(false);
+
+    //Database with usernames and passwords
+    const usersAccesInfo = [
+        ["Per", "1234"],
+        ["Svend", "heyhey"],
+        ["Knud", "jegerknud"]
+    ]
     
     function logIn()
     {
-        //Check for the username and password in database
         console.log("Trying to login: " + username + " | " + password)
-        navigation.navigate("Home") //Set this to homePage
-        
+        if(isInformationValid("username", username) && isInformationValid("password", password))
+        {
+            setDisplayWrongInformation(false)
+            console.log("Giving acces")
+            navigation.navigate("Home") //Set this to homePage     
+
+        } else{
+            console.log("Invalid information given")
+            setDisplayWrongInformation(true)
+        }
     }
+
+    function isInformationValid(type, info) //Type = "username" or "password"    |   info = entered value
+    {
+        const usernamePosition = 0;
+        const passwordPosition = 1;
+        const value = type == "username" ? usernamePosition : passwordPosition;
+
+        for(let i = 0; i < usersAccesInfo.length; i++)
+        {
+            if(usersAccesInfo[i][value] == info)
+            {
+                return true
+            }
+        }
+        return false
+    }
+
     return(
         <View style={{flex: 1, backgroundColor: "#D0E4FF"}}>
             <BackgroundTopForStartingPage/>
@@ -47,6 +79,13 @@ export default function LogInPage({navigation})
                             onPressImageTwo={() => setTypeTextSecure(!typeTextSecure)}
                             typePassword={typeTextSecure}/>
                     </View>
+
+                    {displayWrongInformation && (
+                        <View style={{position: "absolute", bottom: -25, left: 0}}>
+                            <Text style={[style.redFontSize16Regular, {color: "#ff0800"}]}>Invalid username or password, please try again!</Text>
+                        </View>
+                    )}
+                    
                 </View>
 
                 <Pressable onPress={logIn} style={[ style.roundedCornersSmall, {marginTop: 30, backgroundColor: "#FFFFFF", width: "30%", height: 45, alignItems: "center", justifyContent: "center", borderWidth: 3, borderColor: colors.keyColors.secondary}]}>
