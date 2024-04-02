@@ -19,6 +19,7 @@
     "expo-camera": "~14.1.1",
     "expo-media-library": "~15.9.1",
     "expo-status-bar": "~1.11.1",
+    "firebase": "^10.10.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.73.6",
