@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { View, Text, Pressable, Image, TextInput } from 'react-native';
 import style from '../style.js'; 
 import colors from "../colors.js";
@@ -6,8 +6,8 @@ import colors from "../colors.js";
 import EnterInformationLogInComponent from "../components/EnterInformationLogInComponent.js";
 import BackgroundTopForStartingPage from "../components/BackgroundTopForStartingPage.js";
 import BackgroundBottomForStartingPage from "../components/BackgroundBottomForStartingPage.js";
-import SignUpPageOne from "./SignUpPage.js";
 
+import {readData} from "../../firebase.js";
 
 export default function LogInPage({navigation})
 {
@@ -22,7 +22,9 @@ export default function LogInPage({navigation})
         ["Svend", "heyhey"],
         ["Knud", "jegerknud"]
     ]
-    
+
+
+
     function logIn()
     {
         console.log("Trying to login: " + username + " | " + password)
@@ -30,7 +32,8 @@ export default function LogInPage({navigation})
         {
             setDisplayWrongInformation(false)
             console.log("Giving acces")
-            navigation.navigate("Home") //Set this to homePage     
+            navigation.navigate("Home") //Set this to homePage    
+            
 
         } else{
             console.log("Invalid information given")
