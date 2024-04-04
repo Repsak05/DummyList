@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { View, Text, Pressable, Image, TextInput } from 'react-native';
 import style from '../style.js'; 
 import colors from "../colors.js";
@@ -6,6 +6,8 @@ import colors from "../colors.js";
 import EnterInformationLogInComponent from "../components/EnterInformationLogInComponent.js";
 import BackgroundTopForStartingPage from "../components/BackgroundTopForStartingPage.js";
 import BackgroundBottomForStartingPage from "../components/BackgroundBottomForStartingPage.js";
+
+import {readData, addToCollection, firestore} from "../../firebase.js";
 
 export default function SignUpPage({navigation})
 {
@@ -17,13 +19,30 @@ export default function SignUpPage({navigation})
 
     const [displayUsernameAlredyInUse, setDisplayUsernameAlredyInUse] = useState(false)
     const [displayNotAllInformationEntered, setDisplayNotAllInformationEntered] = useState(false)
-    const allUsernames = ["Per", "Knud", "Erik", "Henrik", "Poul"]
+
+    const [currentUsernames, setCurrentUsernames] = useState()
+
+    useEffect(() => {
+        async function fetchUserData() {
+            try {
+                const data = await readData("Users");
+
+                const combinations = data.map(user => user.Username);
+                setCurrentUsernames(combinations);
+
+            } catch (err) {
+                console.log(err);
+            }
+        } 
+    
+        fetchUserData();
+    }, []);
 
     function isUsernameInUse(enteredUsername)
     {
-        for (let i = 0; i<allUsernames.length; i++)
+        for (let i = 0; i<currentUsernames.length; i++)
         {
-            if(allUsernames[i].toLowerCase() == enteredUsername.toLowerCase()) return true;
+            if(currentUsernames[i].toLowerCase() == enteredUsername.toLowerCase() && currentUsernames) return true;
         }
         return false;
     }
@@ -41,8 +60,18 @@ export default function SignUpPage({navigation})
         }  
         
         if (currentState == 3 && username && email && password) {
+            //add user to database;
+            addToCollection("Users",{
+                Username : username,
+                Password : password,
+                Email : email,
+                Level : 1,
+            })
+            
+            //navigate to next page
             navigation.navigate("Home")
             return
+
         } else if (currentState == 3) {
             console.log("Please enter all information, before creating account")
             setDisplayNotAllInformationEntered(true);

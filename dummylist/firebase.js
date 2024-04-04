@@ -25,31 +25,43 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const firestore = getFirestore();
 
-const userCollection = collection(firestore, "Users"); 
 
 //Read users
 
 console.log("HEy")
 
-getDocs(userCollection)
-    .then(((res) => {
-        let users = [];
-        res.docs.forEach((doc) => {
-            users.push({...doc.data(), id: doc.id})
-        })
+function readData(readCollection) {
+    const userCollection = collection(firestore, readCollection); 
 
-        console.table(users)
-    }))
-    .catch((err) => {
-        console.log(err)
-    })
+    return new Promise((resolve, reject) => {
+        getDocs(userCollection)
+            .then((res) => {
+                const data = [];
+                res.docs.forEach((doc) => {
+                    data.push({...doc.data(), id: doc.id});
+                });
+                console.table(data);
+                resolve(data);
+            })
+            .catch((err) => {
+                console.log("Error" + err);
+                reject(err);
+            });
+    });
+}
 
-function addToCollection(object)
-{
-    addDoc(userCollection, {
+function addToCollection(collectionName, object) {
+    addDoc(collection(firestore, collectionName), {
         ...object
     })
+    .then(docRef => {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(err => {
+        console.error("Error adding document: ", err);
+    });
 }
+
 
 function deleteCollection(collection, id) //e.g. "Users", "ND781GH1N89CH17"
 {
@@ -57,4 +69,4 @@ function deleteCollection(collection, id) //e.g. "Users", "ND781GH1N89CH17"
     deleteDoc(docToBeDelted);
 }
 
-export {firestore, addToCollection, deleteCollection};
+export {firestore, readData, addToCollection, deleteCollection};

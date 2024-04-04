@@ -7,7 +7,7 @@ import EnterInformationLogInComponent from "../components/EnterInformationLogInC
 import BackgroundTopForStartingPage from "../components/BackgroundTopForStartingPage.js";
 import BackgroundBottomForStartingPage from "../components/BackgroundBottomForStartingPage.js";
 
-import {readData} from "../../firebase.js";
+import {readData, firestore} from "../../firebase.js";
 
 export default function LogInPage({navigation})
 {
@@ -16,13 +16,27 @@ export default function LogInPage({navigation})
     const [typeTextSecure, setTypeTextSecure] = useState(true)
     const [displayWrongInformation, setDisplayWrongInformation] = useState(false);
 
-    //Database with usernames and passwords
-    const usersAccesInfo = [
-        ["Per", "1234"],
-        ["Svend", "heyhey"],
-        ["Knud", "jegerknud"]
-    ]
+    const [allUsernamePasswordCombinations, setAllUsernamePasswordCombinations] = useState() // [[un1, pw1], [un2, pw2], [un3, pw3]]
 
+    useEffect(() => {
+        async function fetchUserData() {
+            try {
+                const data = await readData("Users");
+
+                const combinations = data.map(user => [user.Username, user.Password]);
+                setAllUsernamePasswordCombinations(combinations);
+
+            } catch (err) {
+                console.log(err);
+            }
+        } 
+    
+        fetchUserData();
+    }, []);
+
+    useEffect(() => {
+        console.log(allUsernamePasswordCombinations)
+    }, [allUsernamePasswordCombinations])
 
 
     function logIn()
@@ -47,9 +61,9 @@ export default function LogInPage({navigation})
         const passwordPosition = 1;
         const value = type == "username" ? usernamePosition : passwordPosition;
 
-        for(let i = 0; i < usersAccesInfo.length; i++)
+        for(let i = 0; i < allUsernamePasswordCombinations.length; i++)
         {
-            if(usersAccesInfo[i][value] == info)
+            if(allUsernamePasswordCombinations[i][value] == info && allUsernamePasswordCombinations[i][0] && allUsernamePasswordCombinations[i][1])
             {
                 return true
             }
