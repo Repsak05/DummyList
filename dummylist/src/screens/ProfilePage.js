@@ -18,7 +18,12 @@ export default function ProfilePage({navigation})
             </View>
 
             <View style={{marginTop: 28}}>
-                <ProfileUserInformation username={"Kasper"} email={"example@gmail.com"}/>
+                <ProfileUserInformation 
+                    username={global.userInformation?.Username || "GuestUser#121"}
+                    email={global.userInformation?.Email || "GuestEmail@gmail.com"}
+                    level={global.userInformation?.Level || 404}
+                    xpCurrent={40}
+                />
             </View>
 
             <View style={{flexDirection: "column", marginTop: 15}}>

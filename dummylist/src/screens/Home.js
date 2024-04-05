@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { View, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image, ScrollView } from 'react-native';
 import styles from '../style.js'; 
+import colors from "../colors.js";
 
 import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 
 export default function Home({navigation})  //TODO: Ajust carouselItem's value: isPlacedInTheMiddle={true/false} (Depending on placement in array)
-{   
+{   //TODO: Fix background coloro on create challenge and active challenges
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
 
     useEffect(() => { //Ensures correct amountOfNotifications
@@ -30,7 +31,7 @@ export default function Home({navigation})  //TODO: Ajust carouselItem's value: 
 
 
             <View style={[styles.wrapper, {flexDirection: 'row', overflow: "scroll", marginBottom: 12 }]}>
-                <View style={{width: "100%"}}>
+                <View style={{width: "100%",}}> 
                     <CreateChallengeComponent navigation={navigation} />
                 </View>
                 <View style={{width: "100%"}}>

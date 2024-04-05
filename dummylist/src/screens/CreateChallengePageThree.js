@@ -6,6 +6,9 @@ import Header from "../components/Header.js";
 import ProgressBarTemplate from "../components/progressBarTemplate.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 
+import {readData, addToCollection, readSingleUserInformation, firestore} from "../../firebase.js";
+
+
 export default function CreateChallengePageThree({navigation, route})
 {
     const { allCurrentChallengeValues } = route.params
@@ -19,8 +22,20 @@ export default function CreateChallengePageThree({navigation, route})
         })
     }
 
-    function createFunction()
+    async function createFunction()
     {
+        async function createChallengePost()
+        {
+            const res = await addToCollection("Challenges", {
+                ...allChallengeValues,
+                createdBy : global.userInformation?.id || "GuestUser#404",
+                isStilActive : true,
+            })
+            console.log(res)
+        }
+
+        createChallengePost();
+
         console.log("Create clicked:");
         console.log(allChallengeValues);
     }

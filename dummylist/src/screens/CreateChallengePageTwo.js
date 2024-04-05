@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { View, ScrollView, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image   } from 'react-native';
 import style from '../style.js'; 
 
@@ -7,14 +7,37 @@ import ProgressBarTemplate from "../components/progressBarTemplate.js";
 import InputFieldWithBlueOutline from "../components/InputFieldWithBlueOutline.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 import AddFriends from "../components/AddFriends.js";
-
 import SliderComponent from "../components/SliderComponent.js";
 
+import {readData, addToCollection, readSingleUserInformation, firestore} from "../../firebase.js";
+
+
 export default function CreateChallengePageTwo({navigation, route})
-{
+{ //TODO___ Make searchbar for friends work
 
     const { allChallengeValues } = route.params;
     const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState(allChallengeValues)
+
+    const [allUsers, setAllUsers] = useState() //___Change to allFriends instead
+
+    useEffect(() => {
+        async function getAllUsers()
+        {
+            try{
+                const res = await readData("Users")
+                const usersInDatabase = res.map(user => ({ //Change picture to the real one
+                    username    : user.Username,
+                    level       : user.Level,
+                    picture     : {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"},
+                    id          : user.id
+                }));
+                setAllUsers(usersInDatabase)
+            }catch(err){
+                console.error(err);
+            }
+        }
+        getAllUsers();
+    }, [])
 
     function updateStartingTime(val)
     {
@@ -58,30 +81,17 @@ export default function CreateChallengePageTwo({navigation, route})
 
     function displayFriendsInChallengeCorrectly(arr) 
     {
-        const isFriendAdded = allCurrentChallengeValues.friends.includes(arr[0]);
+        const isFriendAdded = allCurrentChallengeValues.friends.includes(arr[0]); //Might cause some edge-case problems: .includes becuase; d3d3 true xxxd3d3xxx
 
         return (
-            <AddFriends name={arr[0]} showLevel={true} level={arr[1]} image={arr[2]} 
+            <AddFriends name={arr.username} showLevel={true} level={arr.level} image={arr.picture} 
                 showCancelFriend={isFriendAdded}
                 showAddFriend={!isFriendAdded}
-                onPressCancel={() => removeNameFromChallenge(arr[0])}
-                onPressAddFriend={() => addFriendsToChallenge(arr[0])}
+                onPressCancel={() => removeNameFromChallenge(arr.id)}
+                onPressAddFriend={() => addFriendsToChallenge(arr.id)}
             />
         );
     }
-
-
-    //Should be changed to be a parameter (together with image)
-    const allAddedFriends = [ 
-        ["Peter",   29, require("../assets/icons/exampleProfilePicture2.svg")],
-        ["Svend",   21, require("../assets/icons/exampleProfilePicture2.svg")],
-        ["Erik",    19, require("../assets/icons/exampleProfilePicture2.svg")],
-        ["Knud",    39, require("../assets/icons/exampleProfilePicture2.svg")],
-        ["Pete1r",  29, require("../assets/icons/exampleProfilePicture2.svg")],
-        ["Sven2d",  21, require("../assets/icons/exampleProfilePicture2.svg")],
-        ["Eri3k",   19, require("../assets/icons/exampleProfilePicture2.svg")],
-        ["Knu4d",   39, require("../assets/icons/exampleProfilePicture2.svg")],
-    ];
 
     return(
         <View>
@@ -98,8 +108,8 @@ export default function CreateChallengePageTwo({navigation, route})
             </View>
 
             <ScrollView style={{maxHeight: 300}}>
-                {allAddedFriends.map(arr => (
-                    <View key={arr[0]} style={{marginBottom: 11}}>
+                {allUsers?.map(arr => (
+                    <View key={arr.id} style={{marginBottom: 11}}>
                         {displayFriendsInChallengeCorrectly(arr)}
                     </View>
                 ))}

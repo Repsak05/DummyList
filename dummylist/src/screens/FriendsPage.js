@@ -8,10 +8,36 @@ import InputFieldWithBlueOutline from "../components/InputFieldWithBlueOutline.j
 import AddFriends from "../components/AddFriends.js";
 import FriendOverviewComponent from "../components/FriendOverviewComponent.js";
 
+import { readData } from "../../firebase.js";
+
 export default function FriendsPage({navigation})
 {
     const [searchUsername, setSearchUsername] = useState("");
     const [hasFoundUser, setHasFoundUser] = useState(false);
+
+    const [allUsers, setAllUsers] = useState() //Users from database
+
+    useEffect(() => {
+        async function getAllUsers()
+        {
+            try{
+                const res = await readData("Users")
+                const usersInDatabase = res.map(user => ({
+                    username    : user.Username,
+                    level       : user.Level,
+                    picture     : {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"},
+                    mutual      : 404,
+                    id          : user.id
+                }));
+                setAllUsers(usersInDatabase)
+                console.log(usersInDatabase);
+            }catch(err){
+                console.error(err);
+            }
+        }
+
+        getAllUsers();
+    }, [])
 
     function handlePressLeft()
     {
@@ -25,16 +51,6 @@ export default function FriendsPage({navigation})
         //Navigate to challenges requests
     }
     
-    const allUsers = [ //Being used to search for friends
-        ["Peter",   require("../assets/icons/exampleProfilePicture2.svg"),  3,],
-        ["Poul",    require("../assets/icons/exampleProfilePicture2.svg"),  6,],
-        ["Henrik",  require("../assets/icons/exampleProfilePicture2.svg"),  2,], 
-        ["Erik", require("../assets/icons/exampleProfilePicture2.svg"), 9],
-        ["Knud", require("../assets/icons/exampleProfilePicture2.svg"), 29],
-        ["Søren", require("../assets/icons/exampleProfilePicture2.svg"), 40],  
-        ["Emil", require("../assets/icons/exampleProfilePicture2.svg"), 40],   
-    ]
-
     const allFriendRequests = [
         ["Peter",   require("../assets/icons/exampleProfilePicture2.svg"),  3,  "1 h"],
         ["Poul",    require("../assets/icons/exampleProfilePicture2.svg"),  6,  "2 d"],
@@ -72,7 +88,7 @@ export default function FriendsPage({navigation})
 
         for (let i = 0; i < allUsers.length; i++) 
         {
-            if (allUsers[i][0].toLowerCase().includes(searchUsername.toLowerCase())) {
+            if (allUsers[i].username.toLowerCase().includes(searchUsername.toLowerCase())) {
                 wasUsernameFoundInLoop = true;
                 break;
             }
@@ -95,10 +111,10 @@ export default function FriendsPage({navigation})
                     <InputFieldWithBlueOutline onChange={(e) => setSearchUsername(e.target.value)} startingValue="Enter Friend's name..."/>
                 </View>
 
-                { allUsers.map((arr, index) => (
+                { allUsers?.map((arr, index) => (
                     <View key={index}>
-                        {arr[0].toLowerCase().includes(searchUsername.toLowerCase()) && !!searchUsername && (
-                            <AddFriends hasLine={false} name={arr[0]} showMutualFriends={true} amountOfMutualFriends={arr[2]} showAddFriend={true} onPressAddFriend={() => {console.log("Added Friend");}}  image={arr[1]} />
+                        {arr?.username.toLowerCase().includes(searchUsername.toLowerCase()) && !!searchUsername && (
+                            <AddFriends hasLine={false} name={arr?.username} showMutualFriends={true} amountOfMutualFriends={arr?.mutual} showAddFriend={true} onPressAddFriend={() => {console.log("Added Friend");}}  image={arr?.picture} />
                         )}
                     </View>
                 ))}
