@@ -2,7 +2,7 @@
 import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
 
 
 // Initialize Firebase
@@ -50,16 +50,15 @@ function readData(readCollection) {
     });
 }
 
-function addToCollection(collectionName, object) {
-    addDoc(collection(firestore, collectionName), {
-        ...object
-    })
-    .then(docRef => {
-        console.log("Document written with ID: ", docRef.id);
-    })
-    .catch(err => {
+async function addToCollection(collectionName, object) {
+    try{
+        const docRef = await addDoc(collection(firestore, collectionName), object);
+        console.log("Document written with ID:", docRef.id);
+        return docRef.id
+
+    } catch(err){
         console.error("Error adding document: ", err);
-    });
+    };
 }
 
 
@@ -69,4 +68,23 @@ function deleteCollection(collection, id) //e.g. "Users", "ND781GH1N89CH17"
     deleteDoc(docToBeDelted);
 }
 
-export {firestore, readData, addToCollection, deleteCollection};
+async function readSingleUserInformation(readCollection, userID) {
+    const userDocRef = doc(collection(firestore, readCollection), userID);
+
+    try {
+        const docSnap = await getDoc(userDocRef);
+        if (docSnap.exists()) {
+            const userData = { ...docSnap.data(), id: docSnap.id };
+            console.log("User data:", userData);
+            return userData;
+        } else {
+            console.log("No such document!");
+            return null;
+        }
+    } catch (err) {
+        console.error("Error getting document:", err);
+        throw err;
+    }
+}
+
+export {firestore, readData, readSingleUserInformation, addToCollection, deleteCollection};

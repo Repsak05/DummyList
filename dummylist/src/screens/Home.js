@@ -17,6 +17,11 @@ export default function Home({navigation})  //TODO: Ajust carouselItem's value: 
         }
     }, [amountOfNotifications])
 
+
+    //Log loggedIn user information
+    console.log("ID from Home.js: " + global.loggedInID);
+    console.log("UserObject from Home.js: " + global.userInformation);
+
     return(
         <View>
             <View style={[{width: "100%", marginTop: 55, marginBottom: 29,}]}>

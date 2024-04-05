@@ -7,7 +7,7 @@ import EnterInformationLogInComponent from "../components/EnterInformationLogInC
 import BackgroundTopForStartingPage from "../components/BackgroundTopForStartingPage.js";
 import BackgroundBottomForStartingPage from "../components/BackgroundBottomForStartingPage.js";
 
-import {readData, firestore} from "../../firebase.js";
+import {readData, readSingleUserInformation, firestore} from "../../firebase.js";
 
 export default function LogInPage({navigation})
 {
@@ -16,14 +16,14 @@ export default function LogInPage({navigation})
     const [typeTextSecure, setTypeTextSecure] = useState(true)
     const [displayWrongInformation, setDisplayWrongInformation] = useState(false);
 
-    const [allUsernamePasswordCombinations, setAllUsernamePasswordCombinations] = useState() // [[un1, pw1], [un2, pw2], [un3, pw3]]
+    const [allUsernamePasswordCombinations, setAllUsernamePasswordCombinations] = useState() // [[un1, pw1, id1], [un2, pw2, id2], [un3, pw3, id3]]
 
     useEffect(() => {
         async function fetchUserData() {
             try {
                 const data = await readData("Users");
 
-                const combinations = data.map(user => [user.Username, user.Password]);
+                const combinations = data.map(user => [user.Username, user.Password, user.id]);
                 setAllUsernamePasswordCombinations(combinations);
 
             } catch (err) {
@@ -39,32 +39,34 @@ export default function LogInPage({navigation})
     }, [allUsernamePasswordCombinations])
 
 
-    function logIn()
+    async function logIn()
     {
         console.log("Trying to login: " + username + " | " + password)
-        if(isInformationValid("username", username) && isInformationValid("password", password))
-        {
-            setDisplayWrongInformation(false)
-            console.log("Giving acces")
-            navigation.navigate("Home") //Set this to homePage    
-            
-
-        } else{
-            console.log("Invalid information given")
-            setDisplayWrongInformation(true)
+        
+        try {
+            const canLogIn = await isInformationValid(username, password)
+            if(canLogIn)
+            {
+                setDisplayWrongInformation(false)
+                console.log("Giving acces")
+                navigation.navigate("Home") //Set this to homePage    
+            } else{
+                console.log("Invalid information given")
+                setDisplayWrongInformation(true)
+            }
+        } catch(err){
+            console.error(err)
         }
     }
 
-    function isInformationValid(type, info) //Type = "username" or "password"    |   info = entered value
+    async function isInformationValid(username, password) //Type = "username" or "password"    |   info = entered value
     {
-        const usernamePosition = 0;
-        const passwordPosition = 1;
-        const value = type == "username" ? usernamePosition : passwordPosition;
-
-        for(let i = 0; i < allUsernamePasswordCombinations.length; i++)
+        for(let i = 0; i<allUsernamePasswordCombinations.length; i++)
         {
-            if(allUsernamePasswordCombinations[i][value] == info && allUsernamePasswordCombinations[i][0] && allUsernamePasswordCombinations[i][1])
+            if(allUsernamePasswordCombinations[i][0] == username && allUsernamePasswordCombinations[i][1] == password && allUsernamePasswordCombinations[i][0] && allUsernamePasswordCombinations[i][1])
             {
+                global.loggedInID = allUsernamePasswordCombinations[i][2];
+                global.userInformation = await readSingleUserInformation("Users", global.loggedInID)
                 return true
             }
         }

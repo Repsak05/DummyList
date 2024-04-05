@@ -7,7 +7,7 @@ import EnterInformationLogInComponent from "../components/EnterInformationLogInC
 import BackgroundTopForStartingPage from "../components/BackgroundTopForStartingPage.js";
 import BackgroundBottomForStartingPage from "../components/BackgroundBottomForStartingPage.js";
 
-import {readData, addToCollection, firestore} from "../../firebase.js";
+import {readData, addToCollection, readSingleUserInformation, firestore} from "../../firebase.js";
 
 export default function SignUpPage({navigation})
 {
@@ -47,7 +47,7 @@ export default function SignUpPage({navigation})
         return false;
     }
 
-    function goToNextPage()
+    async function goToNextPage()
     {
         console.log(`Username: ${username} | Email: ${email} | Password: ${password}`);
         
@@ -61,12 +61,23 @@ export default function SignUpPage({navigation})
         
         if (currentState == 3 && username && email && password) {
             //add user to database;
-            addToCollection("Users",{
-                Username : username,
-                Password : password,
-                Email : email,
-                Level : 1,
-            })
+            const newUser = async () => {
+                try {
+                    const resID = await addToCollection("Users", {
+                        Username: username,
+                        Password: password,
+                        Email: email,
+                        Level: 1,
+                    });
+                    global.loggedInID = resID; 
+                    global.userInformation = await readSingleUserInformation("Users", resID)
+                    console.log("User added successfully with ID:", global.loggedInID);
+                } catch (error) {
+                    console.error("Error adding user:", error);
+                }
+            };
+            
+            await newUser();
             
             //navigate to next page
             navigation.navigate("Home")
