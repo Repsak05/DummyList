@@ -6,12 +6,11 @@ import Header from "../components/Header.js";
 import SwitchButton from "../components/SwitchButton.js";
 import CarouselItem from "../components/CarouselItem.js";
 
+import { readData } from "../../firebase.js";
+
+
 export default function InvitedChallengesPage({navigation})
-{
-    const challengesValues = [
-        ["De Ekstreme Bananer", true],
-        ["Home 404", false, "12 Hours"],
-    ]
+{ //TODO ___something is wrong if you are the guest user
 
     function handlePressLeft()
     {
@@ -25,14 +24,53 @@ export default function InvitedChallengesPage({navigation})
         //Navigate to challenges requests
     }
 
-    function challengeInviteClicked(arr)
+    function challengeInviteClicked(challenge)
     {
-        console.log("Navigate to invited challenge")
-        console.table(arr)
+        console.log("Navigate to invited challenge", )
+        console.table(challenge)
        
         //Should give params to navigate:
-        navigation.navigate("AcceptChallengeOverviewPage")
+        navigation.navigate("AcceptChallengeOverviewPage", {challenge})
     }
+
+    //Data taking from db
+    const [inChallenges, setInChallenges] = useState()
+    
+    useEffect(() => {
+        async function getAllChallenges() 
+        {
+            try {
+                const res = await readData("Challenges");
+                const usersInChallenge = res.map(challenge => {
+                    if (challenge) 
+                    {
+                        //Check wether user is invted or has created the challenge (Or not apart of challenge)
+                        const createdByCurrentUser = challenge.createdBy === global.userInformation?.id;
+                        const invitedToChallenge = challenge.friends && challenge.friends.some(friend => friend.user === global.userInformation?.id);
+    
+                        if (createdByCurrentUser || invitedToChallenge) 
+                        {    
+                            return {
+                                isOwner : createdByCurrentUser,
+                                challenge : challenge,
+                            }
+                        }
+                    }
+    
+                    return null;
+                });
+    
+                // Remove null entries from the array
+                const filteredUsersInChallenge = usersInChallenge.filter(userInChallenge => userInChallenge !== null);
+                setInChallenges(filteredUsersInChallenge)
+                console.log(filteredUsersInChallenge)
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    
+        getAllChallenges();
+    }, []);
 
     return(
         <View>
@@ -46,14 +84,15 @@ export default function InvitedChallengesPage({navigation})
             </View>
 
 
-            {challengesValues.map((arr, index) => (
+            {inChallenges?.map((challenge, index) => (
                 <Pressable onPress={challengeInviteClicked} key={index}>
                     <CarouselItem 
-                    title={arr[0]} 
-                    extraStylesToBackground={arr[1] ? { backgroundColor: 'rgba(0, 0, 0, 0.5)' } : null} //Should be chaged
-                    extraText={arr[1] ? "Not Accepted": arr[2] + "   "}
-                    onPressFunction={() => challengeInviteClicked(arr)}
-                    hasPlacement={false}/>
+                        title={challenge.challenge.challengeName} 
+                        extraStylesToBackground={!challenge.isOwner ? { backgroundColor: 'rgba(0, 0, 0, 0.5)' } : null} //Should be chaged
+                        extraText={!challenge.isOwner ? "Not Accepted": challenge.challenge.startingTime + "   "}
+                        onPressFunction={() => challengeInviteClicked(challenge)}
+                        hasPlacement={false}
+                    />
                 </Pressable>
             ))}
         </View>

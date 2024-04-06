@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRoute } from '@react-navigation/native';
 import { View, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image, ScrollView } from 'react-native';
 import style from '../style.js'; 
 
@@ -7,14 +8,22 @@ import CarouselItem from "../components/CarouselItem.js";
 
 export default function AcceptChallengeOverviewPage({navigation, ownsChallenge = false, challengeName = "De Ekstreme Bananer", gameMode = "Team-Mode", amountOfTasks = "12", friendsInvited = 12, friendsJoined = 8, taskDifficulty = "Medium", startinIn = 7, initialHasAccepted = false, intialHasAnswered = false})
 {
-    //TODO Might need to use params rather than as many function parameters
-    const isOwnerOfChallenge = ownsChallenge; //Add settings option in <Header/>
-    const [hasAnswered, setHasAnswered] = useState(intialHasAnswered);
-    const [hasAcceptedOrDeclined, setHasAcceptedOrDeclined] = useState(initialHasAccepted); //True = accepted | false = declined
+    const route = useRoute();
+    const {challenge} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
+
+
+    const isOwnerOfChallenge = challenge.isOwner; //Add settings option in <Header/>
+    const [hasAnswered, setHasAnswered] = useState(intialHasAnswered); //__Should prob be removed, or remade
+    const [hasAcceptedOrDeclined, setHasAcceptedOrDeclined] = useState(challenge?.challenge?.friends?.some(friend => {
+        if (friend.user === global.userInformation?.id) {
+            return friend.hasJoined;
+        }
+    }) || false);
 
     let displayedImage;
     let setBackgroundColor;
-    switch(gameMode)
+    
+    switch(challenge.challenge.gameMode)
     {
         case "Fastest Wins":
             displayedImage = require("../assets/icons/fastestWins.png");
@@ -22,19 +31,19 @@ export default function AcceptChallengeOverviewPage({navigation, ownsChallenge =
             break;
         case "Bingo":
             displayedImage = require("../assets/icons/bingoIcon.png");
-            setBackgroundColor = "#0477BF"
+            setBackgroundColor = "#0477BF";
             break;
         case "Team-Mode":
             displayedImage = require("../assets/icons/teamModeIcon.png");
-            setBackgroundColor = "#F2B705"
+            setBackgroundColor = "#F2B705";
             break;
         case "Long List":
             displayedImage = require("../assets/icons/longListIcon.png");
-            setBackgroundColor = "#F2E2C4"
+            setBackgroundColor = "#F2E2C4";
             break;
         default:
             displayedImage = require("../assets/icons/deleteIcon.svg");
-            setBackgroundColor = "#57C945"
+            setBackgroundColor = "#57C945";
             break;
     }
 
@@ -47,6 +56,9 @@ export default function AcceptChallengeOverviewPage({navigation, ownsChallenge =
         "name1",  "name3", "name4",  "name5", "name6"
     ]
 
+
+    
+
     return(
         <View>
             <View style={[{marginTop: 55, marginBottom: 29,}]}>
@@ -57,7 +69,7 @@ export default function AcceptChallengeOverviewPage({navigation, ownsChallenge =
             <CarouselItem onPressFunction={() => console.log("Do Nothing")} hasPlacement={false} title={false}/>
 
             <View style={{marginLeft: 36}}>
-                <Text style={[style.blackFontSize25, {marginTop: 20, marginBottom: 8}]}>{challengeName}</Text>
+                <Text style={[style.blackFontSize25, {marginTop: 20, marginBottom: 8}]}>{challenge.challenge.challengeName}</Text>
 
                 <View style={{flexDirection: "row", marginBottom: 20}}>
                     <View style={[style.roundedCornersSmall, {width: 60, height: 60, backgroundColor: setBackgroundColor, justifyContent: 'center', alignItems: "center", marginRight: 14}]}>
@@ -65,13 +77,13 @@ export default function AcceptChallengeOverviewPage({navigation, ownsChallenge =
                     </View>
 
                     <View style={{flexDirection: "column"}}>
-                        <Text style={[style.blackFontSize20]}>{gameMode}</Text>
-                        <Text style={[style.blackFontSize16]}>Tasks: {amountOfTasks} • {taskDifficulty} Difficulty</Text>
+                        <Text style={[style.blackFontSize20]}>{challenge.challenge.gameMode}</Text>
+                        <Text style={[style.blackFontSize16]}>Tasks: {amountOfTasks} • {challenge.challenge.taskDifficulty} Difficulty</Text>
                     </View>
                 </View>
                 
                 <View style={{flexDirection: "column", marginBottom: 20}}>
-                    <Text style={[style.blackFontSize20, {marginBottom: 11} ]}>People participating: {friendsJoined}/{friendsInvited}</Text>
+                    <Text style={[style.blackFontSize20, {marginBottom: 11} ]}>People participating: {friendsJoined}/{challenge.challenge.friends.length}</Text>
                     <View style={{flexDirection: "row"}}>
                         {allFriendsInvited.map((arr, index) => (
                             <View key={index}>

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 
-export default function AddFriends({name, image, hasLine = true, showLevel = false, level, showMutualFriends = false, amountOfMutualFriends, showTimeAgo = false, timeAgo, showAddFriend = false, onPressAddFriend, showAcceptFriend = false, onPressAcceptFriend, onPressDenyFriend, showCancelFriend = false, onPressCancel})
+export default function AddFriends({name, image, hasLine = true, showLevel = false, level, showMutualFriends = false, amountOfMutualFriends, showTimeAgo = false, timeAgo, showAddFriend = false, onPressAddFriend, showFriendAdded = true, showAcceptFriend = false, onPressAcceptFriend, onPressDenyFriend, showCancelFriend = false, onPressCancel})
 {
     const [hasAddedFriend, setHasAddedFriend] = useState(false); //Currently being used for animations
 
@@ -35,7 +35,7 @@ export default function AddFriends({name, image, hasLine = true, showLevel = fal
 
                     <View  style={{flex: 1, flexDirection: "row-reverse", marginRight: "10%", alignItems: "center"}}>
                         {showAddFriend && (
-                            <Pressable onPress={() => {onPressAddFriend(); setHasAddedFriend(true)}} style={{borderRadius: 5, width: hasAddedFriend ? 105 : 70, height: 29, backgroundColor: "#D3EC9E", alignItems: "center", justifyContent: "center"}}>
+                            <Pressable onPress={() => {onPressAddFriend(); setHasAddedFriend(showFriendAdded)}} style={{borderRadius: 5, width: hasAddedFriend ? 105 : 70, height: 29, backgroundColor: "#D3EC9E", alignItems: "center", justifyContent: "center"}}>
                                 { hasAddedFriend ? (
                                     <View style={{flexDirection: "row", justifyContent: "space-between", marginHorizontal: 3, alignItems: "center"}}>
                                         <Image style={{with: 18, height: 18}} source={require("../assets/icons/checkmarkDarkIcon.svg")}/>

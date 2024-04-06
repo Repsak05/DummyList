@@ -10,7 +10,7 @@ import {readData, addToCollection, readSingleUserInformation, firestore} from ".
 
 
 export default function CreateChallengePageThree({navigation, route})
-{
+{ //TODO. Add task description on creation (Depending on game-mode)
     const { allCurrentChallengeValues } = route.params
     const [ allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues);
 
