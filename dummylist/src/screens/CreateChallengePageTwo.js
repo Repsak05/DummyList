@@ -9,7 +9,13 @@ import { readData } from "../../firebase.js";
 
 export default function CreateChallengePageTwo({ navigation, route }) {
     const { allChallengeValues } = route.params;
-    const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState(allChallengeValues);
+    const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState({
+        ...allChallengeValues,
+        //Adding yourself to friends (should be called participants/ChallengeMembers)
+        friends : allChallengeValues.friends 
+            ? [...allChallengeValues.friends, {user: global.userInformation.id, hasJoined: true}] 
+            : {user: global.userInformation.id, hasJoined: true}
+    });
     const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
@@ -54,8 +60,10 @@ export default function CreateChallengePageTwo({ navigation, route }) {
         });
     }
 
+
     function nextFunction() {
-        console.log("Go to next!");
+        console.log("Go to next!");        
+
         navigation.navigate("CreateChallengePageThree", {
             allCurrentChallengeValues
         });

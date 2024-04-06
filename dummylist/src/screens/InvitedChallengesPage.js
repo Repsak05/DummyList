@@ -11,6 +11,7 @@ import { readData } from "../../firebase.js";
 
 export default function InvitedChallengesPage({navigation})
 { //TODO ___something is wrong if you are the guest user
+    //TODO ___Only show if challenge is not active (But is going to be)
 
     function handlePressLeft()
     {

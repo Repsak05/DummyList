@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, Text, StyleSheet, Pressable } from 'react-native';
 import style from "../style";
 
 export default function GoToLeaderboard({placement, allPlayers, navigation})
@@ -22,13 +22,13 @@ export default function GoToLeaderboard({placement, allPlayers, navigation})
 
             <View style={[style.displayColumn, {marginRight: 40}]}>
                 <Text style={style.blackFontSize20}>Your Placement:</Text>
-                <Text style={style.greyFontSize16}>{placement}/{allPlayers.length}</Text>
+                <Text style={style.greyFontSize16}>{placement || allPlayers.length}/{allPlayers.length}</Text>
             </View>
 
-            <TouchableOpacity style={[style.displayRow, style.centerVeritically]}onPress={onClickGoToLeaderBoard}>
+            <Pressable style={[style.displayRow, style.centerVeritically]}onPress={onClickGoToLeaderBoard}>
                 <Text style={[style.blackFontSize13, {marginRight: 10, width: 65}]}>See full leaderboard</Text>
                 <Image source={rightArrowPicture} />
-            </TouchableOpacity>
+            </Pressable>
 
         </View>
     )

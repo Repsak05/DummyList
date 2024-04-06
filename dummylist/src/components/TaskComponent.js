@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 
 export default function TaskComponent({description, membersCompletedTask, totalMembersInChallenge, onPress, isCompleted = false}) 
@@ -11,9 +11,9 @@ export default function TaskComponent({description, membersCompletedTask, totalM
                 <Text style={style.taskSmallText}>Done by {membersCompletedTask.length}/{totalMembersInChallenge} people</Text>
             </View>
             {!isCompleted ? (
-                <TouchableOpacity onPress={onPress}>
+                <Pressable onPress={onPress}>
                     <Image style={style.taskImg} source={require("../assets/icons/cameraIcon.svg")} />
-                </TouchableOpacity>
+                </Pressable>
             ) : (
                 <Image style={style.taskImg} source={require("../assets/icons/checkmarkIcon.svg")} />
             )}

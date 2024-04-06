@@ -18,7 +18,7 @@ export default function CreateChallengePageOne({navigation, route})
         friends: [],
         startingTime: 24,
         amountOfTasks: 5,
-        taskDifficulty: ""
+        taskDifficulty: "",
     })
 
     function changeChallengeValues(value, name)

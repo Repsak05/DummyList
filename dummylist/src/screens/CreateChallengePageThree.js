@@ -26,10 +26,26 @@ export default function CreateChallengePageThree({navigation, route})
     {
         async function createChallengePost()
         {
+            console.log(allChallengeValues)
+            const givenTasks = pickNRandomTasks(allChallengeValues.taskDifficulty, allChallengeValues.amountOfTasks)
+
+            const tasksWithFriends = givenTasks.map(task => {
+                const friendTasks = allChallengeValues.friends.map(friend => ({
+                    friendID: friend.user,
+                    hasCompletedTask: false
+                }));
+                return { taskDescription: task, friendsTask: friendTasks };
+            });
+
+            console.log(tasksWithFriends)
+
+
+
             const res = await addToCollection("Challenges", {
                 ...allChallengeValues,
                 createdBy : global.userInformation?.id || "GuestUser#404",
                 isStilActive : true,
+                tasks : tasksWithFriends,
             })
             console.log(res)
         }
@@ -48,6 +64,41 @@ export default function CreateChallengePageThree({navigation, route})
         })
     }
 
+    const easyTasks = ["Take a 10-minute walk outside", "Do 10 jumping jacks", "Write down 3 things you're grateful for", "Call or text a friend to say hello", "Make your bed", "Do a random act of kindness for someone", "Stretch for 5 minutes", "Clean one small area of your living space", "Listen to your favorite song and dance to it", "Try a new fruit or vegetable", "Take a relaxing bath or shower", "Read a short story or article", "Practice deep breathing for 5 minutes", "Write a positive note to yourself and stick it somewhere you'll see it", "Eat a spoonful of mustard", "Wear mismatched socks for the day", "Talk in an accent for an hour", "Brush your teeth with your non-dominant hand", "Eat a slice of lemon without making a face",];
+    const mediumTasks = ["Cook a new recipe from scratch", "Learn a new skill or hobby for 30 minutes", "Complete a 30-minute workout", "Write a letter to a family member or friend", "Organize a cluttered area of your home", "Try a new workout routine", "Go for a bike ride around your neighborhood", "Take a social media break for a day", "Try a new restaurant or café", "Do a digital detox for 2 hours", "Create a vision board for your goals", "Volunteer for a local charity or organization", "Learn a new word in a different language", "Try a new type of exercise class", "Take a day trip to a nearby town or city", "Eat a spoonful of hot sauce", "Wear your clothes backward for a day", "Sing karaoke in public", "Go to a public place and dance like nobody's watching", "Eat a raw clove of garlic",];
+    const hardTasks = ["Run a 5k", "Complete a 1-hour yoga session", "Cook a 3-course meal from scratch", "Go hiking for at least 2 hours", "Write a short story or poem", "Create a budget for the month and stick to it", "Learn a new instrument for an hour", "Take a cold shower", "Try a new extreme sport or activity", "Learn to juggle three objects", "Go camping for a weekend", "Do a digital detox for 24 hours", "Complete a 1000-piece puzzle", "Start a DIY project and finish it within a week", "Go on a spontaneous road trip", "Eat a raw egg", "Dance in public for 10 minutes without music", "Give yourself a temporary tattoo with a marker", "Eat a spoonful of wasabi", "Wear socks on your hands for an hour",];
+
+    function pickNRandomTasks(difficulty, amount)
+    {
+        let taskWithDifficulfty
+        switch(difficulty)
+        {
+            case "low":
+                taskWithDifficulfty = easyTasks;
+                break;
+            case "medium":
+                taskWithDifficulfty = mediumTasks;
+                break;
+            case "high":
+                taskWithDifficulfty = hardTasks;
+                break;
+            default:
+                taskWithDifficulfty = mediumTasks;
+                break;
+        }
+
+        let tasksInChallenge = [];
+        for(let i = 0; i<amount; i++)
+        {
+            const randomNumberInArray = Math.floor(Math.random() * taskWithDifficulfty.length);
+            tasksInChallenge.push(taskWithDifficulfty[randomNumberInArray]);
+            taskWithDifficulfty.splice(randomNumberInArray, 1);
+        }
+
+        return tasksInChallenge;
+    }
+
+
     //All values that can be scrolled through:
     const options = []
     const totalNumberOfValues = 20
@@ -64,8 +115,6 @@ export default function CreateChallengePageThree({navigation, route})
     {
         options.push("ㅤ")
     }
-    
-
 
     const [middleNumber, setMiddleNumber] = useState(null);
     const [prevMiddleNumber, setPrevMiddleNumber] = useState(null);

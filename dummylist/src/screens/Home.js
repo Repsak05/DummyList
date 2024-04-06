@@ -7,9 +7,13 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 
+import { readData } from "../../firebase.js";
+import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderboardTitleInformation.js";
+
 export default function Home({navigation})  //TODO: Ajust carouselItem's value: isPlacedInTheMiddle={true/false} (Depending on placement in array)
-{   //TODO: Fix background coloro on create challenge and active challenges
+{   //TODO: Fix background colors on create challenge and active challenges
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
+    const [allChallenges, setAllChallenges] = useState()
 
     useEffect(() => { //Ensures correct amountOfNotifications
         if(amountOfNotifications == 0)
@@ -18,10 +22,37 @@ export default function Home({navigation})  //TODO: Ajust carouselItem's value: 
         }
     }, [amountOfNotifications])
 
+    useEffect(() => {
+        async function getAllYourChallenges()
+        {
+            try{
+                let yourChallenges = []
+                const res = await readData("Challenges")
+                
+                res.map(challenge => {
+                    if(challenge.friends && challenge.isStilActive){
+                        challenge.friends.forEach(friend => {
+                            if(friend.user == global.userInformation.id){
+                                yourChallenges.push(challenge)
+                            }
+                        })
+                    }
+                })
+                console.log(yourChallenges)
+                setAllChallenges(yourChallenges)
+            } catch(err){
+                console.error(err);
+            }
+        }
 
-    //Log loggedIn user information
-    console.log("ID from Home.js: " + global.loggedInID);
-    console.log("UserObject from Home.js: " + global.userInformation);
+        getAllYourChallenges();
+    }, [])
+
+    function navigateToChallenge(challenge)
+    {
+        console.log("Clicked on " + challenge.challengeName)
+        navigation.navigate("ChallengePage", {challenge})
+    }
 
     return(
         <View>
@@ -34,14 +65,14 @@ export default function Home({navigation})  //TODO: Ajust carouselItem's value: 
                 <View style={{width: "100%",}}> 
                     <CreateChallengeComponent navigation={navigation} />
                 </View>
-                <View style={{width: "100%"}}>
-                    <CarouselItem title={"De Ekstreme Bananer"} navigation={navigation} isPlacedInTheMiddle={true} />
-                </View>
-                <View style={{width: "100%"}}>
-                    <CarouselItem title={"Home 404"} navigation={navigation} isPlacedInTheMiddle={false} />
-                </View>
+                {allChallenges?.map((challenge, index) => {
+                    return(
+                        <View style={{width: "100%"}} key={index}>
+                            <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
+                        </View>
+                    )
+                })}
             </View>
-    
 
             <View style={[styles.homeFeedContainer, styles.wrapper]}>
                 <Pressable onPress={() => {console.log('Open feed'); navigation.navigate("FeedPage")}} style={{width: "100%", height: "100%"}}>
