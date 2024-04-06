@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, ScrollView, Text } from 'react-native';
 import Header from "../components/Header.js";
-import ProgressBarTemplate from "../components/progressBarTemplate.js";
+import ProgressBarTemplate from "../components/ProgressBarTemplate.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 import AddFriends from "../components/AddFriends.js";
 import SliderComponent from "../components/SliderComponent.js";

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import style from "../style";
 
-import ProgressBarTemplate from "./progressBarTemplate";
+import ProgressBarTemplate from "./ProgressBarTemplate";
 export default function ProfileUserInformation({username, email, level, xpCurrent})
 {
     //Extra values: Parameters

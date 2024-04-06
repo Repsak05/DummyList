@@ -8,6 +8,7 @@ import GoToLeaderboard from "../components/GoToLeaderboard";
 import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderboardTitleInformation";
 import TaskComponent from "../components/TaskComponent";
 
+import { calculatePlacement } from "../components/GlobalFunctions";
 
 export default function ChallengePage({navigation})
 {
@@ -39,30 +40,6 @@ export default function ChallengePage({navigation})
         return participants
     }
 
-    function calculatePlacement(id = global.userInformation.id)
-    {
-        const counts = {}
-
-        challenge.tasks.map(task => {
-            task.friendsTask.map(taskFriends => {
-                if(taskFriends.hasCompletedTask){
-                    counts[taskFriends.friendID] = counts[taskFriends.friendID] + 1 || 1;
-                }
-            })
-        })
-
-        const countPairs = Object.entries(counts);
-        countPairs.sort((a, b) => b[1] - a[1]);
-
-        
-        for(let i = 0; i < countPairs.length; i++)
-        {
-            if(countPairs[i][0] == id){
-                return i+1
-            }
-        }
-    }
-
     return(
         <View style={{flex: 1, flexDirection: "column", backgroundColor: "#FFDF9D"}}>
             <View>
@@ -71,7 +48,7 @@ export default function ChallengePage({navigation})
                 </View>
 
                 <View style={{marginVertical: 21}}>
-                    <GoToLeaderboard navigation={navigation}placement={calculatePlacement()} allPlayers={getAllPlayersFromChallenge()}/>
+                    <GoToLeaderboard propsToleaderboard={challenge} navigation={navigation}placement={calculatePlacement(challenge)} allPlayers={getAllPlayersFromChallenge()}/>
                 </View>
             </View>
 

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, Text, StyleSheet, Pressable } from 'react-native';
 import style from "../style";
 
-export default function GoToLeaderboard({placement, allPlayers, navigation})
+export default function GoToLeaderboard({placement, allPlayers, navigation, propsToleaderboard})
 {
     const profilePicture = require("../assets/icons/exampleProfilePicture.svg")
     const rightArrowPicture = require("../assets/icons/rightArrow.svg")
@@ -10,8 +10,7 @@ export default function GoToLeaderboard({placement, allPlayers, navigation})
     //The component itself
     function onClickGoToLeaderBoard(){
         console.log("Should go to Leaderboard page now")
-        navigation.navigate('LeaderboardPage')
-
+        navigation.navigate('LeaderboardPage', {challenge: propsToleaderboard})
     }
 
     return(

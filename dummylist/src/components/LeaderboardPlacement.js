@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import style from "../style";
 
-export default function LeaderboardPlacement({username, placement, challengesCompleted, allChallenges })
+export default function LeaderboardPlacement({username, placement, challengesCompleted, amountOfChallenges })
 {
     const backgroundColorPlacement = [
         "#3F96E0",
@@ -16,7 +16,7 @@ export default function LeaderboardPlacement({username, placement, challengesCom
             <Image style={[style.taskImg,{marginRight: 15, width: 50, height: 50}]} source={require("../assets/icons/exampleProfilePicture.svg")} />
             <View style={style.taskTextContainer}>
                 <Text style={style.taskMainText}>@{username}</Text>
-                <Text style={style.taskSmallText}>Done {challengesCompleted.length}/{allChallenges.length} Challenges</Text>
+                <Text style={style.taskSmallText}>Done {challengesCompleted}/{amountOfChallenges} Challenges</Text>
             </View>
             <Text style={style.whiteFontSize31}>{placement}</Text>
         </View>

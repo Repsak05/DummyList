@@ -1,35 +1,72 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
+import { useRoute } from '@react-navigation/native';
 
 import Header from "../components/Header";
 import GoToTasks from "../components/GoToTasks";
 import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderboardTitleInformation";
 import LeaderboardPlacement from "../components/LeaderboardPlacement";
 
+import { calculatePlacement } from "../components/GlobalFunctions";
+import { readData } from "../../firebase"
+
+
 export default function LeaderboardPage({navigation})
 {
-    //Following should be parameters (information in the database):
-    const challengeGroupName = "De Ekstreme Bananer";
-    const allChallenges = ["Eat A Raw Egg", "Play Sport for 20 min", "Eat A Raw Onion", "Cut 10 cm of your Hair", "Don't wear Socks for a Day"  ]  
-    const leaderboardInformation = [
-        ["Per", 1, ["Eat A Raw Egg", "Play Sport for 20 min", "Eat A Raw Onion", "Cut 10 cm of your Hair"]],
-        ["Søren" , 2, ["Play Sport for 20 min", "Eat A Raw Onion", "Cut 10 cm of your Hair"]],
-        ["John", 3, ["Play Sport for 20 min", "Eat A Raw Onion"]],
-        ["Kasper", 4, ["Eat A Raw Egg"]],
-        ["Igor", 5, ["Eat A Raw Onion"]],
-    ]
+    const route = useRoute();
+    const {challenge} = route.params; 
+
+    const [usernamesInChallenges, setUsernamesInChallenges] = useState() //{id1 : name1,    id2 : name2...}
+
+    useEffect(() => {
+        async function getUsernames() {
+            try {
+                const namesAndID = {};
+                const res = await readData("Users");
+                challenge.friends.forEach(participant => {
+                    res.forEach(user => {
+                        if (participant.user === user.id) {
+                            namesAndID[participant.user] = user.Username;
+                        }
+                    });
+                });
+                setUsernamesInChallenges(namesAndID);
+
+            } catch (error) {
+                console.error("Error fetching usernames:", error);
+            }
+        }
+    
+        getUsernames();
+    }, []);
+
+
+    function getAllUserPlacements() 
+    {
+        let placements = [];
+
+        challenge.friends.map(participant => {
+            const rank = calculatePlacement(challenge, participant.user);
+            placements.push({ id: participant.user, placement: rank });
+            
+        });
+
+        placements.sort((a, b) => a.placement - b.placement);
+        return placements;
+    }
 
     return(
+        
         <View style={{flex: 1, flexDirection: "column", backgroundColor: "#9CF1EE"}}>
             <View>
                 <View style={{marginTop: 55,}}>
-                    <Header navigation={navigation} pageName={challengeGroupName}/>
+                    <Header navigation={navigation} pageName={challenge?.challengeName}/>
                 </View>
             </View>
 
             <View style={{marginVertical: 21}}>
-                <GoToTasks navigation={navigation} completeChallenges={["Egg", "Sport"]} allChallenges={["Me", "Myself", "I", "Another", "Random Guy"]}/>
+                <GoToTasks navigation={navigation} propsToTask={challenge} completeChallenges={calculatePlacement(challenge, global.userInformation.id, true)} allChallenges={challenge.tasks.length}/>
             </View>
 
 
@@ -38,12 +75,19 @@ export default function LeaderboardPage({navigation})
                     <ChallengeLeaderboardTitleInformation daysLeftTillChallengeEnds={3} isChallengeOrLeaderboard={false}/>
                 </View>
 
-                <View style={{marginTop: 21}}>
-                    {leaderboardInformation.map(arr => (
-                        <View key={arr[0]}>
-                            <LeaderboardPlacement username={arr[0]} placement={arr[1]} challengesCompleted={arr[2]} allChallenges={allChallenges}/>
+                <View style={{ marginTop: 21 }}>
+                    {usernamesInChallenges ? (getAllUserPlacements().slice(0, 5).map(participant => (
+                        <View key={participant.id}>
+                            <LeaderboardPlacement
+                                username={usernamesInChallenges[participant.id]}
+                                placement={participant.placement}
+                                challengesCompleted={calculatePlacement(challenge, participant.id, true)}
+                                amountOfChallenges={challenge?.tasks.length}
+                            />
                         </View>
-                    ))}
+                    ))) : (
+                        <Text style={{textAlign: "center"}}>Loading...</Text>
+                    )}
                 </View>
             </View>
             
