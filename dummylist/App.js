@@ -19,7 +19,7 @@ import ProfileChallengesOverview from './src/components/ProfileChallengesOvervie
 import Header from './src/components/Header.js';
 import CameraComponent from './src/components/CameraComponent.js';
 
-import progressBarTemplate from './src/components/progressBarTemplate.js';
+import ProgressBarTemplate from './src/components/ProgressBarTemplate.js';
 import InputFieldWithBlueOutline from './src/components/InputFieldWithBlueOutline.js';
 // import FeedInformation from './src/components/FeedInformation.js';
 // import FeedLikedBy from './src/components/FeedLikedBy.js';

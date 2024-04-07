@@ -1,30 +1,54 @@
-import React, { useState } from "react";
-import { View, Image, Pressable, ImageBackground, ScrollView, Dimensions } from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, Text, ScrollView, } from 'react-native';
 import style from "../style";
 
 import Header from "../components/Header";
 import UploadedChallengeToFeed from "../components/UploadedChallengeToFeed";
 
-export default function FeedPage({ navigation }) {
-    const exampleImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4YoVyIWSCe7lLdwBFj3HAwPM-wUdrH5BI8w&s"; // Change later
-    const yourProfilePicture = "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?cs=srgb&dl=pexels-suliman-sallehi-1704488.jpg&fm=jpg";
+import { readData } from "../../firebase";
 
-    const exampleURI = [
-        "https://as1.ftcdn.net/v2/jpg/05/68/23/98/1000_F_568239815_8NB11CB6LT2D3lBhDVa10jQ6qMYJKCzh.jpg",
-        "https://as2.ftcdn.net/v2/jpg/05/16/81/87/1000_F_516818763_dO4FwzVNNpYhnqNd3x61PF5cKud5Or6i.jpg",
-        "https://ipt.imgix.net/201444/x/0/",
-        "https://static.photocdn.pt/images/articles/2018/05/07/articles/2017_8/landscape_photography_tips.webp",
-        "https://media.istockphoto.com/id/530568719/photo/passenger-airplane-taking-off-at-sunset.jpg?s=612x612&w=0&k=20&c=XkAgyOR8kkY7kgfx2TtuXAilzWkJodleFDQbj_GEBXA=",
-    ];
+export default function FeedPage({ navigation }) 
+{   //TODO: ___Create correct statement in getPosts (look coment) 
+    //Replace Loading... with correct loading screen
+    //When liking image: Add it to db
 
-    const latestPosts = [
-        //user, profilepic, title, Uri, likedBy,
-        ["Kasper", exampleImage, "Eat a Raw Egg", exampleURI[0], [exampleImage, exampleImage, exampleImage, exampleImage]],
-        ["Per", yourProfilePicture, "Do Something Cool!", exampleURI[1], [exampleImage, exampleImage, exampleImage, exampleImage, exampleImage, exampleImage]],
-        ["Svend", exampleImage, "Jump Into the Sea", exampleURI[2], [exampleImage, exampleImage, exampleImage]],
-        ["Erik", yourProfilePicture, "Buy a Gift for a Friend", exampleURI[3], [exampleImage]],
-        ["Kasper", exampleImage, "Help a Stranger", exampleURI[4], [exampleImage, exampleImage, exampleImage, exampleImage, exampleImage]],
-    ];
+    //Change this to the user's profilepicture in users db
+    const exampleURI = "https://as1.ftcdn.net/v2/jpg/05/68/23/98/1000_F_568239815_8NB11CB6LT2D3lBhDVa10jQ6qMYJKCzh.jpg"
+       
+    const [allPostsYourShouldSee, setAllPostsYourShouldSee] = useState();
+
+    useEffect(() => {
+        async function getPosts(){
+            try{
+                const posts = await readData("Posts");
+
+                const yourFeedposts = await Promise.all(posts.map(async post => {
+                    if(true) //Statement so only postID's which is in a challenge your are in too would be added
+                    {
+                        const users = await readData("Users");
+                        let postedByName = "Unknown User";
+                        for (let user of users) {
+                            if (user.id === post.PostedBy) {
+                                postedByName = user.Username;
+                                break; 
+                            }
+                        }
+    
+                        return {
+                            ...post,
+                            PostedByUsername: postedByName,
+                        };
+                    }
+                }));
+                setAllPostsYourShouldSee(yourFeedposts);
+
+            }catch(err){
+                console.error(err);
+            }
+        }
+
+        getPosts();
+    }, [])
 
     return (
         <View style={{ flex: 1 }}>
@@ -33,11 +57,19 @@ export default function FeedPage({ navigation }) {
             </View>
 
             <ScrollView pagingEnabled={true} horizontal={false}>
-                {latestPosts.map((arr, index) => (
-                    <View key={index} style={{ marginBottom: 15 }}>
-                        <UploadedChallengeToFeed arr={arr}/>
+                {allPostsYourShouldSee ? allPostsYourShouldSee.map((post, index) => (
+                    <View key={index} style={{ marginBottom: 15, }}>
+                        <UploadedChallengeToFeed 
+                            username={post.PostedByUsername}
+                            profilePicture={{uri: exampleURI}}
+                            description={post.TaskDescription} 
+                            postUri={post.PostUri} 
+                            likedBy={post.LikedBy}
+                        />
                     </View>
-                ))}
+                )) : (
+                    <Text style={{textAlign: "center"}}>Loading...</Text>
+                )}
             </ScrollView>
         </View>
     );

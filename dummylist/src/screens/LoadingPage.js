@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Animated, Easing, Pressable } from 'react-native';
 import style from '../style';
 
-import EnterInformationLogInComponent from '../components/EnterInformationLogInComponent';
 export default function LoadingPage({navigation}) {
   const [isLoading, setIsLoading] = useState(true);
   const [styleIndex, setStyleIndex] = useState(0);

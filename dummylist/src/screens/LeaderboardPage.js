@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { View, Image, Text, Pressable } from 'react-native';
+import { View, Image, Text, Pressable, ScrollView } from 'react-native';
 import style from "../style";
 import { useRoute } from '@react-navigation/native';
 
@@ -13,7 +13,7 @@ import { readData } from "../../firebase"
 
 
 export default function LeaderboardPage({navigation})
-{
+{ //TODO: //Replace Loading... with correct loading screen
     const route = useRoute();
     const {challenge} = route.params; 
 
@@ -75,7 +75,7 @@ export default function LeaderboardPage({navigation})
                     <ChallengeLeaderboardTitleInformation daysLeftTillChallengeEnds={3} isChallengeOrLeaderboard={false}/>
                 </View>
 
-                <View style={{ marginTop: 21 }}>
+                <ScrollView style={{ marginTop: 21 }}>
                     {usernamesInChallenges ? (getAllUserPlacements().slice(0, 5).map(participant => (
                         <View key={participant.id}>
                             <LeaderboardPlacement
@@ -88,7 +88,7 @@ export default function LeaderboardPage({navigation})
                     ))) : (
                         <Text style={{textAlign: "center"}}>Loading...</Text>
                     )}
-                </View>
+                </ScrollView>
             </View>
             
         </View>

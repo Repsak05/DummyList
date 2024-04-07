@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, ScrollView } from 'react-native';
 import style from "../style";
 import { useRoute } from '@react-navigation/native';
 
@@ -10,15 +10,15 @@ import TaskComponent from "../components/TaskComponent";
 
 import { calculatePlacement } from "../components/GlobalFunctions";
 
-export default function ChallengePage({navigation})
+export default function ChallengesPage({navigation})
 {
     const route = useRoute();
     const {challenge} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
 
-    function handleImageClick(description)
+    function handleImageClick(task)
     {
         console.log("Challenge clicked -> Go to take photo/video!")
-        navigation.navigate('CameraPage', { title: description });
+        navigation.navigate('CameraPage', { task: task });
     }
 
     function getAllMembersWhoFinnishedTheTask(task) {
@@ -58,7 +58,7 @@ export default function ChallengePage({navigation})
                     <ChallengeLeaderboardTitleInformation daysLeftTillChallengeEnds={3} isChallengeOrLeaderboard={true}/>
                 </View>
 
-                <View style={{marginTop: 21}}>
+                <ScrollView style={{marginTop: 21}}>
                     {challenge.tasks?.map(task => (
                         <View key={task.taskDescription}>
                             <TaskComponent 
@@ -66,11 +66,11 @@ export default function ChallengePage({navigation})
                                 membersCompletedTask={getAllMembersWhoFinnishedTheTask(task)} 
                                 totalMembersInChallenge={task.friendsTask.length} 
                                 isCompleted={getAllMembersWhoFinnishedTheTask(task).some(friendID => friendID === global.userInformation.id)} 
-                                onPress={() => handleImageClick(task.taskDescription)}
+                                onPress={() => handleImageClick(task)}
                             />
                         </View>
                     ))}
-                </View>
+                </ScrollView>
             </View>
         </View>
     )

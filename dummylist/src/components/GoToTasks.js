@@ -6,10 +6,6 @@ import ProgressBarTemplate from "./ProgressBarTemplate"
 export default function GoToTasks({completeChallenges, allChallenges, propsToTask, navigation})
 {
 
-    const setHeight = 20;
-    const totalProgressBarWidth = 200;
-    const edgdeOnProgressBarSize = 0;
-
     function onClickGoToTasks(){
         console.log("Should go to Task page now")
         navigation.navigate('ChallengePage', {challenge: propsToTask})

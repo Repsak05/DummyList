@@ -8,17 +8,17 @@ import CameraComponent from '../components/CameraComponent';
 
 export default function CameraPage({navigation, route})
 {
-    const { title } = route.params || " ";
+    const { task } = route.params || " ";
     
     return(
         <View style={{}}>
             
             <View style={{marginTop: 55}}>
-                <Header navigation={navigation} pageName={`"${title}"` || "Camera"}/>
+                <Header navigation={navigation} pageName={`"${task.taskDescription}"` || "Camera"}/>
             </View>
 
             <View style={[style.roundedCorners, {height: 800}]}>
-                <CameraComponent/>
+                <CameraComponent taskRef={task}/>
             </View>
         </View>
     )
