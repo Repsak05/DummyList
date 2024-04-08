@@ -6,21 +6,7 @@ import colors from "../colors.js";
 export default function CarouselItem({navigation, isPlacedInTheMiddle = false, title = "De Ekstreme Bananer", hasPlacement = true, extraStylesToBackground, extraText, onPressFunction})
 {
     const indicationImage = isPlacedInTheMiddle ? require("../assets/icons/placedInTheMiddle.svg") : require("../assets/icons/placedMostRight.svg");
-    
-    // function onpressFunctionCallThisFunction()
-    // {
-    //     if(onPressFunction)
-    //     {
-    //         onPressFunction();
-    //     } else {openCaroselItem();}
-    // }
-
-    // function openCaroselItem()
-    // {
-    //     console.log('Open carousel item')
-    //     navigation.navigate('ChallengePage')
-
-    // }    
+        
     return(
         <View style={[{justifyContent: 'flex-start', alignItems: 'center', alignSelf: 'center', width: "95%",  backgroundColor: "#f8f9ff"}]}>
             <Pressable onPress={() => onPressFunction()} style={[{width: "100%", height: "100%", marginBottom: 12}]}>

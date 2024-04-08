@@ -5,25 +5,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import styles from './src/style'; 
 
-//Components
-import TaskComponent from './src/components/TaskComponent.js';
-import LeaderboardPlacement from './src/components/LeaderboardPlacement.js';
-import GoToLeaderboard from './src/components/GoToLeaderboard.js'; 
-import GoToTasks from './src/components/GoToTasks.js';
-import ChallengeTitleInformation from './src/components/ChallengeLeaderboardTitleInformation.js';
-
-import ProfileAchievements from './src/components/ProfileAchievements.js';
-import ProfileUserInformation from './src/components/ProfileUserInformation.js';
-import ProfileChallengesOverview from './src/components/ProfileChallengesOverview.js';
-
-import Header from './src/components/Header.js';
-import CameraComponent from './src/components/CameraComponent.js';
-
-import ProgressBarTemplate from './src/components/ProgressBarTemplate.js';
-import InputFieldWithBlueOutline from './src/components/InputFieldWithBlueOutline.js';
-// import FeedInformation from './src/components/FeedInformation.js';
-// import FeedLikedBy from './src/components/FeedLikedBy.js';
-
 //Screens
 import Home from './src/screens/Home.js';
 import ChallengePage from './src/screens/ChallengePage.js';
@@ -153,95 +134,5 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-  );
-}
-
-function MainScreen() {
-  return (
-    <View style={{ flex: 1 }}>
-      {/* <Home/> */}
-      <Header
-        pageName={"De Ekstreme Bananer"}
-        />
-      <ProfileUserInformation
-        username={"Kasper"}
-        email={"example@gmail.com"}
-        />
-      <ProfileAchievements
-        typeNumber={1}
-        value={2}
-        />
-      <ProfileAchievements
-        typeNumber={2}
-        value={2}
-        />
-      <ProfileAchievements
-        typeNumber={3}
-        value={2}
-        />
-      <ProfileAchievements
-        typeNumber={4}
-        value={2}
-        />
-      <ChallengeTitleInformation
-        daysLeftTillChallengeEnds={3}
-        isChallengeOrLeaderboard={true}
-        />
-      <ChallengeTitleInformation
-        daysLeftTillChallengeEnds={3}
-        isChallengeOrLeaderboard={false}
-        />
-      <GoToTasks
-        completeChallenges={["Eat an Egg", "Idk"]}
-        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
-        />
-      <LeaderboardPlacement
-        username="Kasper"
-        placement={1}
-        challengesCompleted={["Eat an Egg", "Idk"]}
-        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
-        />
-      <LeaderboardPlacement
-        username="Kasper"
-        placement={2}
-        challengesCompleted={["Eat an Egg", "Idk"]}
-        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
-        />
-      <LeaderboardPlacement
-        username="Kasper"
-        placement={3}
-        challengesCompleted={["Eat an Egg", "Idk"]}
-        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
-        />
-      <LeaderboardPlacement
-        username="Kasper"
-        placement={4}
-        challengesCompleted={["Eat an Egg", "Idk"]}
-        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
-        />
-      <LeaderboardPlacement
-        username="Kasper"
-        placement={5}
-        challengesCompleted={["Eat an Egg", "Idk"]}
-        allChallenges={["Eat an Egg", "Idk", "another", "another2"]}
-        />
-
-      <TaskComponent
-        description="Eat a nice Egg" 
-        membersCompletedTask={["Erik", "Paul"]}
-        totalMembersInChallenge = {6}
-        isCompleted={true}
-        />
-      <TaskComponent
-        description="Eat a nice Egg" 
-        membersCompletedTask={["Erik", "Paul"]}
-        totalMembersInChallenge = {6}
-        isCompleted={false}
-        />
-      <GoToLeaderboard
-        placement="1"
-        allPlayers={["Erik", "Paul", "fjami"]}
-      />
-    </View>
   );
 }
