@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Image, } from 'react-native';
 import style from "../style";
 
 import Header from "../components/Header";
@@ -41,9 +41,6 @@ export default function ProfilePage({navigation})
             <View style={{marginTop: 15}}>
                 <ProfileChallengesOverview/>
             </View>
-
-                
-
         </View>
     )
 }
