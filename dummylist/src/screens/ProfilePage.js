@@ -1,11 +1,13 @@
 import React from "react";
-import { View, Image, } from 'react-native';
+import { View, Image, Button, Pressable, Text} from 'react-native';
 import style from "../style";
 
 import Header from "../components/Header";
 import ProfileUserInformation from "../components/ProfileUserInformation";
 import ProfileAchievements from "../components/ProfileAchievements";
 import ProfileChallengesOverview from "../components/ProfileChallengesOverview";
+import { firebaseAuth } from "../../firebase";
+import WelcomePage from "./WelcomePage";
 
 export default function ProfilePage({navigation})
 {
@@ -19,7 +21,7 @@ export default function ProfilePage({navigation})
 
             <View style={{marginTop: 28}}>
                 <ProfileUserInformation 
-                    username={global.userInformation?.Username || "GuestUser#121"}
+                    username={global.userInformation?.Username || "GuestUser#404"}
                     email={global.userInformation?.Email || "GuestEmail@gmail.com"}
                     level={global.userInformation?.Level || 404}
                     xpCurrent={40}
@@ -41,6 +43,10 @@ export default function ProfilePage({navigation})
             <View style={{marginTop: 15}}>
                 <ProfileChallengesOverview/>
             </View>
+
+            <Pressable onPress={() => {navigation.navigate("LogInPage"); firebaseAuth.signOut(); }}>
+                <Text>Sign Out</Text>
+            </Pressable>
         </View>
     )
 }

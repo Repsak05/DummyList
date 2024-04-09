@@ -3,6 +3,7 @@ import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 
 // Initialize Firebase
@@ -21,10 +22,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const firebaseApp = initializeApp(firebaseConfig);
+const analytics = getAnalytics(firebaseApp);
 const firestore = getFirestore();
 
+const firebaseAuth = getAuth(firebaseApp);
 
 //Read users
 
@@ -87,4 +89,4 @@ async function readSingleUserInformation(readCollection, userID) {
     }
 }
 
-export {firestore, readData, readSingleUserInformation, addToCollection, deleteCollection};
+export {firestore, firebaseApp, firebaseAuth, readData, readSingleUserInformation, addToCollection, deleteCollection};
