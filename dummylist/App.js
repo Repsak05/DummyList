@@ -26,6 +26,7 @@ import ChallengePage from './src/screens/ChallengePage.js';
 import LeaderboardPage from './src/screens/LeaderboardPage.js';
 import SignUpPage from './src/screens/SignUpPage.js';
 import LogInPage from './src/screens/LogInPage.js';
+import CalendarPage from './src/screens/CalendarPage.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -106,6 +107,11 @@ export default function App() {
         <Stack.Screen
           name="FeedPage"
           component={FeedPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CalendarPage"
+          component={CalendarPage}
           options={{ headerShown: false }}
         />
         <Stack.Screen

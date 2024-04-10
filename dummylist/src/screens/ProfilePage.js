@@ -41,7 +41,7 @@ export default function ProfilePage({navigation})
             </View>
 
             <View style={{marginTop: 15}}>
-                <ProfileChallengesOverview/>
+                <ProfileChallengesOverview navigation={navigation}/>
             </View>
 
             <Pressable onPress={() => {navigation.navigate("LogInPage"); firebaseAuth.signOut(); }}>
