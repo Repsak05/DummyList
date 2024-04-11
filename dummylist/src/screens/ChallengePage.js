@@ -14,11 +14,12 @@ export default function ChallengesPage({navigation})
 {
     const route = useRoute();
     const {challenge} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
+    console.log(challenge.id)
 
     function handleImageClick(task)
     {
         console.log("Challenge clicked -> Go to take photo/video!")
-        navigation.navigate('CameraPage', { task: task });
+        navigation.navigate('CameraPage', { task: task, challengeID : challenge.id });
     }
 
     function getAllMembersWhoFinnishedTheTask(task) {

@@ -7,9 +7,9 @@ import { Video } from 'expo-av';
 import style from '../style';
 import ButtonCamera from './ButtonCamera';
 
-import { addToCollection } from '../../firebase';
+import { addToCollection, updateHasCompletedTask } from '../../firebase';
 
-export default function CameraComponent({taskRef}) 
+export default function CameraComponent({taskRef, challengeID}) 
 { //Error at postMedia??? If not, remove comments 
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [image, setImage] = useState(null);
@@ -71,8 +71,7 @@ export default function CameraComponent({taskRef})
         }
     }
 
-    async function postMedia() 
-    {
+    async function postMedia() {
         try {
             let postUri;
             if (image) {
@@ -80,39 +79,35 @@ export default function CameraComponent({taskRef})
             } else if (videoUri) {
                 postUri = videoUri;
             }
-
-            console.log(`Adding ${postUri} to db`)
-
-            //Or create a postID and make a reference in taskRef to the postID //Prob go with this Idea
-            async function createPostID(eachPlayer)
-            {
+    
+            console.log(`Adding ${postUri} to db`);
+    
+            async function createPostID(eachPlayer) {
                 const gottenPostID = await addToCollection("Posts", {
-                    Postedby : global.userInformation.id,
-                    TaskDescription : taskRef.taskDescription,
-                    PostUri : postUri,
-                    LikedBy : [],
+                    PostedBy: global.userInformation.id,
+                    TaskDescription: taskRef.taskDescription,
+                    PostUri: postUri,
+                    LikedBy: [],
                 });
-                
-                console.log("IF YOU JUST GOT AN ERROR, DONT WORRY, LOOK AT THE COMMENTS UNDERNEATH (CAMERACOMPONENT.JS -> postMedia function)")
-                eachPlayer.hasCompletedTask = true; //Might not work; Then you prob need to do either a addReq or changeReq
-                eachPlayer.postID = gottenPostID; //This prob dont work: Look comment above and underneath
-            }
 
-            for(let eachPlayer of taskRef.friendsTask)
-            {
-                if(eachPlayer.friendID == global.userInformation.id){
+                await updateHasCompletedTask(challengeID, eachPlayer, taskRef, gottenPostID);
+            }
+    
+            for (let eachPlayer of taskRef.friendsTask) {
+                if (eachPlayer.friendID == global.userInformation.id) {
                     await createPostID(eachPlayer);
                     break;
                 }
             }
-
-            //Prob need to do something like this: To Update DB correctly 
-            // await taskRef.update({ friendsTask: taskRef.friendsTask });
-
         } catch (err) {
             console.log(err);
         }
     }
+    
+    
+    
+    
+    
 
     if (hasCameraPermission === false) {
         return <Text style={{textAlign: 'center', marginTop: 20}}>No access to camera. Please change it in your settings.</Text>;

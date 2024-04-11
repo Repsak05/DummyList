@@ -9,6 +9,7 @@ import CameraComponent from '../components/CameraComponent';
 export default function CameraPage({navigation, route})
 {
     const { task } = route.params || " ";
+    const { challengeID } = route.params || " ";
     
     return(
         <View style={{}}>
@@ -18,7 +19,7 @@ export default function CameraPage({navigation, route})
             </View>
 
             <View style={[style.roundedCorners, {height: 800}]}>
-                <CameraComponent taskRef={task}/>
+                <CameraComponent taskRef={task} challengeID={challengeID}/>
             </View>
         </View>
     )

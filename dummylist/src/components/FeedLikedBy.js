@@ -9,23 +9,27 @@ export default function FeedLikedBy({peopleWhoLikedThePost})
 
     function returnNumberOfElementsFromArray(arr, num)
     {
-        let newArr = [];
-        for(let i = 0; i<num; i++)
-        {
-            if(i+1 > arr.length) return newArr;
-            newArr.push(arr[i])
+        if(arr){
+
+            let newArr = [];
+            for(let i = 0; i<num; i++)
+            {
+                if(i+1 > arr.length) return newArr;
+                newArr.push(arr[i])
+            }
+            return(newArr)
         }
-        return(newArr)
+        return []
     }
 
     const shownLikedPosts = returnNumberOfElementsFromArray(peopleWhoLikedThePost, showAmountOfLikedBy);
 
     return (
         <View style={{marginLeft: 19, padding: 10, flexDirection: "row", }}>
-            <Text style={[style.blackFontSize16]}>Liked by:</Text>
+            <Text style={[style.blackFontSize16]}>Liked by: {shownLikedPosts.length ? "" : "None"}</Text>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "flex-start", marginTop: 5, marginLeft: 10 }}>
-                {shownLikedPosts.map((element, index) => (
-                    <Image key={index} style={{width: 38, height: 38, borderRadius: "50%", position: "absolute", left: index*19, zIndex: showAmountOfLikedBy-index, opacity: 1- ((1/showAmountOfLikedBy)*index) }} source={{uri: element}} alt="PersonImg"/>
+                { shownLikedPosts.map((element, index) => (
+                        <Image key={index} style={{width: 38, height: 38, borderRadius: "50%", position: "absolute", left: index*19, zIndex: showAmountOfLikedBy-index, opacity: 1- ((1/showAmountOfLikedBy)*index) }} source={{uri: element}} alt="PersonImg"/>
                 ))}
             </View>
         </View>

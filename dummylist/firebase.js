@@ -2,7 +2,7 @@
 import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 
@@ -89,4 +89,39 @@ async function readSingleUserInformation(readCollection, userID) {
     }
 }
 
-export {firestore, firebaseApp, firebaseAuth, readData, readSingleUserInformation, addToCollection, deleteCollection};
+
+async function updateHasCompletedTask(challengeID, eachPlayer, taskRef, postID) {
+    try {
+        const challengeRef = doc(collection(firestore, "Challenges"), challengeID);
+
+        // Retrieve the challenge document
+        const challengeDoc = await getDoc(challengeRef);
+        if (!challengeDoc.exists()) {
+            console.log("Challenge document not found");
+            return;
+        }
+
+        // Update the challenge document with the modified friendsTask
+        const challengeData = challengeDoc.data();
+        const updatedFriendsTask = challengeData.tasks.map(task => {
+            if (task.taskDescription === taskRef.taskDescription) {
+                task.friendsTask.forEach(friendTask => {
+                    if (friendTask.friendID === eachPlayer.friendID) {
+                        friendTask.hasCompletedTask = true;
+                        friendTask.postID = postID;
+                    }
+                });
+            }
+            return task;
+        });
+
+        // Update the challenge document
+        await updateDoc(challengeRef, { tasks: updatedFriendsTask });
+        console.log("Challenge document updated successfully");
+    } catch (err) {
+        console.error("Error updating challenge document:", err);
+    }
+}
+
+
+export {firestore, firebaseApp, firebaseAuth, updateHasCompletedTask, readData, readSingleUserInformation, addToCollection, deleteCollection};
