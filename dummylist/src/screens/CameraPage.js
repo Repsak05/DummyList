@@ -19,7 +19,7 @@ export default function CameraPage({navigation, route})
             </View>
 
             <View style={[style.roundedCorners, {height: 800}]}>
-                <CameraComponent taskRef={task} challengeID={challengeID}/>
+                <CameraComponent taskRef={task} challengeID={challengeID} navigation={navigation}/>
             </View>
         </View>
     )

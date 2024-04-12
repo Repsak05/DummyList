@@ -9,8 +9,8 @@ import ButtonCamera from './ButtonCamera';
 
 import { addToCollection, updateHasCompletedTask } from '../../firebase';
 
-export default function CameraComponent({taskRef, challengeID}) 
-{ //Error at postMedia??? If not, remove comments 
+export default function CameraComponent({taskRef, challengeID, navigation}) 
+{
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [image, setImage] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
@@ -79,9 +79,7 @@ export default function CameraComponent({taskRef, challengeID})
             } else if (videoUri) {
                 postUri = videoUri;
             }
-    
-            console.log(`Adding ${postUri} to db`);
-    
+        
             async function createPostID(eachPlayer) {
                 const gottenPostID = await addToCollection("Posts", {
                     PostedBy: global.userInformation.id,
@@ -99,16 +97,16 @@ export default function CameraComponent({taskRef, challengeID})
                     break;
                 }
             }
+            
+            navigation.navigate("RewardPage");
+
         } catch (err) {
+            console.log("Should not be navigating to RewardPage (Dont know wether it does)");
             console.log(err);
         }
     }
     
     
-    
-    
-    
-
     if (hasCameraPermission === false) {
         return <Text style={{textAlign: 'center', marginTop: 20}}>No access to camera. Please change it in your settings.</Text>;
     }

@@ -27,6 +27,7 @@ import LeaderboardPage from './src/screens/LeaderboardPage.js';
 import SignUpPage from './src/screens/SignUpPage.js';
 import LogInPage from './src/screens/LogInPage.js';
 import CalendarPage from './src/screens/CalendarPage.js';
+import RewardPage from './src/screens/RewardPage.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -82,18 +83,23 @@ export default function App() {
       <Stack.Navigator>
         {user ? (
           <Stack.Screen
-          name="Home"
-          component={Home}
+          name="RewardPage"
+          component={RewardPage}
           options={{ headerShown: false }}
           />
         ) : (
           <Stack.Screen
-            name="WelcomePage"
-            component={WelcomePage}
-            options={{ headerShown: false }}
-            />
+          name="WelcomePage"
+          component={WelcomePage}
+          options={{ headerShown: false }}
+          />
         )}
 
+        <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="LoadingPage"
           component={LoadingPage}
