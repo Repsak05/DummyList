@@ -28,6 +28,8 @@ import SignUpPage from './src/screens/SignUpPage.js';
 import LogInPage from './src/screens/LogInPage.js';
 import CalendarPage from './src/screens/CalendarPage.js';
 import RewardPage from './src/screens/RewardPage.js';
+import SettingsPage from './src/screens/SettingsPage.js';
+import AccountSettingsPage from './src/screens/AccountSettingsPage.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,8 +85,8 @@ export default function App() {
       <Stack.Navigator>
         {user ? (
           <Stack.Screen
-          name="RewardPage"
-          component={RewardPage}
+          name="Home"
+          component={Home}
           options={{ headerShown: false }}
           />
         ) : (
@@ -96,8 +98,18 @@ export default function App() {
         )}
 
         <Stack.Screen
-        name="Home"
-        component={Home}
+        name="SettingsPage"
+        component={SettingsPage}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="AccountSettingsPage"
+        component={AccountSettingsPage}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="RewardPage"
+        component={RewardPage}
         options={{ headerShown: false }}
         />
         <Stack.Screen

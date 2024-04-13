@@ -131,6 +131,12 @@ export default StyleSheet.create({
       borderBottomLeftRadius: 42,
       borderBottomRightRadius: 10,
     },
+    roundedCornersMedium : {
+      borderTopLeftRadius: 25,
+      borderTopRightRadius: 10,
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 25,
+    },
     roundedCornersSmall : {
       borderTopLeftRadius: 15,
       borderTopRightRadius: 5,

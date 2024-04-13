@@ -28,6 +28,7 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
     {
         if(isOnProfilePage){
             console.log("Go to Settings");
+            navigation.navigate("SettingsPage")
             //Navigate to settings page!
 
         } else {
