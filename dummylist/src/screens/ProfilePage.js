@@ -10,10 +10,10 @@ import { firebaseAuth } from "../../firebase";
 import WelcomePage from "./WelcomePage";
 
 export default function ProfilePage({navigation})
-{
+{ //TODO: Change achievements to db values
     return(
         <View style={{flex: 1, flexDirection: "column", backgroundColor: "#D0E4FF", position: "relative"}}>
-            <Image style={{ width: "100%", height: 341}} source={require("../assets/icons/exampleProfilePicture.svg")}/>
+            <Image style={{ width: "100%", height: 341}} source={{uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"}}/>
             
             <View style={{position: "absolute", top: 55, left: 0, width: "100%"}}>
                 <Header pageName={" "} navigation={navigation} isOnProfilePage={true}/>
@@ -22,19 +22,19 @@ export default function ProfilePage({navigation})
             <View style={{marginTop: 28}}>
                 <ProfileUserInformation 
                     username={global.userInformation?.Username || "GuestUser#404"}
-                    email={global.userInformation?.Email || "GuestEmail@gmail.com"}
+                    email={global.userInformation?.Email || "GuestEmail404@gmail.com"}
                     level={global.userInformation?.Level || 404}
                     xpCurrent={40}
                 />
             </View>
 
-            <View style={{flexDirection: "column", marginTop: 15}}>
-                <View style={{flexDirection: "row", flexWrap: "wrap", justifyContent: "space-around"}}>
+            <View style={{flexDirection: "column", marginTop: 15, width: "90%", alignSelf: "center"}}>
+                <View style={{flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between"}}>
                     <ProfileAchievements typeNumber={1} value={2}/>
                     <ProfileAchievements typeNumber={2} value={10}/>
                 </View>
 
-                <View style={{flexDirection: "row", flexWrap: "wrap", justifyContent: "space-around", marginTop: 11}}>
+                <View style={{flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", marginTop: 11}}>
                     <ProfileAchievements typeNumber={3} value={4}/>
                     <ProfileAchievements typeNumber={4} value={19}/>
                 </View>

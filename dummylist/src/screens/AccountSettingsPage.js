@@ -5,9 +5,21 @@ import style from "../style";
 import Header from "../components/Header";
 import EnterInformationLogInComponent from "../components/EnterInformationLogInComponent";
 
+import { readData } from "../../firebase";
 
 export default function AccountSettingsPage({navigation})
 { //TODO: Load user information and possible change it
+    //Handle change in information (update database)
+        //Ensure new username it not being used
+
+    const [username, setUsername] = useState(global.userInformation.Username)
+    const [email, setEmail] = useState(global.userInformation.Email)
+
+    function newUserInformation()
+    {
+
+    }
+
     return(
         <View>
             <View style={{marginTop: 55, marginBottom: 40}}>
@@ -21,11 +33,11 @@ export default function AccountSettingsPage({navigation})
             </ImageBackground>
 
             <View style={{width: "80%", alignSelf: "center", marginTop: 68}}>
-                <EnterInformationLogInComponent image={require("../assets/icons/userIcon.svg")} placeholder='Email'/>
+                <EnterInformationLogInComponent image={require("../assets/icons/userIcon.svg")} placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)}/>
                 <View style={{marginVertical: 24}}>
-                    <EnterInformationLogInComponent image={require("../assets/icons/userIcon.svg")} placeholder='Email'/>
+                    <EnterInformationLogInComponent image={require("../assets/icons/emailIcon.svg")} placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)}/>
                 </View>
-                <EnterInformationLogInComponent image={require("../assets/icons/userIcon.svg")} placeholder='Email'/>
+                <EnterInformationLogInComponent image={require("../assets/icons/passwordIcon.svg")} placeholder='Password - Not working yet' typePassword={true}/>
             </View>
 
             <View style={{marginTop: 34, justifyContent: "space-around", flexDirection: "row", marginHorizontal: 10}}>

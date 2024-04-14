@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Pressable, ImageBackground, Text } from 'react-native';
+import { View, Pressable, ImageBackground, Text, Image } from 'react-native';
 import style from '../style.js'; 
 
 import Header from "../components/Header.js";
@@ -8,7 +8,8 @@ import FeedLikedBy from "../components/FeedLikedBy.js";
 import { readData } from "../../firebase.js";
 
 export default function CalendarPage({navigation}) 
-{ //TODO: Get posts from DB
+{ //TODO: Create post settings  (overlay?)
+
     const [onCurrentPost, setOnCurrentPost] = useState(0);
     const [allPosts, setAllPosts] = useState([])
 
@@ -79,7 +80,12 @@ export default function CalendarPage({navigation})
                         </View>
                     </View>
                     
-                    <Text style={[style.blackFontSize16Medium, {marginLeft: 19, paddingHorizontal: 10}]}>"{allPosts[onCurrentPost].TaskDescription}"</Text>
+                    <View style={{justifyContent: "space-between", flexDirection: "row", marginTop: 10}}>
+                        <Text style={[style.blackFontSize16Medium, {marginLeft: 19, paddingHorizontal: 5}]}>"{allPosts[onCurrentPost].TaskDescription}"</Text>
+                        <Pressable onPress={() => {console.log("Open edit tap")}}>
+                            <Image style={{marginRight: 19}} source={require("../assets/icons/moreOptionsIcon.svg")}/>
+                        </Pressable>
+                    </View>
                     <FeedLikedBy peopleWhoLikedThePost={allPosts[onCurrentPost].likedBy} />
                 </>)
 

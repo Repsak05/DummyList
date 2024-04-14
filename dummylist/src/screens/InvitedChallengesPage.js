@@ -12,6 +12,7 @@ import { readData } from "../../firebase.js";
 export default function InvitedChallengesPage({navigation})
 { //TODO ___something is wrong if you are the guest user
     //TODO ___Only show if challenge is not active (But is going to be)
+    //TODO: Dont know why scrollview is not working properly
 
     function handlePressLeft()
     {
@@ -84,18 +85,20 @@ export default function InvitedChallengesPage({navigation})
                 <SwitchButton startingStateIsLeft={false} onPressLeft={handlePressLeft} onPressRight={handlePressRight}/>
             </View>
 
+            <ScrollView style={{ flex: 1 }}>
+                {inChallenges?.map((challenge, index) => (
+                    <View key={index}>
+                        <CarouselItem 
+                            title={challenge.challenge.challengeName} 
+                            extraStylesToBackground={!challenge.isOwner ? { backgroundColor: 'rgba(0, 0, 0, 0.5)' } : null} //Should be changed
+                            extraText={!challenge.isOwner ? "Not Accepted": challenge.challenge.startingTime + "   "}
+                            onPressFunction={() => challengeInviteClicked(challenge)}
+                            hasPlacement={false}
+                        />
+                    </View>
+                ))}
+            </ScrollView>
 
-            {inChallenges?.map((challenge, index) => (
-                <Pressable onPress={challengeInviteClicked} key={index}>
-                    <CarouselItem 
-                        title={challenge.challenge.challengeName} 
-                        extraStylesToBackground={!challenge.isOwner ? { backgroundColor: 'rgba(0, 0, 0, 0.5)' } : null} //Should be chaged
-                        extraText={!challenge.isOwner ? "Not Accepted": challenge.challenge.startingTime + "   "}
-                        onPressFunction={() => challengeInviteClicked(challenge)}
-                        hasPlacement={false}
-                    />
-                </Pressable>
-            ))}
         </View>
     )
 

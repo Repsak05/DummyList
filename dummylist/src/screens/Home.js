@@ -74,10 +74,10 @@ export default function Home({navigation})  //TODO: Ajust carouselItem's value: 
                 })}
             </View>
 
-            <View style={[styles.homeFeedContainer, styles.wrapper]}>
+            <View style={[styles.homeFeedContainer, styles.wrapper, {height: 539}]}>
                 <Pressable onPress={() => {console.log('Open feed'); navigation.navigate("FeedPage")}} style={{width: "100%", height: "100%"}}>
                     <ImageBackground source={require('../assets/images/test_image_1.jpg')} style={styles.homeFeedThumbnail}>
-                        <View style={styles.homeFeedTextBox}>
+                        <View style={[styles.homeFeedTextBox, {position: "absolute", left: 0, bottom: 0, backgroundColor: "#006A68", height: 84}]}>
                             <Text style={styles.homeFeedText}>Check here what your friends are up to</Text>
                             <Image source={require('../assets/icons/longArrowIcon.svg')}/>
                         </View>

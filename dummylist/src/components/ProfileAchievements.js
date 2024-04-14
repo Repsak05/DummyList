@@ -11,7 +11,7 @@ export default function ProfileAchievements({typeNumber, value})
         ["Times Participated",  require("../assets/icons/timesParticipated.svg"),   "#F2E2C4"       , "Times"],
     ]
     return(
-        <View style={[style.roundedCorners, {alignItems: "center", justifyContent: "space-around", flexDirection: "row", width: "45%", height: 78, backgroundColor: types[typeNumber-1][2]}]}>
+        <View style={[style.roundedCorners, {alignItems: "center", justifyContent: "space-around", flexDirection: "row", width: "48%", height: 78, backgroundColor: types[typeNumber-1][2]}]}>
             <Image source={types[typeNumber-1][1]} />
 
             <View style={{flexDirection: "column"}}>
