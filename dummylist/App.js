@@ -30,6 +30,7 @@ import CalendarPage from './src/screens/CalendarPage.js';
 import RewardPage from './src/screens/RewardPage.js';
 import SettingsPage from './src/screens/SettingsPage.js';
 import AccountSettingsPage from './src/screens/AccountSettingsPage.js';
+import NotificationSettingsPage from './src/screens/NotificationSettingsPage.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -85,8 +86,8 @@ export default function App() {
       <Stack.Navigator>
         {user ? (
           <Stack.Screen
-          name="Home"
-          component={Home}
+          name="NotificationSettingsPage"
+          component={NotificationSettingsPage}
           options={{ headerShown: false }}
           />
         ) : (

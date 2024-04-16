@@ -7,7 +7,7 @@ import Header from "../components/Header";
 export default function SettingsPage({navigation}) 
 {
     const settingsInformation = [
-        [{description : "Account",  imageSrc : require("../assets/icons/settingsAccountIcon.svg"),  color : "#D0E4FF", onPress : () => navigation.navigate("AccountSettingsPage")}, {description: "Notification",   imageSrc : require("../assets/icons/settingsNotificationIcon.svg"), color : "#FFDF9D", onPress : () => console.log("Navigation here")}],
+        [{description : "Account",  imageSrc : require("../assets/icons/settingsAccountIcon.svg"),  color : "#D0E4FF", onPress : () => navigation.navigate("AccountSettingsPage")}, {description: "Notification",   imageSrc : require("../assets/icons/settingsNotificationIcon.svg"), color : "#FFDF9D", onPress : () => navigation.navigate("NotificationSettingsPage")}],
         [{description : "Language", imageSrc : require("../assets/icons/settingsLanguageIcon.svg"), color : "#FFDAD2", onPress : () => console.log("Navigation here")}, {description : "Post",          imageSrc : require("../assets/icons/settingsPostIcon.svg") ,        color : "#D3EC9E", onPress : () => console.log("Navigation here")}],
     ];    
 
