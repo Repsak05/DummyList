@@ -65,6 +65,7 @@ export default function FeedPage({ navigation })
                             description={post.TaskDescription} 
                             postUri={post.PostUri} 
                             likedBy={post.LikedBy}
+                            postID={post.id}
                         />
                     </View>
                 )) : (

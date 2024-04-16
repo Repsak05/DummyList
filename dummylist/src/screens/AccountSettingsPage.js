@@ -12,8 +12,8 @@ export default function AccountSettingsPage({navigation})
     //Handle change in information (update database)
         //Ensure new username it not being used
 
-    const [username, setUsername] = useState(global.userInformation.Username)
-    const [email, setEmail] = useState(global.userInformation.Email)
+    const [username, setUsername] = useState(global.userInformation?.Username || "Guest404")
+    const [email, setEmail] = useState(global.userInformation?.Email || "Guest404@gmail.com")
 
     function newUserInformation()
     {

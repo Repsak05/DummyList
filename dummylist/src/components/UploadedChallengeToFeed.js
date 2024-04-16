@@ -1,22 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image, Pressable, ImageBackground} from 'react-native';
 import style from "../style";
 
 import FeedInformation from "../components/FeedInformation";
 import FeedLikedBy from "../components/FeedLikedBy";
 
-export default function UploadedChallengeToFeed({username, profilePicture, description, postUri, likedBy}) //arr looks like this: //[username, profilepic, title, Uri, likedBy]
-{
+import { addToDocument, removeFromDocumentInArr } from "../../firebase";
+
+export default function UploadedChallengeToFeed({username, profilePicture, description, postUri, likedBy, postID}) //arr looks like this: //[username, profilepic, title, Uri, likedBy]
+{   //TODO: Onlike show images (Currently thinking likedBy is img sources, tho its ID's)
     //set to Database value
+    
     const yourProfilePicture = "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?cs=srgb&dl=pexels-suliman-sallehi-1704488.jpg&fm=jpg";
     const hasCompleteChallenge = false; 
     const [isLiked, setIsLiked] = useState(false); //Read value from database | on change: add new Value to database
+    
+    useEffect(() => {
+        console.log(likedBy)
+        for(let person of likedBy){
+            if(person == global.userInformation.id){
+                setIsLiked(true)
+            }
+        }
+    })
+
+    async function updateLikedByDB()
+    {
+        if(!isLiked){
+            console.log("Should add user to db")
+            await addToDocument("Posts", postID, "LikedBy", global.userInformation.id)
+            setIsLiked(true)
+        } else {
+            console.log("Should remove the user from the db")
+
+            await removeFromDocumentInArr("Posts", postID, "LikedBy", global.userInformation.id)
+            setIsLiked(false)
+        }
+    }
 
     return(
         <View>
             <ImageBackground source={{ uri: postUri }} style={[style.roundedCornersExtremeOpposite, { width: 410, height: 727, position: "relative", alignSelf: "center", marginBottom: 15, overflow: 'hidden' }]}>
                 <View style={{ position: "absolute", right: 0, top: "40%" }}>
-                    <Pressable onPress={() => setIsLiked(!isLiked)}>
+                    <Pressable onPress={() => updateLikedByDB()}>
                         <Image source={isLiked ? require("../assets/icons/isLiked.svg") : require("../assets/icons/notLiked.svg")} />
                     </Pressable>
                     {hasCompleteChallenge ? (

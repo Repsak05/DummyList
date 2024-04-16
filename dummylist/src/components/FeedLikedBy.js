@@ -4,7 +4,7 @@ import { View, Image, Text, TouchableOpacity } from 'react-native';
 import style from "../style";
 
 export default function FeedLikedBy({peopleWhoLikedThePost})
-{   
+{   //TODO: Change from ID to ID's user: shownLikedPosts should contain ID's???
     const showAmountOfLikedBy = 5;
 
     function returnNumberOfElementsFromArray(arr, num)

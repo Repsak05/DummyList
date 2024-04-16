@@ -2,7 +2,7 @@
 import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 
@@ -123,5 +123,48 @@ async function updateHasCompletedTask(challengeID, eachPlayer, taskRef, postID) 
     }
 }
 
+async function addToDocument(collectionName, documentID, field, newObject){
+    try{
+        let docReference = doc(collection(firestore, collectionName), documentID);
 
-export {firestore, firebaseApp, firebaseAuth, updateHasCompletedTask, readData, readSingleUserInformation, addToCollection, deleteCollection};
+        const chosenDoc = await getDoc(docReference);
+
+        if(!chosenDoc.exists){
+            console.log("ID/Document not found");
+            return;
+        }
+
+        await updateDoc(docReference, {
+            [field]: arrayUnion(newObject)
+        });
+
+    }catch(err){
+        console.error(err)
+    }
+}
+
+
+
+async function removeFromDocumentInArr(collectionName, documentID, field, removeItem){
+    try{
+        let docReference = doc(collection(firestore, collectionName), documentID);
+
+        const chosenDoc = await getDoc(docReference);
+
+        if(!chosenDoc.exists){
+            console.log("ID/Document not found");
+            return;
+        }
+
+        await updateDoc(docReference, {
+            [field]: arrayRemove(removeItem)
+        });
+
+    }catch(err){
+        console.error(err)
+    }
+}
+
+
+
+export {firestore, firebaseApp, firebaseAuth, addToDocument, removeFromDocumentInArr, updateHasCompletedTask, readData, readSingleUserInformation, addToCollection, deleteCollection};
