@@ -31,6 +31,7 @@ import RewardPage from './src/screens/RewardPage.js';
 import SettingsPage from './src/screens/SettingsPage.js';
 import AccountSettingsPage from './src/screens/AccountSettingsPage.js';
 import NotificationSettingsPage from './src/screens/NotificationSettingsPage.js';
+import LanguageSettingsPage from './src/screens/LanguageSettingsPage.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -86,8 +87,8 @@ export default function App() {
       <Stack.Navigator>
         {user ? (
           <Stack.Screen
-          name="NotificationSettingsPage"
-          component={NotificationSettingsPage}
+          name="Home"
+          component={Home}
           options={{ headerShown: false }}
           />
         ) : (
@@ -98,6 +99,16 @@ export default function App() {
           />
         )}
 
+        <Stack.Screen
+        name="LanguageSettingsPage"
+        component={LanguageSettingsPage}
+        options={{ headerShown: false }}
+        />
+        <Stack.Screen
+        name="NotificationSettingsPage"
+        component={NotificationSettingsPage}
+        options={{ headerShown: false }}
+        />
         <Stack.Screen
         name="SettingsPage"
         component={SettingsPage}
