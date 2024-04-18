@@ -11,7 +11,8 @@ import FriendOverviewComponent from "../components/FriendOverviewComponent.js";
 import { readData } from "../../firebase.js";
 
 export default function FriendsPage({navigation})
-{
+{ //TODO: Change to use DB values
+    
     const [searchUsername, setSearchUsername] = useState("");
     const [hasFoundUser, setHasFoundUser] = useState(false);
 

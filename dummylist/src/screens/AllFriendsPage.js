@@ -6,7 +6,7 @@ import Header from "../components/Header.js";
 import AddFriends from "../components/AddFriends.js";
 
 export default function AllFriendsPage({navigation})
-{
+{ //TODO: Update to DB
     const allFriends = [
         ["Erik", require("../assets/icons/exampleProfilePicture2.svg"), 9],
         ["Knud", require("../assets/icons/exampleProfilePicture2.svg"), 29],

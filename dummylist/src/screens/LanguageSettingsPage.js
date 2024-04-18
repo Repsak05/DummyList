@@ -18,7 +18,8 @@ export default function LanguageSettingsPage({navigation})
         "Nederlands" : false,
     })
 
-    function changeLanguage(newLanguage) {
+    function changeLanguage(newLanguage) 
+    {
         let valueChanged = false;
     
         const updatedLanguages = { ...languages };
@@ -39,7 +40,6 @@ export default function LanguageSettingsPage({navigation})
         }
     }
     
-
     return(
         <View style={{ flex: 1 }}>
     
@@ -57,8 +57,6 @@ export default function LanguageSettingsPage({navigation})
                 ))}
             </View>
 
-
         </View>
     )
-
 }

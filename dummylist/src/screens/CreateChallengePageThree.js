@@ -71,24 +71,18 @@ export default function CreateChallengePageThree({navigation, route})
     function pickNRandomTasks(difficulty, amount)
     {
         let taskWithDifficulfty
-        switch(difficulty)
-        {
-            case "low":
-                taskWithDifficulfty = easyTasks;
-                break;
-            case "medium":
-                taskWithDifficulfty = mediumTasks;
-                break;
-            case "high":
-                taskWithDifficulfty = hardTasks;
-                break;
-            default:
-                taskWithDifficulfty = mediumTasks;
-                break;
+
+        const difficultiesAndItsTasks = {
+            "low"       : easyTasks,
+            "medium"    : mediumTasks,
+            "high"      : hardTasks,
         }
 
+        taskWithDifficulfty = difficultiesAndItsTasks[difficulty] || mediumTasks
+
+
         let tasksInChallenge = [];
-        for(let i = 0; i<amount; i++)
+        for(let i = 0; i<amount; i++) //Pick amount random tasks 
         {
             const randomNumberInArray = Math.floor(Math.random() * taskWithDifficulfty.length);
             tasksInChallenge.push(taskWithDifficulfty[randomNumberInArray]);

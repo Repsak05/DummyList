@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, Text } from 'react-native';
 import Slider from '@react-native-community/slider';
-
 import style from "../style";
 
-export default function SliderComponent({onChange}) {
+export default function SliderComponent({onChange}) 
+{
     const [sliderValue, setSliderValue] = useState(24);
     console.warn = () => {}; //Stops annoying warnings
 

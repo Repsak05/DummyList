@@ -7,7 +7,9 @@ import AddFriends from "../components/AddFriends.js";
 import SliderComponent from "../components/SliderComponent.js";
 import { readData } from "../../firebase.js";
 
-export default function CreateChallengePageTwo({ navigation, route }) {
+export default function CreateChallengePageTwo({ navigation, route }) 
+{ //TODO: make sure you can only see your friends and not everyone & yourself
+    
     const { allChallengeValues } = route.params;
     const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState({
         ...allChallengeValues,

@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { View, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image, ScrollView } from 'react-native';
 import styles from '../style.js'; 
-import colors from "../colors.js";
 
 import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
-
 import { readData } from "../../firebase.js";
-import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderboardTitleInformation.js";
 
 export default function Home({navigation})  //TODO: Ajust carouselItem's value: isPlacedInTheMiddle={true/false} (Depending on placement in array)
 {   //TODO: Fix background colors on create challenge and active challenges

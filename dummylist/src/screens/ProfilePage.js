@@ -10,7 +10,7 @@ import { firebaseAuth } from "../../firebase";
 import WelcomePage from "./WelcomePage";
 
 export default function ProfilePage({navigation})
-{ //TODO: Change achievements to db values
+{ //TODO: Change achievements to db values (Add xp instead of level, and add achievements)
     return(
         <View style={{flex: 1, flexDirection: "column", backgroundColor: "#D0E4FF", position: "relative"}}>
             <Image style={{ width: "100%", height: 341}} source={{uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"}}/>

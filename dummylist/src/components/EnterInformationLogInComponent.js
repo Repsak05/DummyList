@@ -20,6 +20,7 @@ export default function EnterInformationLogInComponent({image, imageTwo, onPress
                             />
                     </KeyboardAvoidingView>
                 </View>
+                
                 {!!imageTwo && (
                     <Pressable onPress={onPressImageTwo}>
                         <Image style={{width: 30, }} source={imageTwo}/>

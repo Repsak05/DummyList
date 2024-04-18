@@ -9,12 +9,10 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
     const mostLeftPicture = isOnHomePage ? require("../assets/icons/socialIcon.png") : require("../assets/icons/arrowBack.svg");
     const mostRightPicture = isOnProfilePage ? require("../assets/icons/settingsIcon.png") : require("../assets/icons/exampleProfilePicture.svg");
     
-
     function goBack()
     {
         if(isOnHomePage){
             console.log("Go To Socials Page!")
-            //Navigate to social's page!
             navigation.navigate("FriendsPage")
 
         } else {
@@ -29,7 +27,6 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
         if(isOnProfilePage){
             console.log("Go to Settings");
             navigation.navigate("SettingsPage")
-            //Navigate to settings page!
 
         } else {
             console.log("Go to profile button has been clicked")
@@ -42,7 +39,6 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
             <Pressable onPress={() => goBack()}>
                 <Image style={{width: 45, height: 45}} source={mostLeftPicture}/>
 
-
                 {hasNotifications && isOnHomePage 
                 ? (
                     <View style={{position: "absolute", right: -0, top: -12}}>
@@ -50,7 +46,9 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
                     </View>
                 
                 ): <></>}
+
             </Pressable>
+
             <Text style={style.blackFontSize20}>{pageName}</Text>
 
             <Pressable onPress={() => goToProfile()}>

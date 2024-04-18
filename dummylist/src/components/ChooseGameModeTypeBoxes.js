@@ -4,25 +4,14 @@ import style from "../style";
 
 export default function ChooseGameModeTypeBoxes({colorType, image, title, subtitle, onPress, setWidth = 200, setHeight = 78, addStyle})
 {
-    let bgColor = "#127"
-    switch(colorType)
-    {
-        case 1: 
-            bgColor = "#A6290D";
-            break;
-        case 2:
-            bgColor = "#0477BF";
-            break;
-        case 3:
-            bgColor = "#F2B705";
-            break;
-        case 4:
-            bgColor = "#F2E2C4";
-            break;
-        default:
-            console.log("Invalid bgColor: Has not changed its default value");
-            //Maybe add: bgColor = "colorType";
+    const colorOptions = {
+        1 : "#A6290D",
+        2 : "#0477BF",
+        3 : "#F2B705",
+        4 : "#F2E2C4",
     }
+
+    let bgColor = colorOptions[colorType] || "#127"
 
     return(
         <Pressable onPress={() => onPress(title)} style={[style.roundedCorners, addStyle, {backgroundColor: bgColor, flexDirection: "row", justifyContent: "center", alignItems: "center", alignSelf: "center", height: setHeight, width: setWidth}]}>
@@ -33,5 +22,4 @@ export default function ChooseGameModeTypeBoxes({colorType, image, title, subtit
             </View>
         </Pressable>
     )
-
 }

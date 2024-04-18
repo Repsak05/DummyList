@@ -7,7 +7,7 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 
 export default function AcceptChallengeOverviewPage({navigation, ownsChallenge = false, challengeName = "De Ekstreme Bananer", gameMode = "Team-Mode", amountOfTasks = "12", friendsInvited = 12, friendsJoined = 8, taskDifficulty = "Medium", startinIn = 7, initialHasAccepted = false, intialHasAnswered = false})
-{
+{ //TODO: Update to DB values
     const route = useRoute();
     const {challenge} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
 
@@ -55,9 +55,6 @@ export default function AcceptChallengeOverviewPage({navigation, ownsChallenge =
     const allFiendsJoined = [
         "name1",  "name3", "name4",  "name5", "name6"
     ]
-
-
-    
 
     return(
         <View>
