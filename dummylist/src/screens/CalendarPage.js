@@ -5,42 +5,16 @@ import style from '../style.js';
 import Header from "../components/Header.js";
 import FeedLikedBy from "../components/FeedLikedBy.js";
 
-import { readData } from "../../firebase.js";
-
-export default function CalendarPage({navigation}) 
+export default function CalendarPage({navigation, route}) 
 { //TODO: Finish post settings
+    const { chosenChallenge } = route.params;
 
     const [onCurrentPost, setOnCurrentPost] = useState(0);
-    const [allPosts, setAllPosts] = useState([])
-
+    const [allPosts, setAllPosts] = useState(chosenChallenge || [])
     const [isEditTabOpen, setIsEditTabOpen] = useState(false)
-    const heightOfOverlay = 200;
 
+    const heightOfOverlay = 125;
     const ifTooManyPostsChangeMargin = allPosts.length >= 20 ? 4 : 10 
-
-    useEffect(() => {
-        async function getAllPosts()
-        {
-            try{
-                const res = await readData("Posts");
-                let gettingPosts = []
-                res.map((post => {
-                    if(post.PostedBy == global.userInformation.id){
-                        gettingPosts.push(post)
-                    }
-                }))
-
-                console.log(global.userInformation.id)
-                console.log(gettingPosts)
-                setAllPosts(gettingPosts);
-            }catch(err){
-                console.error(err)
-            }
-        }
-
-        getAllPosts();
-    }, [])
-
 
     function nextPost() {
         console.log("Look at next post")
@@ -87,12 +61,15 @@ export default function CalendarPage({navigation})
                     
                     <View style={{justifyContent: "space-between", flexDirection: "row", marginTop: 10}}>
                         {isEditTabOpen && (
-                            <View style={[{height: heightOfOverlay, width: 150, borderRadius: 10, backgroundColor: "#d9d9d9", position: "absolute", top: -(heightOfOverlay+0), right: 20, flexDirection: "column", padding: 10}]}>
+                            <View style={[style.roundedCornersSmall, {height: heightOfOverlay, width: 125, backgroundColor: "#FFDAD2", position: "absolute", top: -(heightOfOverlay+0), right: 20, flexDirection: "column", padding: 10}]}>
                                 <Pressable onPress={() => {console.log("Clicked: Missing function; Share")}} style={{marginBottom: 10}}>
                                     <Text style={style.blackFontSize16}>Share</Text>
                                 </Pressable>
                                 <Pressable onPress={() => {console.log("Clicked: Missing function; Delete")}} style={{marginBottom: 10}}>
                                     <Text style={style.blackFontSize16}>Delete</Text>
+                                </Pressable>
+                                <Pressable onPress={() => {console.log("Clicked: Missing function; Set as Thumbnail")}} style={{marginBottom: 10}}>
+                                    <Text style={style.blackFontSize16}>Set as Thumbnail</Text>
                                 </Pressable>
                                 <Pressable style={{position: "absolute", top: 10, right: 10}} onPress={(() => setIsEditTabOpen(false))}>
                                     <Text style={style.blackFontSize16}>X</Text>

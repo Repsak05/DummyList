@@ -1,3 +1,5 @@
+import { readData } from "../../firebase";
+
 function calculatePlacement(challenge, id = global.userInformation.id, getNumberOfCompletedChallenges = false)
 {
     const counts = {}
@@ -37,4 +39,52 @@ function calculatePlacement(challenge, id = global.userInformation.id, getNumber
     }
 }
 
-export {calculatePlacement}
+
+
+async function getAllChallenges(returnPostsOrChallenges = true)
+{
+    try{
+        const res = await readData("Challenges")
+        
+        //Check if you are in challenge (If add it)
+        let inChallenges = []
+        res.map(challenge => {
+            
+            for (let member in challenge.friends)
+            {
+                let mem = challenge.friends[member]
+
+                if(mem.user == global.userInformation.id && mem.hasJoined)
+                {
+                    inChallenges.push(challenge)
+                }
+            }
+        })
+        
+        if(!returnPostsOrChallenges){
+            return inChallenges //Doesnt happen as default
+        }
+
+        //Return all postID's in that challenge
+        let allPostsID = []
+
+        inChallenges.map(challenge => {
+            for(let friendsTask of challenge.tasks)
+            {
+                for(let member of friendsTask.friendsTask)
+                {
+                    if(member.hasCompletedTask)
+                    {
+                        allPostsID.push(member.postID)
+                    }
+                }
+            }
+        })
+
+        return allPostsID;
+    } catch(err){
+        console.error(err)
+    }
+}
+
+export {calculatePlacement, getAllChallenges}
