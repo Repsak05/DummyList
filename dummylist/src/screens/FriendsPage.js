@@ -8,7 +8,7 @@ import InputFieldWithBlueOutline from "../components/InputFieldWithBlueOutline.j
 import AddFriends from "../components/AddFriends.js";
 import FriendOverviewComponent from "../components/FriendOverviewComponent.js";
 
-import { readData } from "../../firebase.js";
+import { readData, readSingleUserInformation, addToDocument, removeFromDocumentInArr } from "../../firebase.js";
 
 export default function FriendsPage({navigation})
 { //TODO: Change to use DB values
@@ -52,18 +52,6 @@ export default function FriendsPage({navigation})
         //Navigate to challenges requests
     }
     
-    const allFriendRequests = [
-        ["Peter",   require("../assets/icons/exampleProfilePicture2.svg"),  3,  "1 h"],
-        ["Poul",    require("../assets/icons/exampleProfilePicture2.svg"),  6,  "2 d"],
-        ["Henrik",  require("../assets/icons/exampleProfilePicture2.svg"),  2,  "17 m"],  
-    ]
-
-    const allSentFriendRequests = [
-        ["Erik", require("../assets/icons/exampleProfilePicture2.svg"), 9],
-        ["Knud", require("../assets/icons/exampleProfilePicture2.svg"), 29],
-        ["Søren", require("../assets/icons/exampleProfilePicture2.svg"), 40],  
-        ["Emil", require("../assets/icons/exampleProfilePicture2.svg"), 40],  
-    ]
 
     const friendOverview = [
         ["Peter",   require("../assets/icons/exampleProfilePicture2.svg"),  3],
@@ -75,7 +63,7 @@ export default function FriendsPage({navigation})
     {
         //Navigate to new page
         console.log('"See all" has been pressed')
-        navigation.navigate("AllFriendsPage")
+        navigation.navigate("AllFriendsPage", {allFriends : yourFriends})
     }
 
     useEffect(() => {
@@ -98,6 +86,71 @@ export default function FriendsPage({navigation})
 
     }, [searchUsername, allUsers]);
     
+
+    const exampleProfilePicture = "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft";
+    const exampleMutualFriends = 404;
+    const exampleTimeAgo = "1 d";
+
+    const [yourFriends, setYourFriends] = useState(null);                             //Your Friends
+    const [yourPendingFriendRequests, setYourPendingFriendRequests] = useState(null); //Those you can accept
+    const [yourSentFriendRequests, setYourSentFriendRequests] = useState(null);       //Those you have sent
+
+    useEffect(() => {
+        async function initializeAllFriendItems()
+        {
+            try{
+                const res = await readSingleUserInformation("Users", global.userInformation.id)
+
+                setYourFriends(res.Friends || [])
+                setYourSentFriendRequests(res.SentFriendRequests || [])
+                setYourPendingFriendRequests(res.PendingFriendRequests || [])
+
+            }catch(err){
+                console.error(err)
+            }
+        }
+
+        initializeAllFriendItems();
+
+        //Following can be done in a better way
+    }, [sendFriendRequest, cancelFriendRequest, acceptFriendRequest]);
+
+    async function sendFriendRequest(ID)
+    {
+        try{
+            await addToDocument("Users", global.userInformation.id, "SentFriendRequests", ID, true);
+            await addToDocument("Users", ID, "PendingFriendRequests", global.userInformation.id, true);
+
+        } catch(err){
+            console.error(err)
+        }
+    }
+
+    async function cancelFriendRequest(ID)
+    {
+        try{
+            await removeFromDocumentInArr("Users", global.userInformation.id, "SentFriendRequests", ID);
+            await removeFromDocumentInArr("Users", ID, "PendingFriendRequests", global.userInformation.id);
+
+        } catch(err){
+            console.error(err)
+        }
+    }
+
+    async function acceptFriendRequest(ID)
+    {
+        try{
+            await addToDocument("Users", global.userInformation.id, "Friends", ID);
+            await addToDocument("Users", ID, "Friends", global.userInformation.id);
+
+            await removeFromDocumentInArr("Users", global.userInformation.id, "PendingFriendRequests", ID)
+            await removeFromDocumentInArr("Users", ID, "SentFriendRequests", global.userInformation.id)
+
+        }catch(err){
+            console.error(err)
+        }
+    }
+
     return(
         <View style={{flex: 1}}>
             <View style={{marginTop: 55, marginBottom: 20}}>
@@ -112,10 +165,10 @@ export default function FriendsPage({navigation})
                     <InputFieldWithBlueOutline onChange={(e) => setSearchUsername(e.target.value)} startingValue="Enter Friend's name..."/>
                 </View>
 
-                { allUsers?.map((arr, index) => (
+                { allUsers?.map((friend, index) => (
                     <View key={index}>
-                        {arr?.username.toLowerCase().includes(searchUsername.toLowerCase()) && !!searchUsername && (
-                            <AddFriends hasLine={false} name={arr?.username} showMutualFriends={true} amountOfMutualFriends={arr?.mutual} showAddFriend={true} onPressAddFriend={() => {console.log("Added Friend");}}  image={arr?.picture} />
+                        {friend?.username.toLowerCase().includes(searchUsername.toLowerCase()) && !!searchUsername && (
+                            <AddFriends hasLine={false} name={friend?.username} showMutualFriends={true} amountOfMutualFriends={friend?.mutual} showAddFriend={true} onPressAddFriend={() => {sendFriendRequest(friend?.id)}}  image={friend?.picture} />
                         )}
                     </View>
                 ))}
@@ -124,26 +177,30 @@ export default function FriendsPage({navigation})
                 )}
 
                 <View style={{flexDirection: "column", marginTop: 17}}>
-                    <Text style={[style.blackFontSize25, {textAlign: "center", marginBottom: 9}]} >Friend Requests ({allFriendRequests.length})</Text>
+                    {yourPendingFriendRequests && (
+                        <View>
+                            <Text style={[style.blackFontSize25, {textAlign: "center", marginBottom: 9}]} >Friend Requests ({yourPendingFriendRequests?.length || 0})</Text>
 
-                    {allFriendRequests.map(arr => (
-                        <View key={arr[0]}>
-                            <AddFriends name={arr[0]} image={arr[1]} showMutualFriends={true} amountOfMutualFriends={arr[2]} showTimeAgo={true} timeAgo={arr[3]} showAcceptFriend={true} onPressAcceptFriend={() => console.log("Friend Request got accepted")} onPressDenyFriend={() => console.log("Friend Request got Denied")}/>
+                            {yourPendingFriendRequests?.map((id, index) => (
+                                <View key={index}>
+                                    <AddFriends id={id} showMutualFriends={true} amountOfMutualFriends={exampleMutualFriends} showTimeAgo={true} timeAgo={exampleTimeAgo} showAcceptFriend={true} onPressAcceptFriend={() => {console.log("Friend Request got accepted"); acceptFriendRequest(id);}} onPressDenyFriend={() => console.log("Friend Request got Denied")}/>
+                                </View>
+                            ))}
                         </View>
-                    ))}
+                    )}
                 </View>
 
 
                 <View style={{flexDirection: "column", marginVertical: 17, }}>
-                        <Text style={[style.blackFontSize25, {textAlign: "center", marginBottom: 9, position: "relative"}]}>Your Friends (20)
+                        <Text style={[style.blackFontSize25, {textAlign: "center", marginBottom: 9, position: "relative"}]}>Your Friends ({yourFriends?.length || 0})
                         <Pressable onPress={seeAllFriends} style={{position: "absolute", backgroundColor: "#9CF1EE", height: 26, width: 77, borderRadius: 5, alignSelf: "center", justifyContent: "center", alignItems: "center", bottom: 2, transform: [{translateX: 40}]}}>
                                 <Text style={[style.darkGreenFontSize13, {textAlign: "center"}]}> See all</Text>
                             </Pressable>
                         </Text>
                     <ScrollView horizontal={true} style={{flexDirection: "row", marginHorizontal: 10}}>
-                        {friendOverview.map(arr => (
-                            <View key={arr[0]} style={{marginRight: 14}}>
-                                <FriendOverviewComponent name={arr[0]} image={arr[1]} level={arr[2]} />
+                        {yourFriends?.slice(0, 3).map((id, index) => (
+                            <View key={index} style={{marginRight: 14}}>
+                                <FriendOverviewComponent id={id} />
                             </View>
                         ))}
                     </ScrollView>
@@ -151,10 +208,10 @@ export default function FriendsPage({navigation})
 
 
                 <View style={{flexDirection: "column"}}>
-                    <Text style={[style.blackFontSize25, {textAlign: "center", marginBottom: 9}]} >Requests Sent ({allSentFriendRequests.length})</Text>
-                    {allSentFriendRequests.map(arr => (
-                        <View key={arr[0]}>
-                            <AddFriends name={arr[0]} image={arr[1]} showLevel={true} level={arr[2]} showCancelFriend={true} onPressCancel={() => console.log("Friend Request got canceled")}/>
+                    <Text style={[style.blackFontSize25, {textAlign: "center", marginBottom: 9}]} >Requests Sent ({yourSentFriendRequests?.length || 0})</Text>
+                    {yourSentFriendRequests?.map((id, index) => (
+                        <View key={index}>
+                            <AddFriends id={id} showLevel={true} showCancelFriend={true} onPressCancel={() => {console.log("Friend Request got canceled"); cancelFriendRequest(id);}}/>
                         </View>
                     ))}
                 </View>

@@ -7,7 +7,7 @@ import { readSingleUserInformation } from "../../firebase";
 
 export default function ProfileChallengesOverview({navigation})
 { //TODO: Change thumbnails index depending on chosen value
-    //TODO: No need to load all posts here! Find better solution
+    //TODO: No need to load all posts here! Find a better solution
 
     const [challengesWithPosts, setChallengesWithPosts] = useState()
 

@@ -1,15 +1,49 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 
-export default function AddFriends({name, image, hasLine = true, showLevel = false, level, showMutualFriends = false, amountOfMutualFriends, showTimeAgo = false, timeAgo, showAddFriend = false, onPressAddFriend, showFriendAdded = true, showAcceptFriend = false, onPressAcceptFriend, onPressDenyFriend, showCancelFriend = false, onPressCancel})
+import { readSingleUserInformation } from "../../firebase";
+
+export default function AddFriends({id, name, image, hasLine = true, showLevel = false, level, showMutualFriends = false, amountOfMutualFriends, showTimeAgo = false, timeAgo, showAddFriend = false, onPressAddFriend, showFriendAdded = true, showAcceptFriend = false, onPressAcceptFriend, onPressDenyFriend, showCancelFriend = false, onPressCancel})
 {
+    //Might wanna do the same (the following) with amountOfMutualFriends, showTimeAgo...
+    const [theUsername, setTheUsername] = useState(name || "loading...");
+    const [theLevel, setTheLevel] = useState(level || 404);
+    const [theImage, setTheImage] = useState(image || null);
+    
+    useEffect(() => {
+        async function getData()
+        {
+            if(id){
+                try{
+                    const res = await readSingleUserInformation("Users", id)
+
+                    if(theUsername == "loading..."){
+                        setTheUsername(name || res.Username || "Invalid")
+                    }
+                    if(showLevel && theLevel == 404){
+                        setTheLevel(level || res.Level || 1337)
+                    }
+                    if(!theImage){
+                        const exampleImage = "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"
+                        setTheImage(image || {uri : exampleImage})
+                    }
+    
+                } catch(err){
+                    console.error(err)
+                }
+            }
+        } 
+
+        getData();
+    }, [])
+
     const [hasAddedFriend, setHasAddedFriend] = useState(false); //Currently being used for animations
 
     let stringContaining = "";
     if(showLevel)
     {
-        stringContaining += "Level " + level;
+        stringContaining += "Level " + theLevel;
     }
     if(showLevel && showMutualFriends)
     {
@@ -27,9 +61,9 @@ export default function AddFriends({name, image, hasLine = true, showLevel = fal
     return(
         <View style={{flexDirection: "column",}}>
             <View style={{flexDirection: "row", paddingLeft: 50, paddingBottom: 8}}>
-                <Image source={image} style={{alignSelf: "center", width: 40, height: 40, borderRadius: 5, marginRight: 18}}/>
+                <Image source={theImage} style={{alignSelf: "center", width: 40, height: 40, borderRadius: 5, marginRight: 18}}/>
                 <View style={{flexDirection: "column"}}>
-                    <Text style={style.blackFontSize20}>@{name}</Text>
+                    <Text style={style.blackFontSize20}>@{theUsername}</Text>
                     <Text style={style.greyFontSize13}>{stringContaining}</Text>
                 </View>
 

@@ -1,4 +1,4 @@
-import { readData } from "../../firebase";
+import { readData, readSingleUserInformation } from "../../firebase";
 
 function calculatePlacement(challenge, id = global.userInformation.id, getNumberOfCompletedChallenges = false)
 {
