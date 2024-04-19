@@ -5,7 +5,7 @@ import style from "../style";
 import Header from "../components/Header";
 import UploadedChallengeToFeed from "../components/UploadedChallengeToFeed";
 
-import { readData } from "../../firebase";
+import { readData, readSingleUserInformation } from "../../firebase";
 
 export default function FeedPage({ navigation }) 
 {   //TODO: ___Create correct statement in getPosts (look coment) 
@@ -18,36 +18,102 @@ export default function FeedPage({ navigation })
     const [allPostsYourShouldSee, setAllPostsYourShouldSee] = useState();
 
     useEffect(() => {
-        async function getPosts(){
+        async function getAllChallenges()
+        {
             try{
-                const posts = await readData("Posts");
-
-                const yourFeedposts = await Promise.all(posts.map(async post => {
-                    if(true) //Statement so only postID's which is in a challenge your are in too would be added
+                const res = await readData("Challenges")
+                
+                //Check if you are in challenge (If add it)
+                let inChallenges = []
+                res.map(challenge => {
+                    
+                    for (let member in challenge.friends)
                     {
-                        const users = await readData("Users");
-                        let postedByName = "Unknown User";
-                        for (let user of users) {
-                            if (user.id === post.PostedBy) {
-                                postedByName = user.Username;
-                                break; 
+                        let mem = challenge.friends[member]
+
+                        if(mem.user == global.userInformation.id && mem.hasJoined)
+                        {
+                            inChallenges.push(challenge)
+                        }
+                    }
+                })
+
+                //Return all postID's in that challenge
+                let allPostsID = []
+
+                inChallenges.map(challenge => {
+                    for(let friendsTask of challenge.tasks)
+                    {
+                        for(let member of friendsTask.friendsTask)
+                        {
+                            if(member.hasCompletedTask)
+                            {
+                                allPostsID.push(member.postID)
                             }
                         }
-    
-                        return {
-                            ...post,
-                            PostedByUsername: postedByName,
-                        };
                     }
-                }));
-                setAllPostsYourShouldSee(yourFeedposts);
+                })
 
-            }catch(err){
+                return allPostsID;
+            } catch(err){
+                console.error(err)
+            }
+        }
+
+        async function getPosts(IDs)
+        {
+            //Takes in a list of postID's and outputs the post objects
+
+            try{
+                let allPostsInYourFeed = []
+                for(let id of IDs)
+                {
+                    let val = await readSingleUserInformation("Posts", id)
+                    allPostsInYourFeed.push(val)
+                }
+
+                return allPostsInYourFeed;
+
+            }catch (err){
                 console.error(err);
             }
         }
 
-        getPosts();
+        async function fetchData() 
+        {
+            try {
+                let allID = await getAllChallenges();
+                console.log(allID);
+
+                let allPosts = await getPosts(allID);
+
+                //Add usernames to all postCreators
+                let allPostsWithUsername = await Promise.all(allPosts.map(async post => {
+                    const users = await readData("Users");
+                    let postedByName = "Unknown User";
+                    for (let user of users) {
+                        if (user.id === post.PostedBy) {
+                            postedByName = user.Username;
+                            break; 
+                        }
+                    }
+
+                    return {
+                        ...post,
+                        PostedByUsername: postedByName,
+                    };
+                }));
+
+
+                //Set all posts with usernames to later be displayed
+                setAllPostsYourShouldSee(allPostsWithUsername)
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        fetchData();
     }, [])
 
     return (

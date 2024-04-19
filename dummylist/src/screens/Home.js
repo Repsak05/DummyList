@@ -29,7 +29,7 @@ export default function Home({navigation})  //TODO: Ajust carouselItem's value: 
                 res.map(challenge => {
                     if(challenge.friends && challenge.isStilActive){
                         challenge.friends.map(friend => {
-                            if(friend.user == global.userInformation.id){
+                            if(friend.user == global.userInformation.id && friend.hasJoined){
                                 yourChallenges.push(challenge)
                             }
                         })

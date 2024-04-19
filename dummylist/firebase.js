@@ -42,7 +42,7 @@ function readData(readCollection) {
                 res.docs.forEach((doc) => {
                     data.push({...doc.data(), id: doc.id});
                 });
-                console.table(data);
+                // console.table(data);
                 resolve(data);
             })
             .catch((err) => {
@@ -77,7 +77,7 @@ async function readSingleUserInformation(readCollection, userID) {
         const docSnap = await getDoc(userDocRef);
         if (docSnap.exists()) {
             const userData = { ...docSnap.data(), id: docSnap.id };
-            console.log("User data:", userData);
+            // console.log("User data:", userData);
             return userData;
         } else {
             console.log("No such document!");

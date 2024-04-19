@@ -52,6 +52,8 @@ export default function App() {
       if(user)
       {
         const gottenUserInformation = await retrieveUserInformation(user.uid)
+
+        //Probably not viable in the long run  
         global.userInformation = gottenUserInformation 
         global.loggedInID = gottenUserInformation.id
         global.userUID = user.uid
