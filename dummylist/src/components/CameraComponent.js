@@ -101,8 +101,9 @@ export default function CameraComponent({taskRef, challengeID, navigation})
             navigation.navigate("RewardPage");
 
         } catch (err) {
-            console.log("Should not be navigating to RewardPage (Dont know wether it does)");
+            console.log("Error publishing the uri");
             console.log(err);
+            navigation.navigate("UploadErrorPage") //Might want to remove it?
         }
     }
     

@@ -28,6 +28,7 @@ import SignUpPage from './src/screens/SignUpPage.js';
 import LogInPage from './src/screens/LogInPage.js';
 import CalendarPage from './src/screens/CalendarPage.js';
 import RewardPage from './src/screens/RewardPage.js';
+import UploadErrorPage from './src/screens/UploadErrorPage.js';
 import SettingsPage from './src/screens/SettingsPage.js';
 import AccountSettingsPage from './src/screens/AccountSettingsPage.js';
 import NotificationSettingsPage from './src/screens/NotificationSettingsPage.js';
@@ -87,42 +88,47 @@ export default function App() {
       <Stack.Navigator>
         {user ? (
           <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
+            name="Home"
+            component={Home}
+            options={{ headerShown: false }}
           />
         ) : (
           <Stack.Screen
-          name="WelcomePage"
-          component={WelcomePage}
-          options={{ headerShown: false }}
+            name="WelcomePage"
+            component={WelcomePage}
+            options={{ headerShown: false }}
           />
         )}
 
         <Stack.Screen
-        name="LanguageSettingsPage"
-        component={LanguageSettingsPage}
-        options={{ headerShown: false }}
+          name="UploadErrorPage"
+          component={UploadErrorPage}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-        name="NotificationSettingsPage"
-        component={NotificationSettingsPage}
-        options={{ headerShown: false }}
+          name="LanguageSettingsPage"
+          component={LanguageSettingsPage}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-        name="SettingsPage"
-        component={SettingsPage}
-        options={{ headerShown: false }}
+          name="NotificationSettingsPage"
+          component={NotificationSettingsPage}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-        name="AccountSettingsPage"
-        component={AccountSettingsPage}
-        options={{ headerShown: false }}
+          name="SettingsPage"
+          component={SettingsPage}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-        name="RewardPage"
-        component={RewardPage}
-        options={{ headerShown: false }}
+          name="AccountSettingsPage"
+          component={AccountSettingsPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="RewardPage"
+          component={RewardPage}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="LoadingPage"

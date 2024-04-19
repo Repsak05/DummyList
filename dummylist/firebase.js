@@ -123,7 +123,7 @@ async function updateHasCompletedTask(challengeID, eachPlayer, taskRef, postID) 
     }
 }
 
-async function addToDocument(collectionName, documentID, field, newObject){
+async function addToDocument(collectionName, documentID, field, newObject, combine = true){
     try{
         let docReference = doc(collection(firestore, collectionName), documentID);
 
@@ -134,9 +134,15 @@ async function addToDocument(collectionName, documentID, field, newObject){
             return;
         }
 
-        await updateDoc(docReference, {
-            [field]: arrayUnion(newObject)
-        });
+        if (combine){
+            await updateDoc(docReference, {
+                [field]: arrayUnion(newObject)
+            });
+        } else {
+            await updateDoc(docReference, {
+                [field]: newObject
+            });
+        }
 
     }catch(err){
         console.error(err)
