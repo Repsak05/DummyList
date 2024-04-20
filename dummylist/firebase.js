@@ -24,10 +24,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
-const firestore = getFirestore();
-
+const firestore = getFirestore(firebaseApp);
 const firebaseAuth = getAuth(firebaseApp);
-
 //Read users
 
 console.log("HEy")
@@ -171,6 +169,15 @@ async function removeFromDocumentInArr(collectionName, documentID, field, remove
     }
 }
 
-
-
-export {firestore, firebaseApp, firebaseAuth, addToDocument, removeFromDocumentInArr, updateHasCompletedTask, readData, readSingleUserInformation, addToCollection, deleteCollection};
+export {
+    firestore,
+    firebaseApp,
+    firebaseAuth,
+    addToDocument,
+    removeFromDocumentInArr,
+    updateHasCompletedTask,
+    readData,
+    readSingleUserInformation,
+    addToCollection,
+    deleteCollection
+  };

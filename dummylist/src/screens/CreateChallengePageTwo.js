@@ -5,14 +5,15 @@ import ProgressBarTemplate from "../components/ProgressBarTemplate.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 import AddFriends from "../components/AddFriends.js";
 import SliderComponent from "../components/SliderComponent.js";
-import { readData } from "../../firebase.js";
+import { readData, readSingleUserInformation } from "../../firebase.js";
 
 export default function CreateChallengePageTwo({ navigation, route }) 
-{ //TODO: make sure you can only see your friends and not everyone & yourself
+{
     
     const { allChallengeValues } = route.params;
     const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState({
         ...allChallengeValues,
+
         //Adding yourself to friends (should be called participants/ChallengeMembers)
         friends : allChallengeValues.friends 
             ? [...allChallengeValues.friends, {user: global.userInformation.id, hasJoined: true}] 
@@ -23,15 +24,9 @@ export default function CreateChallengePageTwo({ navigation, route })
     useEffect(() => {
         async function getAllUsers() {
             try {
-                const res = await readData("Users");
-                const usersInDatabase = res.map(user => ({
-                    username: user.Username,
-                    level: user.Level,
-                    picture: { uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft" },
-                    id: user.id,
-                    hasJoined: allCurrentChallengeValues.friends.some(friend => friend.user === user.id)
-                }));
-                setAllUsers(usersInDatabase);
+                const res = await readSingleUserInformation("Users", global.userInformation.id)
+
+                setAllUsers(res.Friends);
             } catch (err) {
                 console.error(err);
             }
@@ -60,6 +55,14 @@ export default function CreateChallengePageTwo({ navigation, route })
             ...allCurrentChallengeValues,
             friends: allCurrentChallengeValues.friends.filter(friend => friend.user !== id)
         });
+    }
+
+    function hasFriendBeenInvited(id){
+        const friend = allCurrentChallengeValues.friends.find(friend => friend.user === id);
+        if (friend) {
+            return friend.hasJoined; //Prob false
+        }
+        return true;
     }
 
 
@@ -91,18 +94,16 @@ export default function CreateChallengePageTwo({ navigation, route })
             </View>
 
             <ScrollView style={{ maxHeight: 300 }}>
-                {allUsers.map(user => (
-                    <View key={user.id} style={{ marginBottom: 11 }}>
+                {allUsers?.map((id, index) => (
+                    <View key={index} style={{ marginBottom: 11 }}>
                         <AddFriends
-                            name={user.username}
+                            id={id}
                             showLevel={true}
-                            level={user.level}
-                            image={user.picture}
-                            showCancelFriend={user.hasJoined}
-                            showAddFriend={!user.hasJoined}
+                            showCancelFriend={!hasFriendBeenInvited(id)}
+                            showAddFriend={hasFriendBeenInvited(id)}
                             showFriendAdded={false}
-                            onPressCancel={() => removeFriendFromChallenge(user.id)}
-                            onPressAddFriend={() => addFriendToChallenge(user.id)}
+                            onPressCancel={() => {removeFriendFromChallenge(id); console.log("cliked")}}
+                            onPressAddFriend={() => {addFriendToChallenge(id); console.log("cliekeke")}}
                         />
                     </View>
                 ))}

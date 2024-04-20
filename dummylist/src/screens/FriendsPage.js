@@ -11,11 +11,11 @@ import FriendOverviewComponent from "../components/FriendOverviewComponent.js";
 import { readData, readSingleUserInformation, addToDocument, removeFromDocumentInArr } from "../../firebase.js";
 
 export default function FriendsPage({navigation})
-{ //TODO: Change to use DB values
+{ //TODO: Change to use DB values (Profilepicture, mutualFriends...)
+    //TODO: Maybe remove friends which you are awaiting response from, remove them from being searchable
     
     const [searchUsername, setSearchUsername] = useState("");
     const [hasFoundUser, setHasFoundUser] = useState(false);
-
     const [allUsers, setAllUsers] = useState() //Users from database
 
     useEffect(() => {
@@ -30,8 +30,8 @@ export default function FriendsPage({navigation})
                     mutual      : 404,
                     id          : user.id
                 }));
+
                 setAllUsers(usersInDatabase)
-                console.log(usersInDatabase);
             }catch(err){
                 console.error(err);
             }
@@ -53,12 +53,6 @@ export default function FriendsPage({navigation})
     }
     
 
-    const friendOverview = [
-        ["Peter",   require("../assets/icons/exampleProfilePicture2.svg"),  3],
-        ["Poul",    require("../assets/icons/exampleProfilePicture2.svg"),  6],
-        ["Henrik",  require("../assets/icons/exampleProfilePicture2.svg"),  2],  
-    ]
-
     function seeAllFriends()
     {
         //Navigate to new page
@@ -77,15 +71,19 @@ export default function FriendsPage({navigation})
 
         for (let i = 0; i < allUsers.length; i++) 
         {
-            if (allUsers[i].username.toLowerCase().includes(searchUsername.toLowerCase())) {
+            if (allUsers[i].username.toLowerCase().includes(searchUsername.toLowerCase()) && allUsers[i].id != global.userInformation.id)
+            {
                 wasUsernameFoundInLoop = true;
                 break;
+                
             }
         }
         setHasFoundUser(wasUsernameFoundInLoop);
 
     }, [searchUsername, allUsers]);
     
+    
+ 
 
     const exampleProfilePicture = "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft";
     const exampleMutualFriends = 404;
@@ -151,6 +149,33 @@ export default function FriendsPage({navigation})
         }
     }
 
+    async function declineFriendRequest(ID){
+        try{
+            await removeFromDocumentInArr("Users", global.userInformation.id, "PendingFriendRequests", ID);
+            await removeFromDocumentInArr("Users", ID, "SentFriendRequests", global.userInformation);
+
+        }catch(err){
+            console.error(err);
+        }
+    }
+
+
+    function isElementInArray(element, arr = yourFriends, includeYourID = true)
+    {
+        for(let friends of arr)
+        {
+            console.log(friends, " ==? ", element)
+            if(friends == element ) 
+            {
+                console.log(true)
+                return true
+            }
+        }
+
+        if(includeYourID && global.userInformation.id == element) {return true}
+
+        return false;
+    }
     return(
         <View style={{flex: 1}}>
             <View style={{marginTop: 55, marginBottom: 20}}>
@@ -167,7 +192,7 @@ export default function FriendsPage({navigation})
 
                 { allUsers?.map((friend, index) => (
                     <View key={index}>
-                        {friend?.username.toLowerCase().includes(searchUsername.toLowerCase()) && !!searchUsername && (
+                        {friend?.username.toLowerCase().includes(searchUsername.toLowerCase()) && !!searchUsername && !isElementInArray(friend?.id) && (
                             <AddFriends hasLine={false} name={friend?.username} showMutualFriends={true} amountOfMutualFriends={friend?.mutual} showAddFriend={true} onPressAddFriend={() => {sendFriendRequest(friend?.id)}}  image={friend?.picture} />
                         )}
                     </View>
@@ -183,7 +208,7 @@ export default function FriendsPage({navigation})
 
                             {yourPendingFriendRequests?.map((id, index) => (
                                 <View key={index}>
-                                    <AddFriends id={id} showMutualFriends={true} amountOfMutualFriends={exampleMutualFriends} showTimeAgo={true} timeAgo={exampleTimeAgo} showAcceptFriend={true} onPressAcceptFriend={() => {console.log("Friend Request got accepted"); acceptFriendRequest(id);}} onPressDenyFriend={() => console.log("Friend Request got Denied")}/>
+                                    <AddFriends id={id} showMutualFriends={true} amountOfMutualFriends={exampleMutualFriends} showTimeAgo={true} timeAgo={exampleTimeAgo} showAcceptFriend={true} onPressAcceptFriend={() => {console.log("Friend Request got accepted"); acceptFriendRequest(id);}} onPressDenyFriend={() => {console.log("Friend Request got Denied"); declineFriendRequest(id);}}/>
                                 </View>
                             ))}
                         </View>
