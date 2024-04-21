@@ -23,16 +23,13 @@ function calculatePlacement(challenge, id = global.userInformation.id, getNumber
             if(countPairs[i][0] == id){
                 return i+1
             }
-        }
-        console.error("Something went wrong! You might have used the function in a wrong way;\nTho if someone didn't complete any tasks; ignore this error")
-        
+        }        
         //Ensure that if not all completed a task, that they still have a placement
         if(countPairs.length < challenge.friends.length){
             for(let i = countPairs.length; i<challenge.friends.length; i++){
                 return i+1;
             }
         }
-        console.error("Bruv, wacha doin?")
         
     } else {
         return counts[id] || 0
@@ -87,4 +84,25 @@ async function getAllChallenges(returnPostsOrChallenges = true)
     }
 }
 
-export {calculatePlacement, getAllChallenges}
+
+
+const increasingXPNeeded = 20;
+const baseXP = 10; //needs to be smaller than increasingXPNeeded
+
+function calculateLevel(xp) {
+
+    const level = Math.ceil((xp-baseXP)/increasingXPNeeded) + 1;
+    if(level < 0) level = 1;
+
+    return level;
+}
+
+function calculateXPNeeded(level) {
+    if (level <= 1) {
+        return baseXP;
+    } else {
+        return baseXP + (level - 1) * increasingXPNeeded;
+    }
+}
+
+export {calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded}

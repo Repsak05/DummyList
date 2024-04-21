@@ -3,13 +3,12 @@ import { View, Image, Text, TouchableOpacity } from 'react-native';
 import style from "../style";
 
 import ProgressBarTemplate from "./ProgressBarTemplate";
-export default function ProfileUserInformation({username, email, level, xpCurrent})
+export default function ProfileUserInformation({username, email, level, xpCurrent, xpToLevelUp = 100})
 {
     //Extra values: Parameters
     const widthProgressbar = 135;
     const setHeight = 20;
-    const xpToLevelUp = 200;
-
+    
     return(
         <View style={[style.roundedCorners, {padding: "10%", backgroundColor: "#F8F9FF", width: "90%", height: 124, alignSelf: "center", alignItems: "center", justifyContent: "space-between", flexDirection: "row", }]}>
             <View style={{flexDirection: "column"}}>

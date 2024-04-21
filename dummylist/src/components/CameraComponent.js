@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Image, Text, ActivityIndicator } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { Video } from 'expo-av';
@@ -7,10 +7,12 @@ import { Video } from 'expo-av';
 import style from '../style';
 import ButtonCamera from './ButtonCamera';
 
-import { addToCollection, updateHasCompletedTask } from '../../firebase';
+import { addToCollection, addToDocument, readSingleUserInformation, updateHasCompletedTask } from '../../firebase';
+import { calculateLevel } from './GlobalFunctions';
 
 export default function CameraComponent({taskRef, challengeID, navigation}) 
-{
+{ //TODO: Rewards should be depending on taskDifficulty
+    
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [image, setImage] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
@@ -97,11 +99,20 @@ export default function CameraComponent({taskRef, challengeID, navigation})
                     break;
                 }
             }
+
+
+            //Give rewards (XP &c.)
+            await addToDocument("Users", global.userInformation.id, "XP", false, false, 20)
+            const res = await readSingleUserInformation("Users", global.userInformation.id)
+            const yourLevel = calculateLevel(res.XP);
+            if(res.Level < yourLevel){
+                await addToDocument("Users", global.userInformation.id, "Level", yourLevel, false);
+            }
             
             navigation.navigate("RewardPage");
 
         } catch (err) {
-            console.log("Error publishing the uri");
+            console.log("Error publishing the uri or giving reward");
             console.log(err);
             navigation.navigate("UploadErrorPage") //Might want to remove it?
         }

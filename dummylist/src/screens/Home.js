@@ -6,6 +6,7 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 import { readData } from "../../firebase.js";
+import { calculateLevel, calculateXPNeeded } from "../components/GlobalFunctions.js";
 
 export default function Home({navigation})  //TODO: Ajust carouselItem's value: isPlacedInTheMiddle={true/false} (Depending on placement in array)
 {   //TODO: Fix background colors on create challenge and active challenges
@@ -50,6 +51,7 @@ export default function Home({navigation})  //TODO: Ajust carouselItem's value: 
         console.log("Clicked on " + challenge.challengeName)
         navigation.navigate("ChallengePage", {challenge})
     }
+
 
     return(
         <View>
