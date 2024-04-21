@@ -87,7 +87,7 @@ async function getAllChallenges(returnPostsOrChallenges = true)
 
 
 const increasingXPNeeded = 20;
-const baseXP = 10; //needs to be smaller than increasingXPNeeded
+const baseXP = 10; //needs to be smaller than increasingXPNeeded (or else implement if statement)
 
 function calculateLevel(xp) {
 

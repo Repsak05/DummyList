@@ -2,7 +2,7 @@
 import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 
@@ -140,13 +140,10 @@ async function addToDocument(collectionName, documentID, field, newObject, combi
             let currentValue = chosenDoc.data()[field] || 0;
             let newValue = currentValue + incrementBy;
 
-            console.log(chosenDoc.data())
-
             await updateDoc(docReference, {
                 [field]: newValue
         });
 
-        console.log(newValue)
         }else {
             await updateDoc(docReference, {
                 [field]: newObject
@@ -180,6 +177,32 @@ async function removeFromDocumentInArr(collectionName, documentID, field, remove
     }
 }
 
+async function getPositionInSortedCollection(collectionName, documentId, elementToSortBy) {
+    try {
+        // Get a reference to the Firestore collection
+        const collectionRef = collection(firestore, collectionName);
+
+        // Construct the query to retrieve documents sorted by the specified element in descending order
+        const q = query(collectionRef, orderBy(elementToSortBy, "desc"));
+
+        // Execute the query and get the sorted documents
+        const querySnapshot = await getDocs(q);
+
+        // Find the index of the specified document ID in the sorted array
+        const sortedDocs = querySnapshot.docs.map(doc => doc.id);
+        const position = sortedDocs.findIndex(id => id === documentId);
+
+        // Return the position (index + 1) of the document in the sorted collection
+        return position !== -1 ? position + 1 : -1; // Return -1 if document ID not found
+    } catch (error) {
+        console.error("Error getting position in sorted collection:", error);
+        return -1; // Return -1 in case of error
+    }
+}
+
+
+
+
 export {
     firestore,
     firebaseApp,
@@ -190,5 +213,6 @@ export {
     readData,
     readSingleUserInformation,
     addToCollection,
-    deleteCollection
+    deleteCollection,
+    getPositionInSortedCollection,
   };

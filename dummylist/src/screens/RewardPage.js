@@ -3,8 +3,12 @@ import { View, Image, Text, Animated, Pressable } from 'react-native';
 import style from "../style";
 
 import NextPreviousButton from "../components/NextPreviousButton";
+import { getPositionInSortedCollection } from "../../firebase";
 
-export default function RewardPage({navigation}) {
+export default function RewardPage({navigation, route}) {
+    const {xpGained} = route.params;
+    const {yourRank} = route.params || -1337;
+
     const imageOffset = useRef(new Animated.Value(0)).current;
 
     const [isAnimationDone, setIsAnimationDone] = useState(false);
@@ -26,8 +30,8 @@ export default function RewardPage({navigation}) {
     }, []);
 
     const rewards = [
-        {title : "XP Gained", value : 1701, color : "#FFDF9D"},
-        {title : "Global Rank", value : 12029000, color : "#D0E4FF"},
+        {title : "XP Gained", value : xpGained, color : "#FFDF9D"},
+        {title : "Global Rank", value : yourRank, color : "#D0E4FF"},
         {title : "Complete Tasks", value : 12, color : "#FFDAD2" },
     ];
 

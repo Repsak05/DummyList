@@ -7,7 +7,7 @@ import { Video } from 'expo-av';
 import style from '../style';
 import ButtonCamera from './ButtonCamera';
 
-import { addToCollection, addToDocument, readSingleUserInformation, updateHasCompletedTask } from '../../firebase';
+import { addToCollection, addToDocument, getPositionInSortedCollection, readSingleUserInformation, updateHasCompletedTask } from '../../firebase';
 import { calculateLevel } from './GlobalFunctions';
 
 export default function CameraComponent({taskRef, challengeID, navigation}) 
@@ -102,14 +102,19 @@ export default function CameraComponent({taskRef, challengeID, navigation})
 
 
             //Give rewards (XP &c.)
-            await addToDocument("Users", global.userInformation.id, "XP", false, false, 20)
+            const xpGained = 20;
+            await addToDocument("Users", global.userInformation.id, "XP", false, false, xpGained)
             const res = await readSingleUserInformation("Users", global.userInformation.id)
             const yourLevel = calculateLevel(res.XP);
             if(res.Level < yourLevel){
                 await addToDocument("Users", global.userInformation.id, "Level", yourLevel, false);
             }
+
+            //CalculatePlacement
+            const yourRank = await getPositionInSortedCollection("Users", global.userInformation.id, "XP")
+
             
-            navigation.navigate("RewardPage");
+            navigation.navigate("RewardPage", {xpGained : xpGained, yourRank : yourRank});
 
         } catch (err) {
             console.log("Error publishing the uri or giving reward");

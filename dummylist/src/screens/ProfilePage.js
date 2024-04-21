@@ -13,7 +13,7 @@ import { calculateXPNeeded } from "../components/GlobalFunctions";
 export default function ProfilePage({navigation})
 { //TODO: Change achievements to db values (Add xp instead of level, and add achievements)
     
-    const [currentXP, setCurrentXP] = useState(0);
+    const [currentXP, setCurrentXP] = useState(0); //LeftOverXP
     const [currentLevel, setCurrentLevel] = useState();
     const [xpNeededToLevelUp, setXpNeededToLevelUp] = useState();
 
@@ -23,8 +23,8 @@ export default function ProfilePage({navigation})
             try{
                 const res = await readSingleUserInformation("Users", global.userInformation.id);
                 setCurrentLevel(res.Level || 1);
-                setCurrentXP(res.XP || 0);
-                setXpNeededToLevelUp(calculateXPNeeded(res.Level || 1));
+                setCurrentXP((res.XP || 0) - calculateXPNeeded(res.Level - 1 || 0));
+                setXpNeededToLevelUp(calculateXPNeeded(res.Level || 1) - calculateXPNeeded(res.Level - 1 || 0));
 
             }catch(err){
                 console.error(err)
