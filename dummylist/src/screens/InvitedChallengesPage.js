@@ -7,6 +7,7 @@ import SwitchButton from "../components/SwitchButton.js";
 import CarouselItem from "../components/CarouselItem.js";
 
 import { readData } from "../../firebase.js";
+import { differenceInTime } from "../components/GlobalFunctions.js";
 
 
 export default function InvitedChallengesPage({navigation})
@@ -66,6 +67,12 @@ export default function InvitedChallengesPage({navigation})
                 const filteredUsersInChallenge = usersInChallenge.filter(userInChallenge => userInChallenge !== null);
                 setInChallenges(filteredUsersInChallenge)
                 console.log(filteredUsersInChallenge)
+
+
+                for (let challenge of filteredUsersInChallenge) {
+                    const firestoreTimestamp = challenge.challenge.startingTime;
+                    console.log(differenceInTime(firestoreTimestamp));
+                }
             } catch (err) {
                 console.error(err);
             }
@@ -73,6 +80,8 @@ export default function InvitedChallengesPage({navigation})
     
         getAllChallenges();
     }, []);
+
+
 
     function haveYouAccepted(challengeObj)
     {
@@ -103,7 +112,7 @@ export default function InvitedChallengesPage({navigation})
                         <CarouselItem 
                             title={challenge.challenge.challengeName} 
                             extraStylesToBackground={!challenge.isOwner ? { backgroundColor: 'rgba(0, 0, 0, 0.5)' } : null} //Should be changed
-                            extraText={!haveYouAccepted(challenge) ? "Not Accepted" : "Starts in " + challenge.challenge.startingTime + "h "}
+                            extraText={!haveYouAccepted(challenge) ? "Not Accepted" : "Starts in " + (differenceInTime(challenge.challenge.startingTime)).toFixed(2) + "h "}
                             onPressFunction={() => challengeInviteClicked(challenge)}
                             hasPlacement={false}
                         />

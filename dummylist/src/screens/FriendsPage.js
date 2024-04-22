@@ -164,10 +164,8 @@ export default function FriendsPage({navigation})
     {
         for(let friends of arr)
         {
-            console.log(friends, " ==? ", element)
             if(friends == element ) 
             {
-                console.log(true)
                 return true
             }
         }

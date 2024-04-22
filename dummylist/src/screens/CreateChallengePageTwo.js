@@ -35,9 +35,13 @@ export default function CreateChallengePageTwo({ navigation, route })
     }, [allCurrentChallengeValues.friends]);
 
     function updateStartingTime(val) {
+        //Convert val to timestamp
+        let today = new Date();
+        today.setHours(today.getHours() + val);
+        
         setAllCurrentChallengeValues({
             ...allCurrentChallengeValues,
-            startingTime: val
+            startingTime: today
         });
     }
 

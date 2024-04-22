@@ -105,4 +105,15 @@ function calculateXPNeeded(level) {
     }
 }
 
-export {calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded}
+
+function differenceInTime(beginningTime)
+{
+    const startingTime = beginningTime.toDate();
+    const currentTime = new Date();    
+    const timeDifferenceMs = startingTime.getTime() - currentTime.getTime(); 
+    const timeDifferenceHours = timeDifferenceMs / (1000 * 3600); 
+
+    return timeDifferenceHours;
+}
+
+export {differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded}

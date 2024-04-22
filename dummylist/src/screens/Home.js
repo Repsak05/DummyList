@@ -6,10 +6,11 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 import { readData } from "../../firebase.js";
-import { calculateLevel, calculateXPNeeded } from "../components/GlobalFunctions.js";
 
-export default function Home({navigation})  //TODO: Ajust carouselItem's value: isPlacedInTheMiddle={true/false} (Depending on placement in array)
+export default function Home({navigation})  
 {   //TODO: Fix background colors on create challenge and active challenges
+    //TODO: Create placement icon with just 1/2 and 2/2
+
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()
 

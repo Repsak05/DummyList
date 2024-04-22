@@ -7,6 +7,7 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 
 import { addToDocument } from "../../firebase.js";
+import { differenceInTime } from "../components/GlobalFunctions.js";
 
 export default function AcceptChallengeOverviewPage({ navigation })
 { 
@@ -125,7 +126,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
                         )}
                         <Text style={[style.blackFontSize16]}>This Challenge Starts in </Text>
 
-                        <Text style={[style.blackFontSize16Medium]}>{challenge.challenge.startingTime} Hours.</Text>
+                        <Text style={[style.blackFontSize16Medium]}>{differenceInTime(challenge.challenge.startingTime).toFixed(2)} Hours.</Text>
                         {!hasAnswered && !isOwnerOfChallenge && (
                             <Text style={[style.blackFontSize16]}> Do You Want to Accept? </Text>
                         )}
