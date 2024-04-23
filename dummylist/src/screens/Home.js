@@ -10,6 +10,7 @@ import { readData } from "../../firebase.js";
 export default function Home({navigation})  
 {   //TODO: Fix background colors on create challenge and active challenges
     //TODO: Create placement icon with just 1/2 and 2/2
+    //TODO: Can improve DB usage: Sort by timestamp > startingTime
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()

@@ -8,6 +8,7 @@ import { readSingleUserInformation } from "../../firebase.js";
 
 export default function AllFriendsPage({navigation, route})
 { //TODO: Update to actual profilePicture
+    //Maybe use global.userInformation?
 
     const { allFriends } = route.params;
     const exampleProfilePicture = "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft";

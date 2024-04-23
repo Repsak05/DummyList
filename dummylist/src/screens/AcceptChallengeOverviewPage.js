@@ -5,6 +5,7 @@ import style from '../style.js';
 
 import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
+import EnterTaskDescription from "../components/EnterTaskDescription.js";
 
 import { addToDocument } from "../../firebase.js";
 import { differenceInTime } from "../components/GlobalFunctions.js";
@@ -155,6 +156,9 @@ export default function AcceptChallengeOverviewPage({ navigation })
                     </View>
                 </View>
             </View>
+
+            
+            <EnterTaskDescription/>
         </View>
     )
 }

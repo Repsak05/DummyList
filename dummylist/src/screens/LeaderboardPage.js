@@ -14,6 +14,7 @@ import { readData } from "../../firebase"
 
 export default function LeaderboardPage({navigation})
 { //TODO: //Replace Loading... with correct loading screen
+    //DB; Users.friends. <-- contains
     const route = useRoute();
     const {challenge} = route.params; 
 

@@ -11,6 +11,7 @@ import {getAllChallenges} from "../components/GlobalFunctions"
 export default function FeedPage({ navigation }) 
 {   //TODO: Replace Loading... with correct loading screen
     //TODO: When liking image: Add it to db
+    //DB Reach can be improved a lot
 
     //Change this to the user's profilepicture in users db
     const exampleURI = "https://as1.ftcdn.net/v2/jpg/05/68/23/98/1000_F_568239815_8NB11CB6LT2D3lBhDVa10jQ6qMYJKCzh.jpg"

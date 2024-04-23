@@ -8,7 +8,7 @@ import SliderComponent from "../components/SliderComponent.js";
 import { readData, readSingleUserInformation } from "../../firebase.js";
 
 export default function CreateChallengePageTwo({ navigation, route }) 
-{
+{ //Maybe use global.userInformation
     
     const { allChallengeValues } = route.params;
     const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState({
@@ -22,7 +22,8 @@ export default function CreateChallengePageTwo({ navigation, route })
     const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
-        async function getAllUsers() {
+        async function getAllUsers() 
+        {
             try {
                 const res = await readSingleUserInformation("Users", global.userInformation.id)
 

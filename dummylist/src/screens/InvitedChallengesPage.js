@@ -14,6 +14,7 @@ export default function InvitedChallengesPage({navigation})
 { //TODO ___something is wrong if you are the guest user
     //TODO ___Only show if challenge is not active (But is going to be)
     //TODO: Dont know why scrollview is not working properly
+    //DB; Sort challenges by startingTime > currentTime
 
     function handlePressLeft()
     {
