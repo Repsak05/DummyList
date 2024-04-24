@@ -26,6 +26,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
         }
     }
 
+    const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
     const isOwnerOfChallenge = challenge.isOwner; //Add settings option in <Header/>
     const [hasAnswered, setHasAnswered] = useState(startingStatus()); //__Should prob be removed, or remade
     const [hasAcceptedOrDeclined, setHasAcceptedOrDeclined] = useState(challenge?.challenge?.friends?.some(friend => {
@@ -79,8 +80,16 @@ export default function AcceptChallengeOverviewPage({ navigation })
         }
     }
 
+    const allCurrentCreatedTasks = [
+       {taskDescription: "Do somethingCool", isMadeByYourself: true},
+       {taskDescription: "Do somet31231hingCool", isMadeByYourself: false},
+       {taskDescription: "Do somethi4311fc1dx1ngCool", isMadeByYourself: false},
+       {taskDescription: "Eat some.", isMadeByYourself: false},
+       {taskDescription: "Do somethi413231ngCool", isMadeByYourself: true},
+       {taskDescription: "Do sometxxaxhingCool", isMadeByYourself: false},
+    ]
     return(
-        <View>
+        <View style={{flex: 1}}>
             <View style={[{marginTop: 55, marginBottom: 29,}]}>
                 <Header pageName={"Challenges"} navigation={navigation}/>
             </View>
@@ -131,7 +140,6 @@ export default function AcceptChallengeOverviewPage({ navigation })
                         {!hasAnswered && !isOwnerOfChallenge && (
                             <Text style={[style.blackFontSize16]}> Do You Want to Accept? </Text>
                         )}
-                        <Text></Text>
                     </View>
 
                     <View >
@@ -157,8 +165,41 @@ export default function AcceptChallengeOverviewPage({ navigation })
                 </View>
             </View>
 
-            
-            <EnterTaskDescription/>
+
+            <View style={[style.roundedCorners, {marginHorizontal: 12, backgroundColor: "#D0E4FF", paddingHorizontal: 20, paddingBottom: 10, marginTop: 30}]}>
+                <Text style={[style.blackFontSize20, {marginVertical: 11, }]}>Tasks ({allCurrentCreatedTasks.length})</Text>
+                
+                <Pressable  onPress={() => setIsAddTaskOpen(true)} style={{position: "absolute", right: 10, top: 10}}>
+                    <Text style={[style.blackFontSize16]}>+</Text>
+                </Pressable>
+
+                <View style={[{flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between"}]}>
+                    {allCurrentCreatedTasks.map((task, index) => (
+                        <View key={index} style={[, {borderRadius: 15, backgroundColor: task.isMadeByYourself ? "#FFDF9D" : "#32618D", flexDirection: "row", flexWrap: "nowrap", justifyContent: "space-between", width: 100, height: 30, alignItems: "center", overflow: "hidden", marginBottom: 10}]}>
+                            <Text style={[style.blackFontSize10, {width: 60, heigth: 15, color: task.isMadeByYourself ? "#251A00" :  "#FFFFFF", marginLeft: 11, flexWrap: "nowrap"}]}>{task.taskDescription}</Text>
+                            
+                            <Pressable style={{marginRight: 10}}>
+                                <Text style={{color : task.isMadeByYourself ? "#251A00" :  "#FFFFFF"}}>X</Text>
+                            </Pressable>
+                        </View>
+                    ))}
+
+                </View>
+
+                <Text style={{marginTop: 6, textAlign:"center"}}>  - - + (Image)</Text>
+            </View>
+
+
+            {isAddTaskOpen && (
+                <View style={{ position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: "center", alignItems: "center" }}>
+                    <EnterTaskDescription
+                        onPressCancel={() => setIsAddTaskOpen(false)}
+                        onPressAccept={() => { console.log("Add task"); setIsAddTaskOpen(false)}}
+                    />
+                </View>
+            )}
+
+
         </View>
     )
 }

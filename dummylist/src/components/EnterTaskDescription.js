@@ -2,14 +2,9 @@ import React, { useState } from "react";
 import { View, Text, Pressable, TextInput } from 'react-native';
 import style from "../style";
 
-export default function EnterTaskDescription()
+export default function EnterTaskDescription({onPressAccept, onPressCancel})
 {
     const [taskDescription, setTaskDescription] = useState("");
-
-    function addTask()
-    {
-        console.log("Save following to tasks: " + taskDescription)
-    }
 
     return(
         <View style={{borderRadius: 30, backgroundColor: "#FCEAE8", width: "95%", alignSelf: "center"}}>
@@ -26,11 +21,11 @@ export default function EnterTaskDescription()
 
 
                 <View style={{flexDirection: "row", position: "absolute", right: 0, top: 50}}>
-                    <Pressable onPress={() => {console.log("Cancel this operation")}}style={{borderRadius: 5, backgroundColor: "#FFDAD8", marginRight: 13, paddingHorizontal: 20}}>
+                    <Pressable onPress={onPressCancel} style={{borderRadius: 5, backgroundColor: "#FFDAD8", marginRight: 13, paddingHorizontal: 20}}>
                         <Text style={[style.blackFontSize13]}>Cancel</Text>
                     </Pressable>
 
-                    <Pressable onPress={addTask} style={{borderRadius: 5, backgroundColor: "#D3EC9E", paddingHorizontal: 20}}>
+                    <Pressable onPress={onPressAccept} style={{borderRadius: 5, backgroundColor: "#D3EC9E", paddingHorizontal: 20}}>
                         <Text style={[style.blackFontSize13]}>Accept</Text>
                     </Pressable>
                 </View>
