@@ -6,6 +6,7 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 import { readData } from "../../firebase.js";
+import { differenceInTime } from "../components/GlobalFunctions.js";
 
 export default function Home({navigation})  
 {   //TODO: Fix background colors on create challenge and active challenges
@@ -66,13 +67,15 @@ export default function Home({navigation})
                 <View style={{width: "100%",}}> 
                     <CreateChallengeComponent navigation={navigation} />
                 </View>
-                {allChallenges?.map((challenge, index) => {
-                    return(
-                        <View style={{width: "100%"}} key={index}>
-                            <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
-                        </View>
-                    )
-                })}
+                {allChallenges?.map((challenge, index) => (
+                    <View key={index}>
+                        {differenceInTime(challenge.startingTime) <= 0 && (
+                            <View style={{width: "100%"}} key={index}>
+                                <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
+                            </View>
+                        )}
+                    </View>
+                ))}
             </View>
 
             <View style={[styles.homeFeedContainer, styles.wrapper, {height: 539}]}>

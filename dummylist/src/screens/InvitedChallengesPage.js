@@ -80,6 +80,7 @@ export default function InvitedChallengesPage({navigation})
         }
     
         getAllChallenges();
+
     }, []);
 
 
@@ -96,6 +97,7 @@ export default function InvitedChallengesPage({navigation})
         return false
     }
 
+
     return(
         <View>
             <View style={[{width: "100%", marginTop: 55, marginBottom: 20,}]}>
@@ -110,13 +112,15 @@ export default function InvitedChallengesPage({navigation})
             <ScrollView style={{ flex: 1 }}>
                 {inChallenges?.map((challenge, index) => (
                     <View key={index}>
-                        <CarouselItem 
-                            title={challenge.challenge.challengeName} 
-                            extraStylesToBackground={!challenge.isOwner ? { backgroundColor: 'rgba(0, 0, 0, 0.5)' } : null} //Should be changed
-                            extraText={!haveYouAccepted(challenge) ? "Not Accepted" : "Starts in " + (differenceInTime(challenge.challenge.startingTime)).toFixed(2) + "h "}
-                            onPressFunction={() => challengeInviteClicked(challenge)}
-                            hasPlacement={false}
-                        />
+                        {differenceInTime(challenge.challenge.startingTime) > 0 && (
+                            <CarouselItem 
+                                title={challenge.challenge.challengeName} 
+                                extraStylesToBackground={!challenge.isOwner ? { backgroundColor: 'rgba(0, 0, 0, 0.5)' } : null} //Should be changed
+                                extraText={!haveYouAccepted(challenge) ? "Not Accepted" : "Starts in " + (differenceInTime(challenge.challenge.startingTime)).toFixed(2) + "h "}
+                                onPressFunction={() => challengeInviteClicked(challenge)}
+                                hasPlacement={false}
+                            />
+                        )}
                     </View>
                 ))}
             </ScrollView>
