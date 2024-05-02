@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, Pressable, Image   } from 'react-native';
 import styles from '../style.js'; 
-import colors from "../colors.js";
 
 export default function CarouselItem({navigation, isPlacedInTheMiddle = false, title = "De Ekstreme Bananer", hasPlacement = true, extraStylesToBackground, extraText, onPressFunction})
 {

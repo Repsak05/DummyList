@@ -5,7 +5,7 @@ import ProgressBarTemplate from "../components/ProgressBarTemplate.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 import AddFriends from "../components/AddFriends.js";
 import SliderComponent from "../components/SliderComponent.js";
-import { readData, readSingleUserInformation } from "../../firebase.js";
+import { readSingleUserInformation } from "../../firebase.js";
 
 export default function CreateChallengePageTwo({ navigation, route }) 
 { //Maybe use global.userInformation

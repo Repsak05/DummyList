@@ -199,7 +199,6 @@ export default function AcceptChallengeOverviewPage({ navigation })
                 </View>
             )}
 
-
         </View>
-    )
+    );
 }

@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
-import { View, ScrollView, Text, StyleSheet, Dimensions, TouchableOpacity, Pressable, Image } from 'react-native';
+import React, { useState, } from "react";
+import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
 import style from '../style.js'; 
 
 export default function SwitchButton({textOne = "Friendship", textTwo = "Challenges", onPressLeft, onPressRight, startingStateIsLeft})
