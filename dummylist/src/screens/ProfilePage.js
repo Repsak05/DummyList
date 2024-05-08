@@ -16,6 +16,8 @@ export default function ProfilePage({navigation})
     const [currentXP, setCurrentXP] = useState(0); //LeftOverXP
     const [currentLevel, setCurrentLevel] = useState();
     const [xpNeededToLevelUp, setXpNeededToLevelUp] = useState();
+    const [stats, setStats] = useState();
+
 
     useEffect(() => {
         async function getPersonalInformation()
@@ -25,6 +27,7 @@ export default function ProfilePage({navigation})
                 setCurrentLevel(res.Level || 1);
                 setCurrentXP((res.XP || 0) - calculateXPNeeded(res.Level - 1 || 0));
                 setXpNeededToLevelUp(calculateXPNeeded(res.Level || 1) - calculateXPNeeded(res.Level - 1 || 0));
+                setStats(res.Stats || false);
 
             }catch(err){
                 console.error(err)
@@ -55,13 +58,13 @@ export default function ProfilePage({navigation})
 
             <View style={{flexDirection: "column", marginTop: 15, width: "90%", alignSelf: "center"}}>
                 <View style={{flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between"}}>
-                    <ProfileAchievements typeNumber={1} value={2}/>
-                    <ProfileAchievements typeNumber={2} value={10}/>
+                    <ProfileAchievements typeNumber={1} value={stats?.AveragePlacement || 0}/>
+                    <ProfileAchievements typeNumber={2} value={stats?.ChallengesWon || 0}/>
                 </View>
 
                 <View style={{flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", marginTop: 11}}>
-                    <ProfileAchievements typeNumber={3} value={4}/>
-                    <ProfileAchievements typeNumber={4} value={19}/>
+                    <ProfileAchievements typeNumber={3} value={stats?.TaskCompleted || 0}/>
+                    <ProfileAchievements typeNumber={4} value={stats?.TimesParticipated || 0}/>
                 </View>
             </View>
 

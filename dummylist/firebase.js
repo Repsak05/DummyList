@@ -3,7 +3,7 @@ import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { confirmPasswordReset, getAuth } from "firebase/auth";
 
 
 // Initialize Firebase
@@ -121,7 +121,7 @@ async function updateHasCompletedTask(challengeID, eachPlayer, taskRef, postID) 
     }
 }
 
-async function addToDocument(collectionName, documentID, field, newObject, combine = true, incrementBy = 0){
+async function addToDocument(collectionName, documentID, field, newObject, combine = true, incrementBy = 0, fieldValueTwo = false){
     try{
         let docReference = doc(collection(firestore, collectionName), documentID);
 
@@ -136,14 +136,31 @@ async function addToDocument(collectionName, documentID, field, newObject, combi
             await updateDoc(docReference, {
                 [field]: arrayUnion(newObject)
             });
-        } else if (incrementBy !== 0){
+        } else if (incrementBy !== 0 && !fieldValueTwo){
             let currentValue = chosenDoc.data()[field] || 0;
             let newValue = currentValue + incrementBy;
 
+            console.log("Firebase");
+            console.log(chosenDoc.data()[field]);
+            console.log(currentValue);
+            console.log(newValue);
+
             await updateDoc(docReference, {
                 [field]: newValue
-        });
+            });
+            
+            return newValue;
+        }else if (incrementBy !== 0 && fieldValueTwo){
+            let currentValue = chosenDoc.data()[field][fieldValueTwo] || 0;
+            let newValue = currentValue + incrementBy;
 
+            await updateDoc(docReference, {
+                [field]: {
+                    [fieldValueTwo]: newValue
+                }
+            });
+            
+            return newValue;
         }else {
             await updateDoc(docReference, {
                 [field]: newObject

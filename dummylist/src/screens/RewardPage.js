@@ -8,13 +8,16 @@ import { getPositionInSortedCollection } from "../../firebase";
 export default function RewardPage({navigation, route}) {
     const {xpGained} = route.params;
     const {yourRank} = route.params || -1337;
+    const {amountOfTaskDone} = route.params || -1;
 
     const imageOffset = useRef(new Animated.Value(0)).current;
 
     const [isAnimationDone, setIsAnimationDone] = useState(false);
     const [rewardValue, setRewardValue] = useState([]);
 
+
     useEffect(() => {
+
         const animation = Animated.timing(imageOffset, {
             toValue: 1,
             duration: 3000,
@@ -32,7 +35,7 @@ export default function RewardPage({navigation, route}) {
     const rewards = [
         {title : "XP Gained", value : xpGained, color : "#FFDF9D"},
         {title : "Global Rank", value : yourRank, color : "#D0E4FF"},
-        {title : "Complete Tasks", value : 12, color : "#FFDAD2" },
+        {title : "Complete Tasks", value : amountOfTaskDone || -1, color : "#FFDAD2" },
     ];
 
 const startIncrementAnimation = () => {

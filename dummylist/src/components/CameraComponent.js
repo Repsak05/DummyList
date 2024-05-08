@@ -20,8 +20,7 @@ export default function CameraComponent({taskRef, challengeID, navigation})
     const [isRecording, setIsRecording] = useState(false);
     const [videoUri, setVideoUri] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const cameraRef = useRef(null);
-    
+    const cameraRef = useRef(null);    
 
     useEffect(() => {
         (async () => {
@@ -100,7 +99,6 @@ export default function CameraComponent({taskRef, challengeID, navigation})
                 }
             }
 
-
             //Give rewards (XP &c.)
             const xpGained = 20;
             await addToDocument("Users", global.userInformation.id, "XP", false, false, xpGained)
@@ -113,8 +111,10 @@ export default function CameraComponent({taskRef, challengeID, navigation})
             //CalculatePlacement
             const yourRank = await getPositionInSortedCollection("Users", global.userInformation.id, "XP")
 
+            //Calculate new stats to profile (Amount Of task done)
+            const amountOfTaskDone = await addToDocument("Users", global.userInformation.id, "Stats", false, false, 1, "TaskCompleted");
             
-            navigation.navigate("RewardPage", {xpGained : xpGained, yourRank : yourRank});
+            navigation.navigate("RewardPage", {xpGained : xpGained, yourRank : yourRank, amountOfTaskDone : amountOfTaskDone});
 
         } catch (err) {
             console.log("Error publishing the uri or giving reward");
