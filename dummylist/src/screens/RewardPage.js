@@ -33,9 +33,9 @@ export default function RewardPage({navigation, route}) {
     }, []);
 
     const rewards = [
-        {title : "XP Gained", value : xpGained, color : "#FFDF9D"},
-        {title : "Global Rank", value : yourRank, color : "#D0E4FF"},
-        {title : "Complete Tasks", value : amountOfTaskDone || -1, color : "#FFDAD2" },
+        {title : "XP Gained",       value : xpGained,           color : "#FFDF9D"},
+        {title : "Global Rank",     value : yourRank,           color : "#D0E4FF"},
+        {title : "Complete Tasks",  value : amountOfTaskDone,   color : "#FFDAD2" },
     ];
 
 const startIncrementAnimation = () => {

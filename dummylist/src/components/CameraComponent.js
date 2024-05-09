@@ -12,6 +12,7 @@ import { calculateLevel } from './GlobalFunctions';
 
 export default function CameraComponent({taskRef, challengeID, navigation}) 
 { //TODO: Rewards should be depending on taskDifficulty
+    //DB: Reads/writes can be done more efficiently
     
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [image, setImage] = useState(null);

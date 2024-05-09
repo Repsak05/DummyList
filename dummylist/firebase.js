@@ -3,7 +3,7 @@ import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy } from "firebase/firestore";
-import { confirmPasswordReset, getAuth } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 
 // Initialize Firebase

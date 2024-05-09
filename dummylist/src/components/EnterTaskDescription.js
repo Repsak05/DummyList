@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { View, Text, Pressable, TextInput } from 'react-native';
 import style from "../style";
 
-export default function EnterTaskDescription({onPressAccept, onPressCancel})
+export default function EnterTaskDescription({onPressAccept, onPressCancel, onChangeText, value})
 {
-    const [taskDescription, setTaskDescription] = useState("");
-
     return(
         <View style={{borderRadius: 30, backgroundColor: "#FCEAE8", width: "95%", alignSelf: "center"}}>
             <Text style={[style.blackFontSize40, {textAlign: "center", marginTop: 20, marginBottom: 34}]}>Task Description</Text>
@@ -13,8 +11,8 @@ export default function EnterTaskDescription({onPressAccept, onPressCancel})
             <View style={{width: "80%", flexDirection: "column", marginBottom: 72, alignSelf:"center"}}>
                 <TextInput
                     style={{width: "100%"}}
-                    onChangeText={setTaskDescription}
-                    value={taskDescription}
+                    onChangeText={onChangeText}
+                    value={value}
                     placeholder="Enter Challenge Description"
                 />
                 <View style={{ marginTop: 5, alignSelf: "center", borderBottomColor: "#000000", borderBottomWidth: 3, width: "100%"}} />
