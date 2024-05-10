@@ -151,14 +151,16 @@ async function addToDocument(collectionName, documentID, field, newObject, combi
             
             return newValue;
         }else if (incrementBy !== 0 && fieldValueTwo){
-            let currentValue = chosenDoc.data()[field][fieldValueTwo] || 0;
+            let stats = chosenDoc.data()[field] || {};
+            let currentValue = stats[fieldValueTwo] || 0;
             let newValue = currentValue + incrementBy;
 
             await updateDoc(docReference, {
                 [field]: {
+                    ...stats,
                     [fieldValueTwo]: newValue
                 }
-            });
+            }); 
             
             return newValue;
         }else {

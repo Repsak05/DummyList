@@ -6,7 +6,7 @@ import Header from "../components/Header.js";
 import ProgressBarTemplate from "../components/ProgressBarTemplate.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 
-import {readData, addToCollection, readSingleUserInformation, firestore} from "../../firebase.js";
+import {readData, addToDocument, addToCollection, readSingleUserInformation, firestore} from "../../firebase.js";
 
 
 export default function CreateChallengePageThree({navigation, route})
@@ -50,7 +50,19 @@ export default function CreateChallengePageThree({navigation, route})
             console.log(res)
         }
 
+        // ? Add one to times participated in a challenge (Might want to do it another place, but idk)
+        async function addTimesParticipatedToStats()
+        {
+            try{
+                await addToDocument("Users", global.userInformation.id, "Stats", false, false, 1, "TimesParticipated");
+            }catch(err){
+                console.error(err);
+            }
+        }
+
         createChallengePost();
+        addTimesParticipatedToStats();
+
 
         console.log("Create clicked:");
         console.log(allChallengeValues);
