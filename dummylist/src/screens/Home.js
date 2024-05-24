@@ -5,13 +5,12 @@ import styles from '../style.js';
 import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
-import { readData } from "../../firebase.js";
+import { readData, readDataWithQuery } from "../../firebase.js";
 import { differenceInTime } from "../components/GlobalFunctions.js";
 
 export default function Home({navigation})  
 {   //TODO: Fix background colors on create challenge and active challenges
     //TODO: Create placement icon with just 1/2 and 2/2
-    //TODO: Can improve DB usage: Sort by timestamp > startingTime
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()
@@ -28,7 +27,7 @@ export default function Home({navigation})
         {
             try{
                 let yourChallenges = []
-                const res = await readData("Challenges")
+                const res = await readDataWithQuery("Challenges", [{ field: "startingTime", operator: "<=", value: new Date() }], [{ field: "startingTime", direction: "desc" }])
                 
                 res.map(challenge => {
                     if(challenge.friends && challenge.isStilActive){

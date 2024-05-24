@@ -71,7 +71,7 @@ export default function ChallengesPage({navigation})
                             />
                         </View>
                     ))}
-                </ScrollView>
+                </ScrollView>                
             </View>
         </View>
     )

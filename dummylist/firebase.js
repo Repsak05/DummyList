@@ -2,7 +2,7 @@
 import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 
@@ -50,6 +50,40 @@ function readData(readCollection) {
     });
 }
 
+function readDataWithQuery(readCollection, filters = [], orderings = []) {
+    const userCollection = collection(firestore, readCollection); 
+
+    let q = query(userCollection);
+
+    // Apply filters
+    filters.forEach(filter => {
+        q = query(q, where(filter.field, filter.operator, filter.value));
+    });
+
+    // Apply orderings
+    orderings.forEach(order => {
+        q = query(q, orderBy(order.field, order.direction));
+    });
+
+    return new Promise((resolve, reject) => {
+        getDocs(q)
+            .then((res) => {
+                const data = [];
+                res.docs.forEach((doc) => {
+                    data.push({ ...doc.data(), id: doc.id });
+                });
+                resolve(data);
+            })
+            .catch((err) => {
+                console.error("Error", err);
+                reject(err);
+            });
+    });
+}
+//Exampke ussage:
+// readDataWithQuery("Challenges", [{ field: "startingTime", operator: ">", value: new Date() }], [{ field: "startingTime", direction: "desc" }])
+//     .then(data => console.log(data))
+//     .catch(err => console.error(err));
 async function addToCollection(collectionName, object) {
     try{
         const docRef = await addDoc(collection(firestore, collectionName), object);
@@ -230,6 +264,7 @@ export {
     removeFromDocumentInArr,
     updateHasCompletedTask,
     readData,
+    readDataWithQuery,
     readSingleUserInformation,
     addToCollection,
     deleteCollection,

@@ -6,7 +6,7 @@ import Header from "../components/Header.js";
 import SwitchButton from "../components/SwitchButton.js";
 import CarouselItem from "../components/CarouselItem.js";
 
-import { readData } from "../../firebase.js";
+import { readData, readDataWithQuery } from "../../firebase.js";
 import { differenceInTime } from "../components/GlobalFunctions.js";
 
 
@@ -37,13 +37,14 @@ export default function InvitedChallengesPage({navigation})
     }
 
     //Data taking from db
-    const [inChallenges, setInChallenges] = useState()
+    const [inChallenges, setInChallenges] = useState([]);
     
     useEffect(() => {
         async function getAllChallenges() 
         {
             try {
-                const res = await readData("Challenges");
+                const res = await readDataWithQuery("Challenges", [{ field: "startingTime", operator: ">", value: new Date() }], [{ field: "startingTime", direction: "desc" }])
+
                 const usersInChallenge = res.map(challenge => {
                     if (challenge) 
                     {
@@ -66,12 +67,15 @@ export default function InvitedChallengesPage({navigation})
                 // Remove null entries from the array
                 const filteredUsersInChallenge = usersInChallenge.filter(userInChallenge => userInChallenge !== null);
                 setInChallenges(filteredUsersInChallenge)
+
                 console.log(filteredUsersInChallenge)
 
 
                 for (let challenge of filteredUsersInChallenge) {
                     const firestoreTimestamp = challenge.challenge.startingTime;
-                    console.log(differenceInTime(firestoreTimestamp));
+                    const timeLeft = differenceInTime(firestoreTimestamp)
+                    console.log(timeLeft);
+
                 }
             } catch (err) {
                 console.error(err);
@@ -123,6 +127,12 @@ export default function InvitedChallengesPage({navigation})
                     </View>
                 ))}
             </ScrollView>
+
+            {!inChallenges.length && (
+                <View>
+                    <Text>Replace this with an actual item</Text>
+                </View>
+            )}
 
         </View>
     )
