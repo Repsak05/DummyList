@@ -254,12 +254,38 @@ async function getPositionInSortedCollection(collectionName, documentId, element
 }
 
 
+async function getUsernamesByIds(userIds) {
+    if (!Array.isArray(userIds) || userIds.length === 0) {
+        throw new Error('User IDs must be a non-empty array');
+    }
+
+    const userCollection = collection(firestore, 'Users');
+    const userMap = {};
+
+    try {
+        // Fetch user documents one by one based on IDs
+        for (const userId of userIds) {
+            const q = query(userCollection, where('__name__', '==', userId)); // '__name__' refers to the document ID
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach(doc => {
+                userMap[doc.id] = doc.data().Username;
+            });
+        }
+
+        return userMap;
+    } catch (err) {
+        console.error('Error fetching usernames:', err);
+        throw err;
+    }
+}
+
 
 
 export {
     firestore,
     firebaseApp,
     firebaseAuth,
+    getUsernamesByIds,
     addToDocument,
     removeFromDocumentInArr,
     updateHasCompletedTask,

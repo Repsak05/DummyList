@@ -9,39 +9,37 @@ import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderb
 import LeaderboardPlacement from "../components/LeaderboardPlacement";
 
 import { calculatePlacement } from "../components/GlobalFunctions";
-import { readData } from "../../firebase"
+import { getUsernamesByIds } from "../../firebase"
 
 
 export default function LeaderboardPage({navigation})
 { //TODO: //Replace Loading... with correct loading screen
-    //DB; Users.friends. <-- contains
+    //TODO: Only display people who has joined the challenge
+    
     const route = useRoute();
     const {challenge} = route.params; 
 
     const [usernamesInChallenges, setUsernamesInChallenges] = useState() //{id1 : name1,    id2 : name2...}
 
     useEffect(() => {
-        async function getUsernames() {
-            try {
-                const namesAndID = {};
-                const res = await readData("Users");
-                challenge.friends.forEach(participant => {
-                    res.forEach(user => {
-                        if (participant.user === user.id) {
-                            namesAndID[participant.user] = user.Username;
-                        }
-                    });
-                });
-                setUsernamesInChallenges(namesAndID);
-
-            } catch (error) {
-                console.error("Error fetching usernames:", error);
+        async function getUsernames()
+        {
+            let namesToFind = [];
+            for(let friend of challenge.friends)
+            {
+                namesToFind.push(friend.user); //Might want to make sure that friend has joined first?
             }
-        }
-    
-        getUsernames();
-    }, []);
+            try{
+                const res = await getUsernamesByIds(namesToFind);
+                setUsernamesInChallenges(res);
+                console.log(res);
+            }catch(err){
+                console.error(err);
+            }
 
+        }
+        getUsernames();
+    }, [])
 
     function getAllUserPlacements() 
     {

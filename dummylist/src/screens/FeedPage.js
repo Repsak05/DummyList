@@ -10,8 +10,16 @@ import {getAllChallenges} from "../components/GlobalFunctions"
 
 export default function FeedPage({ navigation }) 
 {   //TODO: Replace Loading... with correct loading screen
+        //Only load a few posts at a time
     //TODO: When liking image: Add it to db
     //DB Reach can be improved a lot
+
+    //Remake DB friends to be:
+    /*
+        invitedFriends : ["id1", "id2", "id3"]
+        joinedFriends : ["id1", "id3"]
+        allPostsInChallenge : ["post1", "post2", "post3", "post4", "post5"]
+    */
 
     //Change this to the user's profilepicture in users db
     const exampleURI = "https://as1.ftcdn.net/v2/jpg/05/68/23/98/1000_F_568239815_8NB11CB6LT2D3lBhDVa10jQ6qMYJKCzh.jpg"
