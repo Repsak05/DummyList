@@ -23,30 +23,34 @@ export default function Home({navigation})
     }, [amountOfNotifications])
 
     useEffect(() => {
-        async function getAllYourChallenges()
-        {
-            try{
-                let yourChallenges = []
-                const res = await readDataWithQuery("Challenges", [{ field: "startingTime", operator: "<=", value: new Date() }], [{ field: "startingTime", direction: "desc" }])
-                
-                res.map(challenge => {
-                    if(challenge.friends && challenge.isStilActive){
-                        challenge.friends.map(friend => {
-                            if(friend.user == global.userInformation.id && friend.hasJoined){
-                                yourChallenges.push(challenge)
-                            }
-                        })
+        async function getAllYourChallenges() {
+            try {
+                // Wait for user information to be available
+                const interval = setInterval(() => {
+                    if (global.userInformation && global.userInformation.id) {
+                        clearInterval(interval);
+                        fetchChallenges();
                     }
-                })
-                console.log(yourChallenges)
-                setAllChallenges(yourChallenges)
-            } catch(err){
-                console.error(err);
+                }, 300); // Check every x-millisecound if userID is available
+
+                async function fetchChallenges() {
+                    const example = await readDataWithQuery( "Challenges", 
+                        [
+                            { field: "startingTime", operator: "<", value: new Date() },
+                            { field: "joinedMembers", operator: "array-contains", value: global.userInformation.id }
+                        ], 
+                        [{ field: "startingTime", direction: "desc" }]
+                    );
+
+                    setAllChallenges(example);
+                }
+            } catch (err) {
+                console.error("Error fetching challenges:", err);
             }
         }
 
         getAllYourChallenges();
-    }, [])
+    }, []);
 
     function navigateToChallenge(challenge)
     {

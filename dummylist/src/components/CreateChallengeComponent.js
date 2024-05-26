@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, Pressable   } from 'react-native';
 import style from '../style.js'; 
 
-export default function CreateChallengeComponent({navigation})
+export default function CreateChallengeComponent({navigation, showAmount = true})
 {
     function openCreateChallenge()
     {
@@ -18,7 +18,9 @@ export default function CreateChallengeComponent({navigation})
                     <Text style={style.whiteFontSize25}> Create Challenge </Text>
                 </View>
             </Pressable> 
-            <Image style={{alignSelf: "center"}} source={require("../assets/icons/placedMostLeft.svg")}/>
+            {showAmount && (
+                <Image style={{alignSelf: "center"}} source={require("../assets/icons/placedMostLeft.svg")}/>
+            )}
         </View>
     )
 

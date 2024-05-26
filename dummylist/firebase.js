@@ -208,6 +208,35 @@ async function addToDocument(collectionName, documentID, field, newObject, combi
     }
 }
 
+async function updateArrayFieldInDocument(collectionName, docId, arrayName, value, addToSet) {
+    const docRef = doc(firestore, collectionName, docId);
+
+    try {
+        const docSnapshot = await getDoc(docRef);
+
+        if (docSnapshot.exists()) {
+            const currentArray = docSnapshot.data()[arrayName] || [];
+            let updatedArray;
+
+            if (addToSet) {
+                // Add the value to the array if it's not already present
+                updatedArray = [...new Set([...currentArray, value])];
+            } else {
+                // Remove the value from the array
+                updatedArray = currentArray.filter(item => item !== value);
+            }
+
+            // Update the array field in the document
+            await updateDoc(docRef, { [arrayName]: updatedArray });
+            console.log(`Array field "${arrayName}" updated in document ${docId}.`);
+        } else {
+            console.error(`Document ${docId} does not exist in collection ${collectionName}.`);
+        }
+    } catch (error) {
+        console.error("Error updating array field:", error);
+    }
+}
+
 
 
 async function removeFromDocumentInArr(collectionName, documentID, field, removeItem){
@@ -285,6 +314,7 @@ export {
     firestore,
     firebaseApp,
     firebaseAuth,
+    updateArrayFieldInDocument,
     getUsernamesByIds,
     addToDocument,
     removeFromDocumentInArr,

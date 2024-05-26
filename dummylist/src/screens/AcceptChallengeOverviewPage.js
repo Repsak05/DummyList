@@ -7,11 +7,15 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import EnterTaskDescription from "../components/EnterTaskDescription.js";
 
-import { addToDocument } from "../../firebase.js";
+import { addToDocument, updateArrayFieldInDocument } from "../../firebase.js";
 import { differenceInTime } from "../components/GlobalFunctions.js";
 
 export default function AcceptChallengeOverviewPage({ navigation })
 { //TODO: If there's more than 9 tasks in a challenge, then it should be scrollable
+  //TODO: When clicking on the yes/no button - add/remove from joinedMembers
+  //TODO: Initial "Accept-" / "Decline invite" based on correct array (joinedMembers)
+
+  
     const route = useRoute();
     const {challenge} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
 
@@ -92,6 +96,15 @@ export default function AcceptChallengeOverviewPage({ navigation })
             console.log(challenge.challenge)
         } catch (err){
             console.error(err)
+        }
+    }
+
+    async function tAreYouParticipating(ans)
+    {
+        try{
+            await updateArrayFieldInDocument("Challenges", challenge.challenge.id, "joinedMembers", global.userInformation.id, ans)
+        } catch(err){
+            console.log(err);
         }
     }
 
@@ -195,17 +208,17 @@ export default function AcceptChallengeOverviewPage({ navigation })
                     <View >
                         {!isOwnerOfChallenge && !hasAnswered ? (
                             <View style={{flexDirection: "row"}}>
-                                <Pressable onPress={() => {setHasAnswered(true); setHasAcceptedOrDeclined(false); areYouParticipating(false);}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", marginRight: 13}]}>
+                                <Pressable onPress={() => {setHasAnswered(true); setHasAcceptedOrDeclined(false); areYouParticipating(false); tAreYouParticipating(false)}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", marginRight: 13}]}>
                                     <Text style={[style.blackFontSize16Medium, {textAlign: "center"}]}>Decline Invite</Text>     
                                 </Pressable>
-                                <Pressable onPress={() => {setHasAnswered(true); setHasAcceptedOrDeclined(true);  areYouParticipating(true); incrementTimesParticipatedStats(1);}} style={[style.roundedCornersSmall, {width: 185, height: 50, borderWidth: 5, borderColor: "#D0E4FF", justifyContent: "center"}]}>
+                                <Pressable onPress={() => {setHasAnswered(true); setHasAcceptedOrDeclined(true);  areYouParticipating(true); tAreYouParticipating(true); incrementTimesParticipatedStats(1);}} style={[style.roundedCornersSmall, {width: 185, height: 50, borderWidth: 5, borderColor: "#D0E4FF", justifyContent: "center"}]}>
                                     <Text style={[style.blackFontSize16Medium, {textAlign: "center"}]}>Accept Invite</Text>
                                 </Pressable>
                             </View>
                         ): (
                             <View>
                                 {!isOwnerOfChallenge && (
-                                    <Pressable  onPress={() => {setHasAnswered(false); if(hasAcceptedOrDeclined){incrementTimesParticipatedStats(-1);} setHasAcceptedOrDeclined(null); areYouParticipating(false);}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", alignContent: "center", }]}>
+                                    <Pressable  onPress={() => {setHasAnswered(false); if(hasAcceptedOrDeclined){incrementTimesParticipatedStats(-1);} setHasAcceptedOrDeclined(null); areYouParticipating(false); tAreYouParticipating(false);}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", alignContent: "center", }]}>
                                         <Text style={[style.blackFontSize16Medium, {textAlign: "center"}]}>Cancel</Text>
                                     </Pressable>
                                 )}

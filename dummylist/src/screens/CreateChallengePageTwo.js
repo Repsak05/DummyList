@@ -9,7 +9,8 @@ import { readSingleUserInformation } from "../../firebase.js";
 
 export default function CreateChallengePageTwo({ navigation, route }) 
 { //Maybe use global.userInformation
-    
+    //TODO: Replace with the t-functions like: replace addFriendToChallenge with tAddFriendToChallenge
+    //TODO: Missing to replace "Starts in..."/"Not accepted" statement depending on the right joinedMembers array
     const { allChallengeValues } = route.params;
     const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState({
         ...allChallengeValues,
@@ -17,7 +18,16 @@ export default function CreateChallengePageTwo({ navigation, route })
         //Adding yourself to friends (should be called participants/ChallengeMembers)
         friends : allChallengeValues.friends 
             ? [...allChallengeValues.friends, {user: global.userInformation.id, hasJoined: true}] 
-            : {user: global.userInformation.id, hasJoined: true}
+            : {user: global.userInformation.id, hasJoined: true},
+
+
+        invitedMembers :  allChallengeValues.invitedMembers 
+            ? [...allChallengeValues.invitedMembers, global.userInformation.id]
+            : [global.userInformation.id],
+
+        joinedMembers :  allChallengeValues.joinedMembers 
+            ? [...allChallengeValues.joinedMembers, global.userInformation.id]
+            : [global.userInformation.id],
     });
     const [allUsers, setAllUsers] = useState([]);
 
@@ -53,6 +63,31 @@ export default function CreateChallengePageTwo({ navigation, route })
                 friends: [...allCurrentChallengeValues.friends, { user: id, hasJoined: false }]
             });
         }
+    }
+
+    function tAddFriendToChallenge(id){
+        setAllCurrentChallengeValues({
+            ...allCurrentChallengeValues,
+            invitedMembers : [ ...allCurrentChallengeValues.invitedMembers, id]
+        });
+    }
+
+    function tRemoveFriendFromChallenge(id){
+        setAllCurrentChallengeValues({
+            ...allCurrentChallengeValues,
+            invitedMembers : allCurrentChallengeValues.invitedMembers.filter(friend => friend !== id)
+        });
+    }
+    function tHasFriendBeenInvited(id){
+        const members = allCurrentChallengeValues.invitedMembers
+
+        for(let ids of members)
+        {
+            if(ids == id){
+                return true;
+            } 
+        }
+        return false;
     }
 
     function removeFriendFromChallenge(id) {
@@ -104,11 +139,11 @@ export default function CreateChallengePageTwo({ navigation, route })
                         <AddFriends
                             id={id}
                             showLevel={true}
-                            showCancelFriend={!hasFriendBeenInvited(id)}
-                            showAddFriend={hasFriendBeenInvited(id)}
+                            showCancelFriend={tHasFriendBeenInvited(id)}
+                            showAddFriend={!tHasFriendBeenInvited(id)}
                             showFriendAdded={false}
-                            onPressCancel={() => {removeFriendFromChallenge(id); console.log("cliked")}}
-                            onPressAddFriend={() => {addFriendToChallenge(id); console.log("cliekeke")}}
+                            onPressCancel={() => {removeFriendFromChallenge(id); console.log("cliked"); tRemoveFriendFromChallenge(id)}}
+                            onPressAddFriend={() => {addFriendToChallenge(id); console.log("cliekeke"); tAddFriendToChallenge(id)}}
                         />
                     </View>
                 ))}

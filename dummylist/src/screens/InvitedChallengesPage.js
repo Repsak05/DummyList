@@ -5,16 +5,16 @@ import styles from '../style.js';
 import Header from "../components/Header.js";
 import SwitchButton from "../components/SwitchButton.js";
 import CarouselItem from "../components/CarouselItem.js";
+import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 
-import { readData, readDataWithQuery } from "../../firebase.js";
+
+import { readDataWithQuery } from "../../firebase.js";
 import { differenceInTime } from "../components/GlobalFunctions.js";
 
 
 export default function InvitedChallengesPage({navigation})
 { //TODO ___something is wrong if you are the guest user
-    //TODO ___Only show if challenge is not active (But is going to be)
     //TODO: Dont know why scrollview is not working properly
-    //DB; Sort challenges by startingTime > currentTime
 
     function handlePressLeft()
     {
@@ -38,53 +38,39 @@ export default function InvitedChallengesPage({navigation})
 
     //Data taking from db
     const [inChallenges, setInChallenges] = useState([]);
-    
+
     useEffect(() => {
-        async function getAllChallenges() 
+
+        async function getAllYourChallenges()
         {
-            try {
-                const res = await readDataWithQuery("Challenges", [{ field: "startingTime", operator: ">", value: new Date() }], [{ field: "startingTime", direction: "desc" }])
+            try{
+                const yourchallenges = await readDataWithQuery( "Challenges", 
+                        [
+                            { field: "startingTime", operator: ">", value: new Date() },
+                            { field: "invitedMembers", operator: "array-contains", value: global.userInformation.id }
+                        ], 
+                        [{ field: "startingTime", direction: "desc" }]
+                );
 
-                const usersInChallenge = res.map(challenge => {
-                    if (challenge) 
-                    {
-                        //Check wether user is invted or has created the challenge (Or not apart of challenge)
+                //Add Wether you are leader in each challenge:
+                const finalsSetup = yourchallenges.map(challenge => {
                         const createdByCurrentUser = challenge.createdBy === global.userInformation?.id;
-                        const invitedToChallenge = challenge.friends && challenge.friends.some(friend => friend.user === global.userInformation?.id);
-    
-                        if (createdByCurrentUser || invitedToChallenge) 
-                        {    
-                            return {
-                                isOwner : createdByCurrentUser,
-                                challenge : challenge,
-                            }
+
+                        return {
+                            isOwner : createdByCurrentUser,
+                            challenge : challenge,
                         }
-                    }
-    
-                    return null;
-                });
-    
-                // Remove null entries from the array
-                const filteredUsersInChallenge = usersInChallenge.filter(userInChallenge => userInChallenge !== null);
-                setInChallenges(filteredUsersInChallenge)
+                })
 
-                console.log(filteredUsersInChallenge)
-
-
-                for (let challenge of filteredUsersInChallenge) {
-                    const firestoreTimestamp = challenge.challenge.startingTime;
-                    const timeLeft = differenceInTime(firestoreTimestamp)
-                    console.log(timeLeft);
-
-                }
-            } catch (err) {
-                console.error(err);
+                console.log(finalsSetup);
+                setInChallenges(finalsSetup);
+            }catch(err){
+                console.log(err);
             }
         }
-    
-        getAllChallenges();
 
-    }, []);
+        getAllYourChallenges();
+    }, [])
 
 
 
@@ -129,8 +115,10 @@ export default function InvitedChallengesPage({navigation})
             </ScrollView>
 
             {!inChallenges.length && (
-                <View>
-                    <Text>Replace this with an actual item</Text>
+                <View style={{alignItems: "center"}}>
+                    <View style={{marginTop: 20, width: "80%",}}>
+                        <CreateChallengeComponent navigation={navigation} showAmount={false} />
+                    </View>
                 </View>
             )}
 
