@@ -36,7 +36,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
         setAllTasks(tasks);
     }, [])
 
-    function startingStatus() //Check wether you have accepted
+    function startingStatus() // ! Can be removed
     {
         for (let member in challenge.challenge.friends)
         {
@@ -47,14 +47,25 @@ export default function AcceptChallengeOverviewPage({ navigation })
         }
     }
 
+    function tStartingStatus() //Check wether you have accepted
+    {
+        for(members of challenge.challenge.joinedMembers){
+            if(members == global.userInformation.id){
+                return true;
+            }
+        }
+        return false;
+    }
+
     const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
     const isOwnerOfChallenge = challenge.isOwner; //Add settings option in <Header/>
-    const [hasAnswered, setHasAnswered] = useState(startingStatus()); //__Should prob be removed, or remade
-    const [hasAcceptedOrDeclined, setHasAcceptedOrDeclined] = useState(challenge?.challenge?.friends?.some(friend => {
-        if (friend.user === global.userInformation?.id) {
-            return friend.hasJoined;
-        }
-    }) || false);
+    const [hasAnswered, setHasAnswered] = useState(tStartingStatus());
+    // const [hasAcceptedOrDeclined, setHasAcceptedOrDeclined] = useState(challenge?.challenge?.friends?.some(friend => { // ? Replace with tStartingStatus? idk
+    //     if (friend.user === global.userInformation?.id) {
+    //         return friend.hasJoined;
+    //     }
+    // }) || false);
+    const [hasAcceptedOrDeclined, setHasAcceptedOrDeclined] = useState(tStartingStatus());
 
     let challengeIconBackground = {
         "Fastest Wins" :    {displayedImage : require("../assets/icons/fastestWins.png"),   setBackgroundColor: "#A6290D" },
@@ -67,7 +78,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
     let setBackgroundColor = challengeIconBackground[challenge.challenge.gameMode].setBackgroundColor ||"#57C945"
     const exampleProfilePicture = "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg"
 
-    function amountJoined()
+    function amountJoined() // ! Remove: Not being used anymore
     {
         let amountJoined = 0;
         for (let member in challenge.challenge.friends)
@@ -147,6 +158,17 @@ export default function AcceptChallengeOverviewPage({ navigation })
         }
     }
 
+    function checkWetherMembersHasJoined(memberID)
+    {
+        for(let members in challenge.challenge.joinedMembers)
+        {
+            const member = challenge.challenge.joinedMembers[members];
+            if(member == memberID){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     const [textInputToCreateNewChallenge, setTextInputToCreateNewChallenge] = useState("");
@@ -174,20 +196,20 @@ export default function AcceptChallengeOverviewPage({ navigation })
                 </View>
                 
                 <View style={{flexDirection: "column", marginBottom: 20}}>
-                    <Text style={[style.blackFontSize20, {marginBottom: 11} ]}>People participating: {amountJoined()}/{challenge.challenge.friends.length}</Text>
+                    <Text style={[style.blackFontSize20, {marginBottom: 11} ]}>People participating: {challenge.challenge.joinedMembers.length}/{challenge.challenge.invitedMembers.length}</Text>
                     <View style={{flexDirection: "row"}}>
-                        {challenge.challenge.friends.map((participant, index) => (
+                        {challenge.challenge.invitedMembers.map((member, index) => {
                             <View key={index}>
                                 <Image
                                     source={{uri: exampleProfilePicture}}
-                                    style={{zIndex: challenge.challenge.friends.length - index, width: 45, height: 45, borderRadius: "50%", transform: [{translateX: -index*10}]}}
+                                    style={{zIndex: challenge.challenge.invitedMembers.length - index, width: 45, height: 45, borderRadius: "50%", transform: [{translateX: -index*10}]}}
                                     imageStyle={{borderRadius: "50%"}}
                                 />
-                                {!participant.hasJoined && (
+                                {!checkWetherMembersHasJoined(member) && (
                                     <View style={{zIndex: 12, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', width: 45, height: 45, borderRadius: "50%", transform: [{translateX: -index*10}]}}></View>
                                 )}
                             </View>
-                        ))}
+                        })}
                     </View>
                 </View>
 

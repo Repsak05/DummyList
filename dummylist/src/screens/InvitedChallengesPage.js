@@ -72,18 +72,16 @@ export default function InvitedChallengesPage({navigation})
         getAllYourChallenges();
     }, [])
 
-
-
-    function haveYouAccepted(challengeObj)
+    function tHaveYourAccepted(challengeObj)
     {
-        for(let members in challengeObj.challenge.friends)
+        for(let members in challengeObj.challenge.joinedMembers)
         {
-            let mem = challengeObj.challenge.friends[members];
-            if(mem.user == global.userInformation.id && mem.hasJoined){
-                return true
+            const member = challengeObj.challenge.joinedMembers[members];
+            if(member == global.userInformation.id){
+                return true;
             }
         }
-        return false
+        return false;
     }
 
 
@@ -105,7 +103,7 @@ export default function InvitedChallengesPage({navigation})
                             <CarouselItem 
                                 title={challenge.challenge.challengeName} 
                                 extraStylesToBackground={!challenge.isOwner ? { backgroundColor: 'rgba(0, 0, 0, 0.5)' } : null} //Should be changed
-                                extraText={!haveYouAccepted(challenge) ? "Not Accepted" : "Starts in " + (differenceInTime(challenge.challenge.startingTime)).toFixed(2) + "h "}
+                                extraText={!tHaveYourAccepted(challenge) ? "Not Accepted" : "Starts in " + (differenceInTime(challenge.challenge.startingTime)).toFixed(2) + "h "}
                                 onPressFunction={() => challengeInviteClicked(challenge)}
                                 hasPlacement={false}
                             />
