@@ -33,7 +33,7 @@ export default function InvitedChallengesPage({navigation})
         console.log("Navigate to invited challenge", )
         console.table(challenge)
        
-        navigation.navigate("AcceptChallengeOverviewPage", {challenge})
+        navigation.navigate("AcceptChallengeOverviewPage", {chal : challenge})
     }
 
     //Data taking from db

@@ -15,11 +15,10 @@ export default function AccountSettingsPage({navigation})
     const [username, setUsername] = useState(global.userInformation?.Username || "Guest404")
     const [email, setEmail] = useState(global.userInformation?.Email || "Guest404@gmail.com")
 
-    function newUserInformation()
+    function editProfileImage()
     {
-
+        console.log("Edit profile image");
     }
-
     return(
         <View>
             <View style={{marginTop: 55, marginBottom: 40}}>
@@ -27,7 +26,7 @@ export default function AccountSettingsPage({navigation})
             </View>
 
             <ImageBackground style={{ width: "100%", height: 341}} source={require("../assets/icons/exampleProfilePicture.svg")}>
-                <Pressable onPress={() => console.log("Edit profile image")} style={{position: "absolute", bottom: 20, right: 20, width: 45, height: 45, borderRadius: "50%", backgroundColor: "#0477BF", alignItems: "center", justifyContent: "center"}}>
+                <Pressable onPress={() => editProfileImage()} style={{position: "absolute", bottom: 20, right: 20, width: 45, height: 45, borderRadius: "50%", backgroundColor: "#0477BF", alignItems: "center", justifyContent: "center"}}>
                     <Image style={{width:24, height: 24, }} source={require("../assets/icons/editIcon.svg")}/>
                 </Pressable>
             </ImageBackground>

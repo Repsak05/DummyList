@@ -14,13 +14,14 @@ export default function AcceptChallengeOverviewPage({ navigation })
 { //TODO: If there's more than 9 tasks in a challenge, then it should be scrollable
   //TODO: When clicking on the yes/no button - add/remove from joinedMembers
   //TODO: Initial "Accept-" / "Decline invite" based on correct array (joinedMembers)
-
+  //TODO: If isOwnerOfChallenge then add edit options
   
     const route = useRoute();
-    const {challenge} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
-
+    const {chal} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
+    const [challenge, setChallenge] = useState(chal);
+    
     const [allTasks, setAllTasks] = useState([]);
-
+    
     useEffect(() => {
         let tasks = [];
 
@@ -36,17 +37,6 @@ export default function AcceptChallengeOverviewPage({ navigation })
         setAllTasks(tasks);
     }, [])
 
-    function startingStatus() // ! Can be removed
-    {
-        for (let member in challenge.challenge.friends)
-        {
-            let mem = challenge.challenge.friends[member];
-            if( global.userInformation.id == mem.user){
-                return mem.hasJoined
-            }
-        }
-    }
-
     function tStartingStatus() //Check wether you have accepted
     {
         for(members of challenge.challenge.joinedMembers){
@@ -58,7 +48,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
     }
 
     const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
-    const isOwnerOfChallenge = challenge.isOwner; //Add settings option in <Header/>
+    // const isOwnerOfChallenge = challenge.isOwner; //Add settings option in <Header/>
     const [hasAnswered, setHasAnswered] = useState(tStartingStatus());
     // const [hasAcceptedOrDeclined, setHasAcceptedOrDeclined] = useState(challenge?.challenge?.friends?.some(friend => { // ? Replace with tStartingStatus? idk
     //     if (friend.user === global.userInformation?.id) {
@@ -76,21 +66,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
     
     let displayedImage     = challengeIconBackground[challenge.challenge.gameMode].displayedImage     || require("../assets/icons/deleteIcon.svg")
     let setBackgroundColor = challengeIconBackground[challenge.challenge.gameMode].setBackgroundColor ||"#57C945"
-    const exampleProfilePicture = "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg"
-
-    function amountJoined() // ! Remove: Not being used anymore
-    {
-        let amountJoined = 0;
-        for (let member in challenge.challenge.friends)
-        {
-            let mem = challenge.challenge.friends[member];
-
-            if(mem.hasJoined){
-                amountJoined++;
-            }
-        }
-        return amountJoined;
-    }
+    const exampleProfilePicture = "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg";
 
     async function areYouParticipating(ans){
         for (let member in challenge.challenge.friends){
@@ -114,6 +90,31 @@ export default function AcceptChallengeOverviewPage({ navigation })
     {
         try{
             await updateArrayFieldInDocument("Challenges", challenge.challenge.id, "joinedMembers", global.userInformation.id, ans)
+
+            //Update current displayed info right away - so it doesnt have to load new info from db:
+            let theNewArr = challenge.challenge.joinedMembers;
+            
+            if(ans){
+                theNewArr.push(global.userInformation.id);
+
+            } else {
+                for(let i = 0; i < challenge.challenge.joinedMembers.length; i++)
+                {
+                    if(challenge.challenge.joinedMembers[i] == global.userInformation.id)
+                    {
+                        theNewArr.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+
+            setChallenge(prevChallenge => ({
+                ...prevChallenge,
+                challenge : {
+                    ...prevChallenge.challenge,
+                    joinedMembers : theNewArr
+                }
+            }))
         } catch(err){
             console.log(err);
         }
@@ -198,48 +199,48 @@ export default function AcceptChallengeOverviewPage({ navigation })
                 <View style={{flexDirection: "column", marginBottom: 20}}>
                     <Text style={[style.blackFontSize20, {marginBottom: 11} ]}>People participating: {challenge.challenge.joinedMembers.length}/{challenge.challenge.invitedMembers.length}</Text>
                     <View style={{flexDirection: "row"}}>
-                        {challenge.challenge.invitedMembers.map((member, index) => {
+                        {challenge.challenge.invitedMembers.map((member, index) => (
                             <View key={index}>
                                 <Image
                                     source={{uri: exampleProfilePicture}}
-                                    style={{zIndex: challenge.challenge.invitedMembers.length - index, width: 45, height: 45, borderRadius: "50%", transform: [{translateX: -index*10}]}}
+                                    style={{zIndex: challenge.challenge.invitedMembers.length - index, width: 45, height: 45, backgroundColor: "#268", borderRadius: "50%", transform: [{translateX: -index*10}]}}
                                     imageStyle={{borderRadius: "50%"}}
                                 />
                                 {!checkWetherMembersHasJoined(member) && (
                                     <View style={{zIndex: 12, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', width: 45, height: 45, borderRadius: "50%", transform: [{translateX: -index*10}]}}></View>
                                 )}
                             </View>
-                        })}
+                        ))}
                     </View>
                 </View>
 
                 <View style={{flexDirection: "column", }}>
                     <View style={{flexDirection: "row", marginBottom: 5}}>
 
-                        {hasAnswered && hasAcceptedOrDeclined && !isOwnerOfChallenge &&(
+                        {hasAnswered && hasAcceptedOrDeclined && !challenge.isOwner &&(
                             <Text style={[style.blackFontSize16]}>You've Accepted! </Text>
                         )}
                         <Text style={[style.blackFontSize16]}>This Challenge Starts in </Text>
 
                         <Text style={[style.blackFontSize16Medium]}>{differenceInTime(challenge.challenge.startingTime).toFixed(2)} Hours.</Text>
-                        {!hasAnswered && !isOwnerOfChallenge && (
+                        {!hasAnswered && !challenge.isOwner && (
                             <Text style={[style.blackFontSize16]}> Do You Want to Accept? </Text>
                         )}
                     </View>
 
                     <View >
-                        {!isOwnerOfChallenge && !hasAnswered ? (
+                        {!challenge.isOwner && !hasAnswered ? (
                             <View style={{flexDirection: "row"}}>
-                                <Pressable onPress={() => {setHasAnswered(true); setHasAcceptedOrDeclined(false); areYouParticipating(false); tAreYouParticipating(false)}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", marginRight: 13}]}>
+                                <Pressable onPress={() => {tAreYouParticipating(false); setHasAnswered(true); setHasAcceptedOrDeclined(false);}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", marginRight: 13}]}>
                                     <Text style={[style.blackFontSize16Medium, {textAlign: "center"}]}>Decline Invite</Text>     
                                 </Pressable>
-                                <Pressable onPress={() => {setHasAnswered(true); setHasAcceptedOrDeclined(true);  areYouParticipating(true); tAreYouParticipating(true); incrementTimesParticipatedStats(1);}} style={[style.roundedCornersSmall, {width: 185, height: 50, borderWidth: 5, borderColor: "#D0E4FF", justifyContent: "center"}]}>
+                                <Pressable onPress={() => {tAreYouParticipating(true); setHasAnswered(true); setHasAcceptedOrDeclined(true); incrementTimesParticipatedStats(1);}} style={[style.roundedCornersSmall, {width: 185, height: 50, borderWidth: 5, borderColor: "#D0E4FF", justifyContent: "center"}]}>
                                     <Text style={[style.blackFontSize16Medium, {textAlign: "center"}]}>Accept Invite</Text>
                                 </Pressable>
                             </View>
                         ): (
                             <View>
-                                {!isOwnerOfChallenge && (
+                                {!challenge.isOwner && (
                                     <Pressable  onPress={() => {setHasAnswered(false); if(hasAcceptedOrDeclined){incrementTimesParticipatedStats(-1);} setHasAcceptedOrDeclined(null); areYouParticipating(false); tAreYouParticipating(false);}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", alignContent: "center", }]}>
                                         <Text style={[style.blackFontSize16Medium, {textAlign: "center"}]}>Cancel</Text>
                                     </Pressable>
