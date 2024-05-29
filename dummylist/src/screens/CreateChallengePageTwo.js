@@ -43,6 +43,7 @@ export default function CreateChallengePageTwo({ navigation, route })
             }
         }
         getAllUsers();
+        updateStartingTime(24); //Set initial starting time to be in one day
     }, [allCurrentChallengeValues.friends]);
 
     function updateStartingTime(val) {
@@ -54,6 +55,8 @@ export default function CreateChallengePageTwo({ navigation, route })
             ...allCurrentChallengeValues,
             startingTime: today
         });
+
+        console.log(today);
     }
 
     function addFriendToChallenge(id) {
@@ -97,17 +100,9 @@ export default function CreateChallengePageTwo({ navigation, route })
         });
     }
 
-    function hasFriendBeenInvited(id){
-        const friend = allCurrentChallengeValues.friends.find(friend => friend.user === id);
-        if (friend) {
-            return friend.hasJoined; //Prob false
-        }
-        return true;
-    }
-
-
     function nextFunction() {
         console.log("Go to next!");        
+
 
         navigation.navigate("CreateChallengePageThree", {
             allCurrentChallengeValues
@@ -120,8 +115,6 @@ export default function CreateChallengePageTwo({ navigation, route })
             allCurrentChallengeValues
         });
     }
-
-
 
     return (
         <View>

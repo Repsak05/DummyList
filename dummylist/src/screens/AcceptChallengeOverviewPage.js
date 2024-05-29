@@ -48,13 +48,8 @@ export default function AcceptChallengeOverviewPage({ navigation })
     }
 
     const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
-    // const isOwnerOfChallenge = challenge.isOwner; //Add settings option in <Header/>
     const [hasAnswered, setHasAnswered] = useState(tStartingStatus());
-    // const [hasAcceptedOrDeclined, setHasAcceptedOrDeclined] = useState(challenge?.challenge?.friends?.some(friend => { // ? Replace with tStartingStatus? idk
-    //     if (friend.user === global.userInformation?.id) {
-    //         return friend.hasJoined;
-    //     }
-    // }) || false);
+
     const [hasAcceptedOrDeclined, setHasAcceptedOrDeclined] = useState(tStartingStatus());
 
     let challengeIconBackground = {
@@ -64,27 +59,9 @@ export default function AcceptChallengeOverviewPage({ navigation })
         "Long List" :       {displayedImage : require("../assets/icons/longListIcon.png"),  setBackgroundColor: "#F2E2C4" },
     }
     
-    let displayedImage     = challengeIconBackground[challenge.challenge.gameMode].displayedImage     || require("../assets/icons/deleteIcon.svg")
-    let setBackgroundColor = challengeIconBackground[challenge.challenge.gameMode].setBackgroundColor ||"#57C945"
+    let displayedImage          = challengeIconBackground[challenge.challenge.gameMode]?.displayedImage     || require("../assets/icons/deleteIcon.svg");
+    let setBackgroundColor      = challengeIconBackground[challenge.challenge.gameMode]?.setBackgroundColor || "#57C945";
     const exampleProfilePicture = "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg";
-
-    async function areYouParticipating(ans){
-        for (let member in challenge.challenge.friends){
-            let mem = challenge.challenge.friends[member];
-            if( global.userInformation.id == mem.user){
-                mem.hasJoined = ans;
-
-                console.log(mem.hasJoined)
-            }
-        }
-
-        try{
-            await addToDocument("Challenges", challenge.challenge.id, "friends", challenge.challenge.friends, false)
-            console.log(challenge.challenge)
-        } catch (err){
-            console.error(err)
-        }
-    }
 
     async function tAreYouParticipating(ans)
     {
@@ -241,7 +218,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
                         ): (
                             <View>
                                 {!challenge.isOwner && (
-                                    <Pressable  onPress={() => {setHasAnswered(false); if(hasAcceptedOrDeclined){incrementTimesParticipatedStats(-1);} setHasAcceptedOrDeclined(null); areYouParticipating(false); tAreYouParticipating(false);}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", alignContent: "center", }]}>
+                                    <Pressable  onPress={() => {setHasAnswered(false); if(hasAcceptedOrDeclined){incrementTimesParticipatedStats(-1);} setHasAcceptedOrDeclined(null); tAreYouParticipating(false);}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", alignContent: "center", }]}>
                                         <Text style={[style.blackFontSize16Medium, {textAlign: "center"}]}>Cancel</Text>
                                     </Pressable>
                                 )}

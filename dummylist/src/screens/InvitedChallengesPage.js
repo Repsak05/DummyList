@@ -49,7 +49,7 @@ export default function InvitedChallengesPage({navigation})
                             { field: "startingTime", operator: ">", value: new Date() },
                             { field: "invitedMembers", operator: "array-contains", value: global.userInformation.id }
                         ], 
-                        [{ field: "startingTime", direction: "desc" }]
+                        [{ field: "startingTime", direction: "asc" }]
                 );
 
                 //Add Wether you are leader in each challenge:
@@ -122,5 +122,4 @@ export default function InvitedChallengesPage({navigation})
 
         </View>
     )
-
 }
