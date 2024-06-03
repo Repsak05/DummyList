@@ -15,8 +15,9 @@ export default function ProfileChallengesOverview({navigation})
         async function getPostsPerChallenge()
         {
             try{
-                //Get all your challenges  
-                const allYourChallenges = await getAllChallenges(false);
+                //Get all your challenges  --> // ! this is very heavy - add more arguments
+                const allYourChallenges = await getAllChallenges(false); //.where global.userInformation.id is in joinedMembers
+                console.log(allYourChallenges);
 
                 //Get all your postsID in each challenge
                 // [[id1, id2], [id3], [id4], [id5, id6, id6], ...]

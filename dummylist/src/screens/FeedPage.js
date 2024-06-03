@@ -21,6 +21,8 @@ export default function FeedPage({ navigation })
         allPostsInChallenge : ["post1", "post2", "post3", "post4", "post5"]
     */
 
+    // ! Remake fetchData (shouldnt use getAllChalleges)
+
     //Change this to the user's profilepicture in users db
     const exampleURI = "https://as1.ftcdn.net/v2/jpg/05/68/23/98/1000_F_568239815_8NB11CB6LT2D3lBhDVa10jQ6qMYJKCzh.jpg"
        
@@ -47,7 +49,7 @@ export default function FeedPage({ navigation })
             }
         }
 
-        async function fetchData() 
+        async function fetchData()  //! This funcition is very DB heavy!
         {
             try {
                 let allID = await getAllChallenges(); //Gets all postsID of challenges you're in
@@ -55,7 +57,7 @@ export default function FeedPage({ navigation })
 
                 let allPosts = await getPosts(allID);
 
-                //Add usernames to all postCreators
+                //Add usernames to all postCreators //! can be improved
                 let allPostsWithUsername = await Promise.all(allPosts.map(async post => {
                     const users = await readData("Users");
                     let postedByName = "Unknown User";

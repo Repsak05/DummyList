@@ -1,4 +1,4 @@
-import { readData, readSingleUserInformation } from "../../firebase";
+import { readData, readSingleUserInformation, readDataWithQuery } from "../../firebase";
 
 function calculatePlacement(challenge, id = global.userInformation.id, getNumberOfCompletedChallenges = false)
 {
@@ -41,38 +41,33 @@ function calculatePlacement(challenge, id = global.userInformation.id, getNumber
 async function getAllChallenges(returnPostsOrChallenges = true)
 {
     try{
-        const res = await readData("Challenges")
-        
-        //Check if you are in challenge (If add it)
-        let inChallenges = []
-        res.map(challenge => {
-            
-            for (let member in challenge.friends)
-            {
-                let mem = challenge.friends[member]
 
-                if(mem.user == global.userInformation.id && mem.hasJoined)
-                {
-                    inChallenges.push(challenge)
-                }
-            }
-        })
-        
+        let allChallengesThatYouAreIn = await readDataWithQuery(
+            "Challenges",
+            [
+                { field: "joinedMembers", operator: "array-contains", value: global.userInformation.id },
+                { field: "startingTime", operator: "<", value: new Date()}
+            ],
+            [
+                { field: "startingTime", direction: "desc" }
+            ]
+        );
+
         if(!returnPostsOrChallenges){
-            return inChallenges //Doesnt happen as default
+            return allChallengesThatYouAreIn; //Doesnt happen as default
         }
 
         //Return all postID's in that challenge
-        let allPostsID = []
+        let allPostsID = [];
 
-        inChallenges.map(challenge => {
+        allChallengesThatYouAreIn.map(challenge => {
             for(let friendsTask of challenge.tasks)
             {
                 for(let member of friendsTask.friendsTask)
                 {
                     if(member.hasCompletedTask)
                     {
-                        allPostsID.push(member.postID)
+                        allPostsID.push(member.postID);
                     }
                 }
             }

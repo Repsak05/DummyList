@@ -90,7 +90,11 @@ export default function CameraComponent({taskRef, challengeID, navigation})
                     LikedBy: [],
                 });
 
-                await updateHasCompletedTask(challengeID, eachPlayer, taskRef, gottenPostID);
+                await updateHasCompletedTask(challengeID, eachPlayer, taskRef, gottenPostID); //Heavy
+
+                // ? maybe not needed: v2 add postId to arr 
+                // await addToDocument("Challenges", challengeID, "posts", gottenPostID, true);
+                // console.log("added " + gottenPostID + " to " + challengeID);
             }
     
             for (let eachPlayer of taskRef.friendsTask) {
@@ -99,6 +103,7 @@ export default function CameraComponent({taskRef, challengeID, navigation})
                     break;
                 }
             }
+
 
             //Give rewards (XP &c.)
             const xpGained = 20;

@@ -80,7 +80,7 @@ function readDataWithQuery(readCollection, filters = [], orderings = []) {
             });
     });
 }
-//Exampke ussage:
+//Example ussage:
 // readDataWithQuery("Challenges", [{ field: "startingTime", operator: ">", value: new Date() }], [{ field: "startingTime", direction: "desc" }])
 //     .then(data => console.log(data))
 //     .catch(err => console.error(err));

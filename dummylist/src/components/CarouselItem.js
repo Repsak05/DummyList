@@ -17,7 +17,7 @@ export default function CarouselItem({navigation, isPlacedInTheMiddle = false, t
                                 </View>
                                 {extraText && (
                                     <View style={[{ position: "absolute", top: 15, right: 32 }]}>
-                                        <Text style={styles.blackFontSize20}>{extraText}</Text>
+                                        <Text style={[styles.whiteFontSize25,]}>{extraText}</Text>
                                     </View>
                                 )}
                             </>
