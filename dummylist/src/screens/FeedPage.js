@@ -5,23 +5,13 @@ import style from "../style";
 import Header from "../components/Header";
 import UploadedChallengeToFeed from "../components/UploadedChallengeToFeed";
 
-import { readData, readSingleUserInformation } from "../../firebase";
+import { readData, readSingleUserInformation, readDocumentsInArray } from "../../firebase";
 import {getAllChallenges} from "../components/GlobalFunctions"
 
 export default function FeedPage({ navigation }) 
 {   //TODO: Replace Loading... with correct loading screen
         //Only load a few posts at a time
     //TODO: When liking image: Add it to db
-    //DB Reach can be improved a lot
-
-    //Remake DB friends to be:
-    /*
-        invitedFriends : ["id1", "id2", "id3"]
-        joinedFriends : ["id1", "id3"]
-        allPostsInChallenge : ["post1", "post2", "post3", "post4", "post5"]
-    */
-
-    // ! Remake fetchData (shouldnt use getAllChalleges)
 
     //Change this to the user's profilepicture in users db
     const exampleURI = "https://as1.ftcdn.net/v2/jpg/05/68/23/98/1000_F_568239815_8NB11CB6LT2D3lBhDVa10jQ6qMYJKCzh.jpg"
@@ -29,51 +19,24 @@ export default function FeedPage({ navigation })
     const [allPostsYourShouldSee, setAllPostsYourShouldSee] = useState();
 
     useEffect(() => {
-
-        async function getPosts(IDs)
-        {
-            //Takes in a list of postID's and outputs the post objects
-
-            try{
-                let allPostsInYourFeed = []
-                for(let id of IDs)
-                {
-                    let val = await readSingleUserInformation("Posts", id)
-                    allPostsInYourFeed.push(val)
-                }
-
-                return allPostsInYourFeed;
-
-            }catch (err){
-                console.error(err);
-            }
-        }
-
-        async function fetchData()  //! This funcition is very DB heavy!
+        async function fetchData()
         {
             try {
                 let allID = await getAllChallenges(); //Gets all postsID of challenges you're in
-                console.log(allID);
+                let allPosts = await readDocumentsInArray("Posts", [], [], allID); //Get the posts
 
-                let allPosts = await getPosts(allID);
 
-                //Add usernames to all postCreators //! can be improved
+                //Add usernames to all postCreators
                 let allPostsWithUsername = await Promise.all(allPosts.map(async post => {
-                    const users = await readData("Users");
-                    let postedByName = "Unknown User";
-                    for (let user of users) {
-                        if (user.id === post.PostedBy) {
-                            postedByName = user.Username;
-                            break; 
-                        }
-                    }
+
+                    const users = await readSingleUserInformation("Users", post.PostedBy)
+                    let postedByName = users.Username || "Unknown User";
 
                     return {
                         ...post,
                         PostedByUsername: postedByName,
                     };
                 }));
-
 
                 //Set all posts with usernames to later be displayed
                 setAllPostsYourShouldSee(allPostsWithUsername)

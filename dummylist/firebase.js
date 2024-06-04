@@ -2,7 +2,7 @@
 import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy, where } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy, where, documentId } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 
@@ -84,6 +84,44 @@ function readDataWithQuery(readCollection, filters = [], orderings = []) {
 // readDataWithQuery("Challenges", [{ field: "startingTime", operator: ">", value: new Date() }], [{ field: "startingTime", direction: "desc" }])
 //     .then(data => console.log(data))
 //     .catch(err => console.error(err));
+
+
+function readDocumentsInArray(readCollection, filters = [], orderings = [], documentIDs = []) {
+    const userCollection = collection(firestore, readCollection); 
+
+    let q = query(userCollection);
+
+    // Apply filters
+    filters.forEach(filter => {
+        q = query(q, where(filter.field, filter.operator, filter.value));
+    });
+
+    // Apply orderings
+    orderings.forEach(order => {
+        q = query(q, orderBy(order.field, order.direction));
+    });
+
+    // Apply document ID filter
+    if (documentIDs.length > 0) {
+        q = query(q, where(documentId(), 'in', documentIDs));
+    }
+
+    return new Promise((resolve, reject) => {
+        getDocs(q)
+            .then((res) => {
+                const data = [];
+                res.docs.forEach((doc) => {
+                    data.push({ ...doc.data(), id: doc.id });
+                });
+                resolve(data);
+            })
+            .catch((err) => {
+                console.error("Error", err);
+                reject(err);
+            });
+    });
+}
+
 async function addToCollection(collectionName, object) {
     try{
         const docRef = await addDoc(collection(firestore, collectionName), object);
@@ -315,6 +353,7 @@ export {
     firebaseApp,
     firebaseAuth,
     updateArrayFieldInDocument,
+    readDocumentsInArray,
     getUsernamesByIds,
     addToDocument,
     removeFromDocumentInArr,
