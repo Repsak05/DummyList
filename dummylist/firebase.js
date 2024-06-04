@@ -2,7 +2,7 @@
 import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy, where, documentId } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy, where, documentId, setDoc  } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 
@@ -133,6 +133,19 @@ async function addToCollection(collectionName, object) {
     };
 }
 
+async function addSingleValueToDocument(collectionName, documentID, field, value) {
+    try {
+        const docRef = doc(firestore, collectionName, documentID);
+    
+        // Set the field with the specified value
+        await setDoc(docRef, { [field]: value }, { merge: true });
+      
+        return { [field]: value };
+    } catch (error) {
+        console.error('Error adding value to document:', error);
+        return false;
+    }
+}
 
 function deleteCollection(collection, id) //e.g. "Users", "ND781GH1N89CH17"
 {
@@ -356,6 +369,7 @@ export {
     readDocumentsInArray,
     getUsernamesByIds,
     addToDocument,
+    addSingleValueToDocument,
     removeFromDocumentInArr,
     updateHasCompletedTask,
     readData,

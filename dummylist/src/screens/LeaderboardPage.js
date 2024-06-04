@@ -82,6 +82,7 @@ export default function LeaderboardPage({navigation})
                                 placement={participant.placement}
                                 challengesCompleted={calculatePlacement(challenge, participant.id, true)}
                                 amountOfChallenges={challenge?.tasks.length}
+                                userID={participant.id}
                             />
                         </View>
                     ))) : (

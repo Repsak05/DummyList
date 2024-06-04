@@ -31,6 +31,7 @@ import RewardPage from './src/screens/RewardPage.js';
 import UploadErrorPage from './src/screens/UploadErrorPage.js';
 import SettingsPage from './src/screens/SettingsPage.js';
 import AccountSettingsPage from './src/screens/AccountSettingsPage.js';
+import ChangeProfilePicture from './src/screens/ChangeProfilePicture.js';
 import NotificationSettingsPage from './src/screens/NotificationSettingsPage.js';
 import LanguageSettingsPage from './src/screens/LanguageSettingsPage.js';
 
@@ -125,6 +126,11 @@ export default function App() {
         <Stack.Screen
           name="AccountSettingsPage"
           component={AccountSettingsPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ChangeProfilePicture"
+          component={ChangeProfilePicture}
           options={{ headerShown: false }}
         />
         <Stack.Screen

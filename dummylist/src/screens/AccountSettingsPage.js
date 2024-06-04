@@ -18,6 +18,7 @@ export default function AccountSettingsPage({navigation})
     function editProfileImage()
     {
         console.log("Edit profile image");
+        navigation.navigate("ChangeProfilePicture");
     }
     return(
         <View>
@@ -25,7 +26,7 @@ export default function AccountSettingsPage({navigation})
                 <Header navigation={navigation} pageName={"Account Settings"}/>
             </View>
 
-            <ImageBackground style={{ width: "100%", height: 341}} source={require("../assets/icons/exampleProfilePicture.svg")}>
+            <ImageBackground style={{ width: "100%", height: 341}} source={global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"}}>
                 <Pressable onPress={() => editProfileImage()} style={{position: "absolute", bottom: 20, right: 20, width: 45, height: 45, borderRadius: "50%", backgroundColor: "#0477BF", alignItems: "center", justifyContent: "center"}}>
                     <Image style={{width:24, height: 24, }} source={require("../assets/icons/editIcon.svg")}/>
                 </Pressable>

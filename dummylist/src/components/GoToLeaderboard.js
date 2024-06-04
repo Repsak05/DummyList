@@ -17,7 +17,7 @@ export default function GoToLeaderboard({placement, allPlayers, navigation, prop
         <View
             style={[style.goToLeaderboardBackground, style.displayRow, style.centerVeritically, style.centerHorzontally, {alignSelf: "center", height: 124}]} >
 
-            <Image style={[style.widthHeight70,{ marginRight: 10, borderRadius: 15}]} source={profilePicture} />
+            <Image style={[style.widthHeight70,{ marginRight: 10, borderRadius: 15}]} source={global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"}} />
 
             <View style={[style.displayColumn, {marginRight: 40}]}>
                 <Text style={style.blackFontSize20}>Your Placement:</Text>

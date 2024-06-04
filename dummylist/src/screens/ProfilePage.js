@@ -40,7 +40,7 @@ export default function ProfilePage({navigation})
 
     return(
         <View style={{flex: 1, flexDirection: "column", backgroundColor: "#D0E4FF", position: "relative"}}>
-            <Image style={{ width: "100%", height: 341}} source={{uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"}}/>
+            <Image style={{ width: "100%", height: 341}} source={global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"}}/>
             
             <View style={{position: "absolute", top: 55, left: 0, width: "100%"}}>
                 <Header pageName={" "} navigation={navigation} isOnProfilePage={true}/>

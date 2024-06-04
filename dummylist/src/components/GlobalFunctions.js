@@ -111,4 +111,25 @@ function differenceInTime(beginningTime)
     return timeDifferenceHours;
 }
 
-export {differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded}
+async function getProfilePic(userID) //?DB can probably be improved by only retrieving .ProfilePicture
+{
+    try{
+        let profilePic;
+        const defaultImage = {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"};
+        if(userID == global.userInformation.id)
+        {
+            profilePic = global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : defaultImage;
+
+        }else {
+            const profileInfo = await readSingleUserInformation("Users", userID);
+            profilePic = profileInfo.ProfilePicture ? {uri: profileInfo.ProfilePicture} : defaultImage;
+        }
+
+        return profilePic
+
+    }catch(err){
+        console.error(err);
+    }
+}
+
+export {differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}
