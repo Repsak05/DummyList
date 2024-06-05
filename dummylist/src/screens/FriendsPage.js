@@ -26,7 +26,7 @@ export default function FriendsPage({navigation})
                 const usersInDatabase = res.map(user => ({
                     username    : user.Username,
                     level       : user.Level,
-                    picture     : {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"},
+                    picture     : user.ProfilePicture ? {uri: user.ProfilePicture} : {uri : "https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg"},
                     mutual      : 404,
                     id          : user.id
                 }));
@@ -57,7 +57,7 @@ export default function FriendsPage({navigation})
     {
         //Navigate to new page
         console.log('"See all" has been pressed')
-        navigation.navigate("AllFriendsPage", {allFriends : yourFriends})
+        navigation.navigate("AllFriendsPage", {allFriends : yourFriends, allUsers : allUsers});
     }
 
     useEffect(() => {
@@ -83,9 +83,6 @@ export default function FriendsPage({navigation})
     }, [searchUsername, allUsers]);
     
     
- 
-
-    const exampleProfilePicture = "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft";
     const exampleMutualFriends = 404;
     const exampleTimeAgo = "1 d";
 
@@ -159,6 +156,20 @@ export default function FriendsPage({navigation})
         }
     }
 
+    function getImageFromID(id)
+    {
+        for(let users in allUsers)
+        {
+            const user = allUsers[users];
+
+            if(user.id == id)
+            {
+                return user.image;
+            }
+
+        }
+        console.log("No image found for user: " + id);
+    }
 
     function isElementInArray(element, arr = yourFriends, includeYourID = true)
     {
@@ -206,7 +217,7 @@ export default function FriendsPage({navigation})
 
                             {yourPendingFriendRequests?.map((id, index) => (
                                 <View key={index}>
-                                    <AddFriends id={id} showMutualFriends={true} amountOfMutualFriends={exampleMutualFriends} showTimeAgo={true} timeAgo={exampleTimeAgo} showAcceptFriend={true} onPressAcceptFriend={() => {console.log("Friend Request got accepted"); acceptFriendRequest(id);}} onPressDenyFriend={() => {console.log("Friend Request got Denied"); declineFriendRequest(id);}}/>
+                                    <AddFriends id={id} image={getImageFromID(id)} showMutualFriends={true} amountOfMutualFriends={exampleMutualFriends} showTimeAgo={true} timeAgo={exampleTimeAgo} showAcceptFriend={true} onPressAcceptFriend={() => {console.log("Friend Request got accepted"); acceptFriendRequest(id);}} onPressDenyFriend={() => {console.log("Friend Request got Denied"); declineFriendRequest(id);}}/>
                                 </View>
                             ))}
                         </View>
@@ -223,7 +234,7 @@ export default function FriendsPage({navigation})
                     <ScrollView horizontal={true} style={{flexDirection: "row", marginHorizontal: 10}}>
                         {yourFriends?.slice(0, 3).map((id, index) => (
                             <View key={index} style={{marginRight: 14}}>
-                                <FriendOverviewComponent id={id} />
+                                <FriendOverviewComponent id={id} image={getImageFromID(id)}/>
                             </View>
                         ))}
                     </ScrollView>
@@ -234,7 +245,7 @@ export default function FriendsPage({navigation})
                     <Text style={[style.blackFontSize25, {textAlign: "center", marginBottom: 9}]} >Requests Sent ({yourSentFriendRequests?.length || 0})</Text>
                     {yourSentFriendRequests?.map((id, index) => (
                         <View key={index}>
-                            <AddFriends id={id} showLevel={true} showCancelFriend={true} onPressCancel={() => {console.log("Friend Request got canceled"); cancelFriendRequest(id);}}/>
+                            <AddFriends id={id} image={getImageFromID(id)} showLevel={true} showCancelFriend={true} onPressCancel={() => {console.log("Friend Request got canceled"); cancelFriendRequest(id);}}/>
                         </View>
                     ))}
                 </View>

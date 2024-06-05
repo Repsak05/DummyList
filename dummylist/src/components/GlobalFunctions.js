@@ -36,8 +36,6 @@ function calculatePlacement(challenge, id = global.userInformation.id, getNumber
     }
 }
 
-
-
 async function getAllChallenges(returnPostsOrChallenges = true)
 {
     try{
@@ -80,7 +78,6 @@ async function getAllChallenges(returnPostsOrChallenges = true)
 }
 
 
-
 const increasingXPNeeded = 20;
 const baseXP = 10; //needs to be smaller than increasingXPNeeded (or else implement if statement)
 
@@ -111,11 +108,11 @@ function differenceInTime(beginningTime)
     return timeDifferenceHours;
 }
 
+const defaultImage = {uri : "https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg"};
 async function getProfilePic(userID) //?DB can probably be improved by only retrieving .ProfilePicture
 {
     try{
         let profilePic;
-        const defaultImage = {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"};
         if(userID == global.userInformation.id)
         {
             profilePic = global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : defaultImage;
@@ -128,6 +125,7 @@ async function getProfilePic(userID) //?DB can probably be improved by only retr
         return profilePic
 
     }catch(err){
+        console.log('Failed to get profile picture');
         console.error(err);
     }
 }

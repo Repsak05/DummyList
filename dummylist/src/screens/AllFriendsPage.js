@@ -10,8 +10,13 @@ export default function AllFriendsPage({navigation, route})
 { //TODO: Update to actual profilePicture
     //Maybe use global.userInformation?
 
+
+    // ? Might need to create a useEffect if route.params is empty (in case of: link to the page - no navigation)
     const { allFriends } = route.params;
-    const exampleProfilePicture = "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft";
+    const { allUsers } = route.params; //Can be used for DB improvement
+
+
+    const exampleProfilePicture = "https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg";
     const [yourFriends, setYourFriends] = useState([])
 
     useEffect(() => {
@@ -22,11 +27,12 @@ export default function AllFriendsPage({navigation, route})
 
                 for(let id of allFriends)
                 {
+                    //! DB: No need for this call - can use allUsers from route.params
                     const res = await readSingleUserInformation("Users", id)
 
                     let personInformation = {
                         Username : res.Username,
-                        ProfilePicture : {uri : exampleProfilePicture},
+                        ProfilePicture : {uri : res.ProfilePicture || exampleProfilePicture},
                         Level : res.Level,
                     }
 

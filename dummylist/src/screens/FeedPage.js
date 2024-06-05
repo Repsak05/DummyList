@@ -35,6 +35,7 @@ export default function FeedPage({ navigation })
                     return {
                         ...post,
                         PostedByUsername: postedByName,
+                        PostedByProfilePicture : users.ProfilePicture || "https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg"
                     };
                 }));
 
@@ -60,7 +61,7 @@ export default function FeedPage({ navigation })
                     <View key={index} style={{ marginBottom: 15, }}>
                         <UploadedChallengeToFeed 
                             username={post.PostedByUsername}
-                            profilePicture={{uri: exampleURI}}
+                            profilePicture={{uri: post.PostedByProfilePicture}}
                             description={post.TaskDescription} 
                             postUri={post.PostUri} 
                             likedBy={post.LikedBy}

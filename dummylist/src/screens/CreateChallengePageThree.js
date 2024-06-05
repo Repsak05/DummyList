@@ -14,6 +14,12 @@ export default function CreateChallengePageThree({navigation, route})
     const { allCurrentChallengeValues } = route.params
     const [ allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues);
 
+    console.log("allChallengeValues");
+    console.log(allChallengeValues);
+    console.log(allChallengeValues.friends);
+    console.log(allChallengeValues.invitedMembers);
+    console.log("------e---");
+
     function changeChallengeValues(value, name)
     {
         setAllChallengeValues({
@@ -30,8 +36,8 @@ export default function CreateChallengePageThree({navigation, route})
             const givenTasks = pickNRandomTasks(allChallengeValues.taskDifficulty, allChallengeValues.amountOfTasks)
 
             const tasksWithFriends = givenTasks.map(task => {
-                const friendTasks = allChallengeValues.friends.map(friend => ({
-                    friendID: friend.user,
+                const friendTasks = allChallengeValues.invitedMembers.map(id => ({
+                    friendID: id,
                     hasCompletedTask: false
                 }));
                 return { taskDescription: task, friendsTask: friendTasks };

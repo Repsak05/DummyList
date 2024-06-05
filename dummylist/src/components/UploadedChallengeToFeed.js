@@ -11,7 +11,6 @@ export default function UploadedChallengeToFeed({username, profilePicture, descr
 {   //TODO: Onlike show images (Currently thinking likedBy is img sources, tho its ID's)
     //set to Database value
     
-    const yourProfilePicture = "https://images.pexels.com/photos/1704488/pexels-photo-1704488.jpeg?cs=srgb&dl=pexels-suliman-sallehi-1704488.jpg&fm=jpg";
     const hasCompleteChallenge = false; 
     const [isLiked, setIsLiked] = useState(false); //Read value from database | on change: add new Value to database
     
@@ -34,8 +33,25 @@ export default function UploadedChallengeToFeed({username, profilePicture, descr
             console.log("Should remove the user from the db")
 
             await removeFromDocumentInArr("Posts", postID, "LikedBy", global.userInformation.id)
+            // likedBy = getCorrectLiked(likedBy); //! Need to do something liked this though with usestate()
             setIsLiked(false)
+
         }
+    }
+
+    function getCorrectLiked(arr)
+    {
+        //If isliked:
+        let copy = []
+
+        for(let id of arr)
+        {
+            if(id != global.userInformation.id)
+            {
+                copy.push(id);
+            }
+        }
+        return copy
     }
 
     return(
@@ -62,7 +78,7 @@ export default function UploadedChallengeToFeed({username, profilePicture, descr
                 </View>
             </ImageBackground>
     
-            <FeedLikedBy peopleWhoLikedThePost={isLiked ? [yourProfilePicture, ...likedBy] : likedBy} />
+            <FeedLikedBy peopleWhoLikedThePost={isLiked ? [global.userInformation?.id, ...getCorrectLiked(likedBy)] : likedBy} />
 
         </View>
     )

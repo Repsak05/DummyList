@@ -8,7 +8,7 @@ import CarouselItem from "../components/CarouselItem.js";
 import EnterTaskDescription from "../components/EnterTaskDescription.js";
 
 import { addToDocument, updateArrayFieldInDocument } from "../../firebase.js";
-import { differenceInTime } from "../components/GlobalFunctions.js";
+import { differenceInTime, getProfilePic } from "../components/GlobalFunctions.js";
 
 export default function AcceptChallengeOverviewPage({ navigation })
 { //TODO: If there's more than 9 tasks in a challenge, then it should be scrollable
@@ -149,6 +149,23 @@ export default function AcceptChallengeOverviewPage({ navigation })
     }
 
 
+    const [profilePics, setProfilePics] = useState({});
+
+    useEffect(() => {
+       //Get all pictures of people in the challenge
+        async function fetchProfilePics()
+        {
+            let pics = {};
+
+            for (let member of challenge.challenge.invitedMembers) {
+                pics[member] = await getProfilePic(member);
+            }
+            setProfilePics(pics);
+        }
+
+        fetchProfilePics();
+    }, [challenge]);
+
     const [textInputToCreateNewChallenge, setTextInputToCreateNewChallenge] = useState("");
 
     return(
@@ -179,7 +196,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
                         {challenge.challenge.invitedMembers.map((member, index) => (
                             <View key={index}>
                                 <Image
-                                    source={{uri: exampleProfilePicture}}
+                                    source={profilePics[member]}
                                     style={{zIndex: challenge.challenge.invitedMembers.length - index, width: 45, height: 45, backgroundColor: "#268", borderRadius: "50%", transform: [{translateX: -index*10}]}}
                                     imageStyle={{borderRadius: "50%"}}
                                 />
