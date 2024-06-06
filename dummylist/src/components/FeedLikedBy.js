@@ -18,8 +18,6 @@ export default function FeedLikedBy({peopleWhoLikedThePost})
                 if(i+1 > arr.length) return newArr;
                 newArr.push(arr[i])
             }
-            console.log("newArr");
-            console.log(newArr);
             return(newArr)
         }
         return []
@@ -28,15 +26,15 @@ export default function FeedLikedBy({peopleWhoLikedThePost})
     const [shownPic, setShownPic] = useState({})
     const shownLikedPosts = returnNumberOfElementsFromArray(peopleWhoLikedThePost, showAmountOfLikedBy);
 
-    const [firstFewPosts, setFirstFewPosts] = useState(peopleWhoLikedThePost.slice(0,5)) 
+    const [firstFewPosts, setFirstFewPosts] = useState(returnNumberOfElementsFromArray(peopleWhoLikedThePost, showAmountOfLikedBy)) 
 
     useEffect(() => {
-        const themPics = peopleWhoLikedThePost.slice(0,showAmountOfLikedBy)
+        const themPics = returnNumberOfElementsFromArray(peopleWhoLikedThePost, showAmountOfLikedBy)
         setFirstFewPosts(themPics);
 
         async function getPics()
         {
-            const themPics = peopleWhoLikedThePost.slice(0, showAmountOfLikedBy);
+            const themPics = returnNumberOfElementsFromArray(peopleWhoLikedThePost, showAmountOfLikedBy);
             try{
                 
                 if(themPics.length > 0)
@@ -46,7 +44,6 @@ export default function FeedLikedBy({peopleWhoLikedThePost})
                     for(let id of themPics)
                     {
                         const personPic = await getProfilePic(id);
-                        console.log(id, personPic);
                         allPics[id] = personPic;
                     }
 

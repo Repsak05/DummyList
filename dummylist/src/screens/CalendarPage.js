@@ -33,6 +33,10 @@ export default function CalendarPage({navigation, route})
         }
     }
 
+    console.log(allPosts)
+    console.log(allPosts[onCurrentPost])
+    console.log(allPosts[onCurrentPost].likedBy)
+
     return (
         <View>
             <View style={{ marginTop: 55, marginBottom: 10 }}>
@@ -81,7 +85,7 @@ export default function CalendarPage({navigation, route})
                             <Image style={{marginRight: 19}} source={require("../assets/icons/moreOptionsIcon.svg")}/>
                         </Pressable>
                     </View>
-                    <FeedLikedBy peopleWhoLikedThePost={allPosts[onCurrentPost].likedBy} />
+                    <FeedLikedBy peopleWhoLikedThePost={allPosts[onCurrentPost].LikedBy} />
                 </>)
 
 

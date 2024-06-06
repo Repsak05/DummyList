@@ -12,16 +12,21 @@ export default function UploadedChallengeToFeed({username, profilePicture, descr
     //set to Database value
     
     const hasCompleteChallenge = false; 
-    const [isLiked, setIsLiked] = useState(false); //Read value from database | on change: add new Value to database
+    const [isLiked, setIsLiked] = useState(null); //Read value from database | on change: add new Value to database
+    const [allLikedBy, setAllLikedBy] = useState(likedBy);
     
     useEffect(() => {
-        console.log(likedBy)
-        for(let person of likedBy){
-            if(person == global.userInformation.id){
-                setIsLiked(true)
+        if(isLiked == null)
+        {
+            for(let person of allLikedBy){
+                if(person == global.userInformation.id){
+                    setIsLiked(true);
+                    return;
+                }
             }
+            setIsLiked(false);
         }
-    })
+    }, [])
 
     async function updateLikedByDB()
     {
@@ -33,8 +38,8 @@ export default function UploadedChallengeToFeed({username, profilePicture, descr
             console.log("Should remove the user from the db")
 
             await removeFromDocumentInArr("Posts", postID, "LikedBy", global.userInformation.id)
-            // likedBy = getCorrectLiked(likedBy); //! Need to do something liked this though with usestate()
-            setIsLiked(false)
+            setAllLikedBy(getCorrectLiked(likedBy)); //! Need to do something liked this though with usestate()
+            setIsLiked(false);
 
         }
     }
@@ -42,7 +47,7 @@ export default function UploadedChallengeToFeed({username, profilePicture, descr
     function getCorrectLiked(arr)
     {
         //If isliked:
-        let copy = []
+        let copy = [];
 
         for(let id of arr)
         {
@@ -78,8 +83,7 @@ export default function UploadedChallengeToFeed({username, profilePicture, descr
                 </View>
             </ImageBackground>
     
-            <FeedLikedBy peopleWhoLikedThePost={isLiked ? [global.userInformation?.id, ...getCorrectLiked(likedBy)] : likedBy} />
-
+            <FeedLikedBy peopleWhoLikedThePost={isLiked ? [global.userInformation?.id, ...getCorrectLiked(allLikedBy)] : allLikedBy} />
         </View>
     )
 }

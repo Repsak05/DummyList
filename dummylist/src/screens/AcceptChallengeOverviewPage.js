@@ -103,12 +103,12 @@ export default function AcceptChallengeOverviewPage({ navigation })
         
         //Find out which members is participating
         let membersID = [];
-        const friendsInChallenge = challenge.challenge.friends;
+        const allInvitedMembers = challenge.challenge.invitedMembers;
         
-        for(let friends of friendsInChallenge)
+        for(let id of allInvitedMembers)
         {
             //Add each player ID and set them not to have Completed The New Task to array membersID 
-            membersID.push({friendID : friends.user, hasCompletedTask : false});
+            membersID.push({friendID : id, hasCompletedTask : false});
         }
 
         //Create tasks. object structure
@@ -119,7 +119,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
             await addToDocument("Challenges", challenge.challenge.id, "tasks", newTaskObject, true);
             console.log("Task added!");
 
-            //Make it display on screen instantaneously
+            //Make it display on screen instantaneously                   //! Should this be removed or added to DB (Only difference is color)
             setAllTasks([...allTasks, { taskDescription: taskDescription, isMadeByYourself: false }]);
         }catch(err){
             console.error(err);
