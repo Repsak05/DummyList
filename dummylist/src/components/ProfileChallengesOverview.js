@@ -23,7 +23,7 @@ export default function ProfileChallengesOverview({navigation})
                 // [[id1, id2], [id3], [id4], [id5, id6, id6], ...]
                 let allYourPostID = []
 
-                allYourChallenges.map(challenge => {
+                allYourChallenges?.map(challenge => {
                     let postIDsPerChallenge = [];
 
                     for(let friendsTask of challenge.tasks)

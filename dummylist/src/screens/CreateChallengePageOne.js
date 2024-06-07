@@ -33,14 +33,32 @@ export default function CreateChallengePageOne({navigation, route})
         console.log("Go to Previos!");
         navigation.navigate("Home")
     }
-
-
+        
+        
     function nextFunction()
     {
-        console.log("Go to next!");
-        navigation.navigate("CreateChallengePageTwo", {
-            allChallengeValues
-        })
+        if(!allChallengeValues.challengeName)
+        {
+            const endValue = {
+                ...allChallengeValues,
+                "challengeName" : Math.floor(Math.random() * (9999999 - 1000000 + 1) + 1000000)
+            }
+
+            console.log("endValue")
+            console.log(endValue)
+            navigation.navigate("CreateChallengePageTwo", {
+                allChallengeValues : endValue
+            })
+        } else {
+
+            console.log("Go to next!");
+            console.log(allChallengeValues)
+
+            navigation.navigate("CreateChallengePageTwo", {
+                allChallengeValues
+            })
+        }
+
     }
 
 

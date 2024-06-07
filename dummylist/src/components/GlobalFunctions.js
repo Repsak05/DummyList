@@ -39,39 +39,45 @@ function calculatePlacement(challenge, id = global.userInformation.id, getNumber
 async function getAllChallenges(returnPostsOrChallenges = true)
 {
     try{
-
-        let allChallengesThatYouAreIn = await readDataWithQuery(
-            "Challenges",
-            [
-                { field: "joinedMembers", operator: "array-contains", value: global.userInformation.id },
-                { field: "startingTime", operator: "<", value: new Date()}
-            ],
-            [
-                { field: "startingTime", direction: "desc" }
-            ]
-        );
-
-        if(!returnPostsOrChallenges){
-            return allChallengesThatYouAreIn; //Doesnt happen as default
-        }
-
-        //Return all postID's in that challenge
-        let allPostsID = [];
-
-        allChallengesThatYouAreIn.map(challenge => {
-            for(let friendsTask of challenge.tasks)
-            {
-                for(let member of friendsTask.friendsTask)
+        if(global?.userInformation?.id)
+        {
+            
+            let allChallengesThatYouAreIn = await readDataWithQuery(
+                "Challenges",
+                [
+                    { field: "joinedMembers", operator: "array-contains", value: global.userInformation?.id },
+                    { field: "startingTime", operator: "<", value: new Date()}
+                ],
+                [
+                    { field: "startingTime", direction: "desc" }
+                ]
+            );
+    
+            if(!returnPostsOrChallenges){
+                return allChallengesThatYouAreIn; //Doesnt happen as default
+            }
+    
+            //Return all postID's in that challenge
+            let allPostsID = [];
+    
+            allChallengesThatYouAreIn.map(challenge => {
+                for(let friendsTask of challenge.tasks)
                 {
-                    if(member.hasCompletedTask)
+                    for(let member of friendsTask.friendsTask)
                     {
-                        allPostsID.push(member.postID);
+                        if(member.hasCompletedTask)
+                        {
+                            allPostsID.push(member.postID);
+                        }
                     }
                 }
-            }
-        })
+            })
+    
+            return allPostsID;
+        }else{
+            console.log("MISSING ID - called from globalFunctions" );
+        }
 
-        return allPostsID;
     } catch(err){
         console.error(err)
     }

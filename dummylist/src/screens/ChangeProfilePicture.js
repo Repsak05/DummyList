@@ -8,7 +8,8 @@ import { addSingleValueToDocument } from '../../firebase';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
-export default function ChangeProfilePicture({ navigation }) {
+export default function ChangeProfilePicture({ navigation }) 
+{
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [hasMediaLibraryPermission, setHasMediaLibraryPermission] = useState(null);
   const [image, setImage] = useState(null);
