@@ -58,6 +58,37 @@ export default function Home({navigation})
         navigation.navigate("ChallengePage", {challenge})
     }
 
+    function checkIfChallengeIsDone(challengeObj) //missing to check wether function works
+    {
+        let map = {};
+        for(let tasks of challengeObj.tasks)
+        {
+            for(let friends in tasks.friendsTask)
+            {
+                const participantTaskObject = tasks.friendsTask[friends];
+
+                if(participantTaskObject.hasCompletedTask)
+                {
+                    if(map[participantTaskObject.friendID])
+                    {
+                        map[participantTaskObject.friendID] += 1;
+
+                    } else {
+                        map[participantTaskObject.friendID] = 1;
+
+                    }
+                }
+            }
+        }
+
+        console.log("Challenge information");
+        console.log(challengeObj.tasks.length);
+        console.log(map);
+        
+    }
+
+    
+
 
     return(
         <View>
