@@ -5,7 +5,7 @@ import styles from '../style.js';
 import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
-import { readData, readDataWithQuery } from "../../firebase.js";
+import { addToDocument, readData, readDataWithQuery } from "../../firebase.js";
 import { differenceInTime } from "../components/GlobalFunctions.js";
 
 export default function Home({navigation})  
@@ -58,9 +58,11 @@ export default function Home({navigation})
         navigation.navigate("ChallengePage", {challenge})
     }
 
-    function checkIfChallengeIsDone(challengeObj) //missing to check wether function works
+    async function checkIfChallengeIsDone(challengeObj) // ! missing to check wether function works
     {
         let map = {};
+
+        //Figure out how many tasks each participant has completed 
         for(let tasks of challengeObj.tasks)
         {
             for(let friends in tasks.friendsTask)
@@ -80,11 +82,27 @@ export default function Home({navigation})
                 }
             }
         }
-
-        console.log("Challenge information");
-        console.log(challengeObj.tasks.length);
-        console.log(map);
         
+        //Check wether anyone has completed all challenges:
+        for(let amountOfCompletedTasks in map)
+        {
+            const amountCompleted = map[amountOfCompletedTasks];
+
+            console.log(amountCompleted);
+            if(amountCompleted == challengeObj.tasks.length)
+            {
+                console.log("Someone has completed this challenge");
+
+                //Insert finished status in DB
+                try{
+                    // ? Needs to be verified that it works 
+                    await addToDocument("Challenges", challengeObj.id, "isStilActive", false);
+
+                }catch(err){
+                    console.log(err);
+                }
+            }
+        }
     }
 
     
