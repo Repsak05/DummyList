@@ -5,8 +5,6 @@ import style from "../style";
 import Header from "../components/Header";
 import EnterInformationLogInComponent from "../components/EnterInformationLogInComponent";
 
-import { readData } from "../../firebase";
-
 export default function AccountSettingsPage({navigation})
 { //TODO: Load user information and possible change it
     //Handle change in information (update database)
