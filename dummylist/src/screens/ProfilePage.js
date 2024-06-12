@@ -10,9 +10,11 @@ import { firebaseAuth, readSingleUserInformation } from "../../firebase";
 import WelcomePage from "./WelcomePage";
 import { calculateXPNeeded } from "../components/GlobalFunctions";
 
+
+
+
 export default function ProfilePage({navigation})
 { //TODO: Change achievements to db values (Add xp instead of level, and add achievements)
-    
     const [currentXP, setCurrentXP] = useState(0); //LeftOverXP
     const [currentLevel, setCurrentLevel] = useState();
     const [xpNeededToLevelUp, setXpNeededToLevelUp] = useState();
