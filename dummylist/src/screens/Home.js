@@ -11,6 +11,7 @@ import { differenceInTime } from "../components/GlobalFunctions.js";
 export default function Home({navigation})  
 {   //TODO: Fix background colors on create challenge and active challenges
     //TODO: Create placement icon with just 1/2 and 2/2
+    //!Test 
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()
