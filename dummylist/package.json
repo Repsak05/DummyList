@@ -16,7 +16,7 @@
     "@react-navigation/native-stack": "^6.9.25",
     "expo": "^51.0.13",
     "expo-av": "~14.0.5",
-    "expo-camera": "~15.0.10",
+    "expo-camera": "^14.1.1",
     "expo-image-picker": "~15.0.5",
     "expo-media-library": "~16.0.3",
     "expo-status-bar": "~1.12.1",
