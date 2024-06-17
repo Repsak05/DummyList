@@ -5,12 +5,14 @@ import styles from '../style.js';
 import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
-import { addToDocument, readData, readDataWithQuery } from "../../firebase.js";
+import { readDataWithQuery, addSingleValueToDocument } from "../../firebase.js";
 import { differenceInTime } from "../components/GlobalFunctions.js";
 
 export default function Home({navigation})  
 {   //TODO: Fix background colors on create challenge and active challenges
     //TODO: Create placement icon with just 1/2 and 2/2
+    /*//? TODO: Dertermine wether the challenge is finished and hasBeen opened by you
+        //? maybe create new collection with finished challenges - though probably not necessary*/
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()
@@ -58,7 +60,7 @@ export default function Home({navigation})
         navigation.navigate("ChallengePage", {challenge})
     }
 
-    async function checkIfChallengeIsDone(challengeObj) // ! missing to check wether function works
+    async function checkIfChallengeIsDone(challengeObj)
     {
         let map = {};
 
@@ -95,18 +97,15 @@ export default function Home({navigation})
 
                 //Insert finished status in DB
                 try{
-                    // ? Needs to be verified that it works 
-                    await addToDocument("Challenges", challengeObj.id, "isStilActive", false);
+                    await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
 
                 }catch(err){
                     console.log(err);
                 }
             }
+            console.log(amountCompleted);
         }
     }
-
-    
-
 
     return(
         <View>
@@ -121,7 +120,7 @@ export default function Home({navigation})
                 </View>
                 {allChallenges?.map((challenge, index) => (
                     <View key={index}>
-                        {differenceInTime(challenge.startingTime) <= 0 && (
+                        {differenceInTime(challenge.startingTime) <= 0 && checkIfChallengeIsDone(challenge) && (
                             <View style={{width: "100%"}} key={index}>
                                 <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
                             </View>
