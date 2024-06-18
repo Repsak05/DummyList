@@ -98,13 +98,18 @@ export default function Home({navigation})
                 //Insert finished status in DB
                 try{
                     await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
-
+                    
                 }catch(err){
                     console.log(err);
                 }
             }
-            console.log(amountCompleted);
         }
+    }
+
+    function goToFinishedChallenge(challenge)
+    {
+        //! Insert navigation to page
+        console.log("Go To Finished Challenge!\n" + challenge.challengeName);
     }
 
     return(
@@ -121,8 +126,20 @@ export default function Home({navigation})
                 {allChallenges?.map((challenge, index) => (
                     <View key={index}>
                         {differenceInTime(challenge.startingTime) <= 0 && checkIfChallengeIsDone(challenge) && (
-                            <View style={{width: "100%"}} key={index}>
-                                <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
+                            <View>
+                                {challenge.isStilActive 
+                                    ? (
+                                        <View style={{width: "100%"}} key={index}>
+                                            <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
+                                        </View>
+
+                                    ) : (
+                                        <Pressable onPress={() => goToFinishedChallenge(challenge)}>
+                                            <Text>{challenge.id} </Text>
+                                            <Text>Check Your Score!</Text>
+                                        </Pressable>
+                                    )
+                                }
                             </View>
                         )}
                     </View>
