@@ -33,10 +33,6 @@ export default function CalendarPage({navigation, route})
         }
     }
 
-    console.log(allPosts)
-    console.log(allPosts[onCurrentPost])
-    console.log(allPosts[onCurrentPost].likedBy)
-
     return (
         <View>
             <View style={{ marginTop: 55, marginBottom: 10 }}>

@@ -134,9 +134,11 @@ export default function Home({navigation})
                                         </View>
 
                                     ) : (
-                                        <Pressable onPress={() => goToFinishedChallenge(challenge)}>
-                                            <Text>{challenge.id} </Text>
-                                            <Text>Check Your Score!</Text>
+                                        <Pressable onPress={() => goToFinishedChallenge(challenge)} >
+                                            {/* //! THIS SHOULD BE REMADE  */}
+                                            <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
+                                            <View style={{position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "#000", opacity: 0.5}}></View>
+                                            <Text style={[styles.whiteFontSize25, {position: "absolute", top: "30%", left:"27%"}]}>Finished - View Results</Text>
                                         </Pressable>
                                     )
                                 }

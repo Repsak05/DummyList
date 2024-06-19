@@ -6,12 +6,8 @@ import Header from "../components/Header";
 import ProfileUserInformation from "../components/ProfileUserInformation";
 import ProfileAchievements from "../components/ProfileAchievements";
 import ProfileChallengesOverview from "../components/ProfileChallengesOverview";
-import { firebaseAuth, readSingleUserInformation } from "../../firebase";
-import WelcomePage from "./WelcomePage";
+import { readSingleUserInformation } from "../../firebase";
 import { calculateXPNeeded } from "../components/GlobalFunctions";
-
-
-
 
 export default function ProfilePage({navigation})
 { //TODO: Change achievements to db values (Add xp instead of level, and add achievements)
