@@ -86,7 +86,7 @@ export default function InvitedChallengesPage({navigation})
 
 
     return(
-        <View>
+        <ScrollView horizontal={false}>
             <View style={[{width: "100%", marginTop: 55, marginBottom: 20,}]}>
                 <Header pageName={"Challenges"} navigation={navigation}/>
             </View>
@@ -96,7 +96,7 @@ export default function InvitedChallengesPage({navigation})
                 <SwitchButton startingStateIsLeft={false} onPressLeft={handlePressLeft} onPressRight={handlePressRight}/>
             </View>
 
-            <ScrollView style={{ flex: 1 }}>
+            <View >
                 {inChallenges?.map((challenge, index) => (
                     <View key={index}>
                         {differenceInTime(challenge.challenge.startingTime) > 0 && (
@@ -110,7 +110,7 @@ export default function InvitedChallengesPage({navigation})
                         )}
                     </View>
                 ))}
-            </ScrollView>
+            </View>
 
             {!inChallenges.length && (
                 <View style={{alignItems: "center"}}>
@@ -120,6 +120,6 @@ export default function InvitedChallengesPage({navigation})
                 </View>
             )}
 
-        </View>
+        </ScrollView>
     )
 }

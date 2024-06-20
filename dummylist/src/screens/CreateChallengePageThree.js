@@ -6,7 +6,7 @@ import Header from "../components/Header.js";
 import ProgressBarTemplate from "../components/ProgressBarTemplate.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 
-import {readData, addToDocument, addToCollection, readSingleUserInformation, firestore} from "../../firebase.js";
+import {readData, addToDocument, addToCollection, readSingleUserInformation, } from "../../firebase.js";
 
 
 export default function CreateChallengePageThree({navigation, route})
@@ -25,7 +25,7 @@ export default function CreateChallengePageThree({navigation, route})
         setAllChallengeValues({
             ...allChallengeValues,
             [name] : value
-        })
+        });
     }
 
     async function createFunction()
@@ -43,7 +43,7 @@ export default function CreateChallengePageThree({navigation, route})
                 return { taskDescription: task, friendsTask: friendTasks };
             });
 
-            console.log(tasksWithFriends)
+            console.log(tasksWithFriends);
 
 
 
@@ -52,8 +52,8 @@ export default function CreateChallengePageThree({navigation, route})
                 createdBy : global.userInformation?.id || "GuestUser#404",
                 isStilActive : true,
                 tasks : tasksWithFriends,
-            })
-            console.log(res)
+            });
+            console.log(res);
         }
 
         // ? Add one to times participated in a challenge (Might want to do it another place, but idk)
@@ -72,6 +72,7 @@ export default function CreateChallengePageThree({navigation, route})
 
         console.log("Create clicked:");
         console.log(allChallengeValues);
+        navigation.navigate("Home");
     }
     
     function previousFunction()
