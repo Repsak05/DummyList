@@ -5,8 +5,8 @@ import styles from '../style.js';
 import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
-import { readDataWithQuery, addSingleValueToDocument } from "../../firebase.js";
-import { differenceInTime } from "../components/GlobalFunctions.js";
+import { readDataWithQuery, addSingleValueToDocument, addToDocument } from "../../firebase.js";
+import { calculatePlacement, differenceInTime } from "../components/GlobalFunctions.js";
 
 export default function Home({navigation})  
 {   //TODO: Fix background colors on create challenge and active challenges
@@ -60,10 +60,10 @@ export default function Home({navigation})
         navigation.navigate("ChallengePage", {challenge})
     }
 
-    async function checkIfChallengeIsDone(challengeObj)
+    async function checkIfChallengeIsDone(challengeObj) //Missing to check if you've alredy seen done screen.
     {
         let map = {};
-
+        
         //Figure out how many tasks each participant has completed 
         for(let tasks of challengeObj.tasks)
         {
@@ -95,12 +95,38 @@ export default function Home({navigation})
             {
                 console.log("Someone has completed this challenge");
 
-                //Insert finished status in DB
-                try{
-                    await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
-                    
-                }catch(err){
-                    console.log(err);
+                //Ensure that you've not alredy seen the end page:
+                let shouldYouSeeFinishScreen = true; 
+                if(challengeObj.peopleSeenFinishScreen)
+                {
+                    for(let member of challengeObj.peopleSeenFinishScreen)
+                        {
+                            if(member == global.userInformation.id){
+                                shouldYouSeeFinishScreen = false;
+                                break;
+                            }
+                        }
+                    } else {
+                        try{
+                        await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
+                        setHasFinishedChallenge(challengeObj);
+                        
+                    }catch(err){
+                        console.log(err);
+                    }
+                }
+
+                if(shouldYouSeeFinishScreen)
+                {
+                    try{
+                        //? This should maybe first happen when clicking continue of view leaderboard
+                        await addToDocument("Challenges", challengeObj.id, "peopleSeenFinishScreen", global.userInformation.id, true); 
+                        setHasFinishedChallenge(challengeObj);
+                        console.log(challengeObj);
+                        console.log("--------\nLook at end screen\n-------------");
+                    }catch(err){
+                        console.log(err);
+                    }
                 }
             }
         }
@@ -112,8 +138,10 @@ export default function Home({navigation})
         console.log("Go To Finished Challenge!\n" + challenge.challengeName);
     }
 
+    const [hasFinnishedChallenge, setHasFinishedChallenge] = useState(false);
+
     return(
-        <View>
+        <View style={{flex: 1}}>
             <View style={[{width: "100%", marginTop: 55, marginBottom: 29,}]}>
                 <Header pageName={"Home"} navigation={navigation} isOnHomePage={true} hasNotifications={amountOfNotifications}/>
             </View>
@@ -127,19 +155,10 @@ export default function Home({navigation})
                     <View key={index}>
                         {differenceInTime(challenge.startingTime) <= 0 && checkIfChallengeIsDone(challenge) && (
                             <View>
-                                {challenge.isStilActive 
-                                    ? (
+                                {challenge.isStilActive && (
                                         <View style={{width: "100%"}} key={index}>
                                             <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
                                         </View>
-
-                                    ) : (
-                                        <Pressable onPress={() => goToFinishedChallenge(challenge)} >
-                                            {/* //! THIS SHOULD BE REMADE  */}
-                                            <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
-                                            <View style={{position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "#000", opacity: 0.5}}></View>
-                                            <Text style={[styles.whiteFontSize25, {position: "absolute", top: "30%", left:"27%"}]}>Finished - View Results</Text>
-                                        </Pressable>
                                     )
                                 }
                             </View>
@@ -147,6 +166,7 @@ export default function Home({navigation})
                     </View>
                 ))}
             </View>
+
 
             <View style={[styles.homeFeedContainer, styles.wrapper, {height: 539}]}>
                 <Pressable onPress={() => {console.log('Open feed'); navigation.navigate("FeedPage")}} style={{width: "100%", height: "100%"}}>
@@ -158,6 +178,19 @@ export default function Home({navigation})
                     </ImageBackground>
                 </Pressable>
             </View>
+
+
+            {!hasFinnishedChallenge?.id ? (
+                <></>
+                ): (
+                    <View style={{position: "absolute", left: 0, top: 0, right: 0, bottom: 0, backgroundColor: "#001D34", opacity: 0.9}}>
+                        <View style={{flex: 1, alignItems: "center", marginTop: "100%"}}>
+                            <Text style={[styles.whiteFontSize25, {}]}>Congrats!</Text>
+                            <Text style={[styles.whiteFontSize16, {}]}>You Finished #{calculatePlacement(hasFinnishedChallenge, global.userInformation.id, false)} in {hasFinnishedChallenge.challengeName}</Text>
+                        </View>
+                    </View>
+                )
+            }
         </View>
     )
 }
