@@ -229,25 +229,37 @@ export default function Home({navigation})
             {!hasFinnishedChallenge?.id ? (
                 <></>
                 ): (
-                    <View style={{position: "absolute", left: 0, top: 0, right: 0, bottom: 0, backgroundColor: "#001D34", opacity: 0.9}}>
+                    <View style={{position: "absolute", left: 0, top: 0, right: 0, bottom: 0, backgroundColor: "#001D34", opacity: 0.95}}>
                         {leaderboard && topThreeInformation && (
-                            <View style={{alignItems: "center", flexDirection: "row", justifyContent: "space-evenly"}}>
+                            <View style={{position: "absolute", bottom: "57%", left: 0, right: 0, alignItems: "flex-end", flexDirection: "row", justifyContent: "center"}}>
                                 {leaderboard.length >= 3 && (
                                     <View>
-                                        <Image source={topThreeInformation[1][1]}/>
-                                        <Text style={[styles.whiteFontSize16]}>{topThreeInformation[1][0]}</Text>                                    
+                                        <Image style={{marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center"}} source={topThreeInformation[1][1]}/>
+
+                                        <View style={{justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#FFDF9D", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 126, width: 84}}>
+                                            <Text style={[styles.blackFontSize25, {textAlign: "center"}]}>#2</Text>
+                                            <Text style={[styles.blackFontSize13, {marginBottom: 23, textAlign: "center"}]}>{topThreeInformation[1][0]}</Text>                                    
+                                        </View>
                                     </View>
                                 )}
                                 {leaderboard.length >= 1 && (
                                     <View>
-                                        <Image source={topThreeInformation[0][1]}/>
-                                        <Text style={[styles.whiteFontSize16]}>{topThreeInformation[0][0]}</Text>
+                                        <Image style={{marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center"}} source={topThreeInformation[0][1]}/>
+
+                                        <View style={{justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#D0E4FF", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 174, width: 84}}>
+                                            <Text style={[styles.blackFontSize25, {textAlign: "center"}]}>#1</Text>
+                                            <Text style={[styles.blackFontSize13, {marginBottom: 23, textAlign: "center"}]}>{topThreeInformation[0][0]}</Text>
+                                        </View>
                                     </View>
                                 )}
                                 {leaderboard.length >= 2 && (
                                     <View>
-                                        <Image source={topThreeInformation[2][1]}/>
-                                        <Text style={[styles.whiteFontSize16]}>{topThreeInformation[2][0]}</Text>
+                                        <Image style={{marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center"}} source={topThreeInformation[2][1]}/>
+                                        
+                                        <View style={{justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#FFDAD2", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 93, width: 84}}>
+                                            <Text style={[styles.blackFontSize25, {textAlign: "center"}]}>#3</Text>
+                                            <Text style={[styles.blackFontSize13, {marginBottom: 23, textAlign: "center"}]}>{topThreeInformation[2][0]}</Text>
+                                        </View>
                                     </View>
                                 )}
                             </View>
