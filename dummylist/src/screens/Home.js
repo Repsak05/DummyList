@@ -5,7 +5,7 @@ import styles from '../style.js';
 import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
-import { readDataWithQuery, addSingleValueToDocument, addToDocument } from "../../firebase.js";
+import { readDataWithQuery, addSingleValueToDocument, addToDocument, readSingleUserInformation } from "../../firebase.js";
 import { calculatePlacement, differenceInTime } from "../components/GlobalFunctions.js";
 
 export default function Home({navigation})  
@@ -60,7 +60,7 @@ export default function Home({navigation})
         navigation.navigate("ChallengePage", {challenge})
     }
 
-    async function checkIfChallengeIsDone(challengeObj) //Missing to check if you've alredy seen done screen.
+    async function checkIfChallengeIsDone(challengeObj)
     {
         let map = {};
         
@@ -89,12 +89,8 @@ export default function Home({navigation})
         for(let amountOfCompletedTasks in map)
         {
             const amountCompleted = map[amountOfCompletedTasks];
-
-            console.log(amountCompleted);
             if(amountCompleted == challengeObj.tasks.length)
             {
-                console.log("Someone has completed this challenge");
-
                 //Ensure that you've not alredy seen the end page:
                 let shouldYouSeeFinishScreen = true; 
                 if(challengeObj.peopleSeenFinishScreen)
@@ -119,11 +115,9 @@ export default function Home({navigation})
                 if(shouldYouSeeFinishScreen)
                 {
                     try{
-                        //? This should maybe first happen when clicking continue of view leaderboard
+                        //? This very next line should maybe first happen when clicking continue of view leaderboard
                         await addToDocument("Challenges", challengeObj.id, "peopleSeenFinishScreen", global.userInformation.id, true); 
                         setHasFinishedChallenge(challengeObj);
-                        console.log(challengeObj);
-                        console.log("--------\nLook at end screen\n-------------");
                     }catch(err){
                         console.log(err);
                     }
@@ -139,6 +133,58 @@ export default function Home({navigation})
     }
 
     const [hasFinnishedChallenge, setHasFinishedChallenge] = useState(false);
+    const [leaderboard, setLeaderboard] = useState(false);
+    const [topThreeInformation, setTopThreeInformation] = useState(false);
+
+    useEffect(() => {
+        if(hasFinnishedChallenge)
+        {
+            const allPlayersAmountCompleted = calculatePlacement(hasFinnishedChallenge, false, false, true);
+            const sortedEntries = Object.entries(allPlayersAmountCompleted).sort((a, b) => b[1] - a[1]);
+            const sortedKeys = sortedEntries.map(entry => entry[0]);
+            
+            setLeaderboard(sortedKeys);
+            console.log(sortedKeys);
+
+            setIagesAndNames(sortedKeys);
+        }
+
+        async function setIagesAndNames(ids)
+        {
+            let arr = [] // [[n1, i1], [n2, i2], [n3, i3]]
+            for(let id of ids.slice(0, 3))
+            {
+                const values = await returnImageAndNameFromID(id);
+                arr.push(values);
+            }
+
+            setTopThreeInformation(arr);
+            console.log(arr);
+        }
+
+    }, [hasFinnishedChallenge])
+
+    async function returnImageAndNameFromID(id) //! Can diffently be improved (useState)
+    {
+        const standardProfilePic = "https://media.macphun.com/img/uploads/customer/how-to/608/15542038745ca344e267fb80.28757312.jpg?q=85&w=1340"
+        if(id == global.userInformation.id && global.userInformation.Username)
+        {
+            const profilePic = global.userInformation.ProfilePicture || standardProfilePic;
+            console.log([global.userInformation.Username, profilePic])
+            return [global.userInformation.Username, {uri : profilePic}];
+        }else {
+            try{
+                const res = await readSingleUserInformation("Users", id);
+
+                const profilPic = res.ProfilePicture || standardProfilePic;
+                console.log([res.Username, profilPic])
+                return [res.Username, {uri : profilPic}];
+
+            }catch(err){
+                console.error(err);
+            }
+        }
+    }
 
     return(
         <View style={{flex: 1}}>
@@ -184,6 +230,29 @@ export default function Home({navigation})
                 <></>
                 ): (
                     <View style={{position: "absolute", left: 0, top: 0, right: 0, bottom: 0, backgroundColor: "#001D34", opacity: 0.9}}>
+                        {leaderboard && topThreeInformation && (
+                            <View style={{alignItems: "center", flexDirection: "row", justifyContent: "space-evenly"}}>
+                                {leaderboard.length >= 3 && (
+                                    <View>
+                                        <Image source={topThreeInformation[1][1]}/>
+                                        <Text style={[styles.whiteFontSize16]}>{topThreeInformation[1][0]}</Text>                                    
+                                    </View>
+                                )}
+                                {leaderboard.length >= 1 && (
+                                    <View>
+                                        <Image source={topThreeInformation[0][1]}/>
+                                        <Text style={[styles.whiteFontSize16]}>{topThreeInformation[0][0]}</Text>
+                                    </View>
+                                )}
+                                {leaderboard.length >= 2 && (
+                                    <View>
+                                        <Image source={topThreeInformation[2][1]}/>
+                                        <Text style={[styles.whiteFontSize16]}>{topThreeInformation[2][0]}</Text>
+                                    </View>
+                                )}
+                            </View>
+                        )}
+
                         <View style={{flex: 1, alignItems: "center", marginTop: "100%"}}>
                             <Text style={[styles.whiteFontSize25, {}]}>Congrats!</Text>
                             <Text style={[styles.whiteFontSize16, {}]}>You Finished #{calculatePlacement(hasFinnishedChallenge, global.userInformation.id, false)} in {hasFinnishedChallenge.challengeName}</Text>

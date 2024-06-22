@@ -1,6 +1,6 @@
 import { readData, readSingleUserInformation, readDataWithQuery } from "../../firebase";
 
-function calculatePlacement(challenge, id = global.userInformation.id, getNumberOfCompletedChallenges = false)
+function calculatePlacement(challenge, id = global.userInformation.id, getNumberOfCompletedChallenges = false, getAllPlacements = false)
 {
     const counts = {}
 
@@ -12,7 +12,11 @@ function calculatePlacement(challenge, id = global.userInformation.id, getNumber
         })
     })
 
-    if(!getNumberOfCompletedChallenges)
+    if(getAllPlacements)
+    {
+        return counts;
+
+    } else if(!getNumberOfCompletedChallenges)
     {
         const countPairs = Object.entries(counts);
         countPairs.sort((a, b) => b[1] - a[1]);
