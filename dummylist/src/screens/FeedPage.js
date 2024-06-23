@@ -23,18 +23,23 @@ export default function FeedPage({ navigation })
         {
             try {
                 let allID = await getAllChallenges(); //Gets all postsID of challenges you're in
+
+                console.log(allID);
+                if (!allID || !Array.isArray(allID) || allID.some(id => typeof id !== 'string')) {
+                    throw new Error("Invalid document IDs received");
+                }
+
                 let allPosts = await readDocumentsInArray("Posts", [], [], allID); //Get the posts
 
 
                 //Add usernames to all postCreators
                 let allPostsWithUsername = await Promise.all(allPosts.map(async post => {
 
-                    const users = await readSingleUserInformation("Users", post.PostedBy)
-                    let postedByName = users.Username || "Unknown User";
+                    const users = await readSingleUserInformation("Users", post.PostedBy);
 
                     return {
                         ...post,
-                        PostedByUsername: postedByName,
+                        PostedByUsername: users.Username || "Unknown User",
                         PostedByProfilePicture : users.ProfilePicture || "https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg"
                     };
                 }));

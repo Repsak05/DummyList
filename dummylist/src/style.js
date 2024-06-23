@@ -299,6 +299,17 @@ export default StyleSheet.create({
     color: "#F6F6F6",
     fontSize: 16,
   },
+  whiteFontSize16ExtraBold: {
+    fontFamily: "Oswald_500Medium", 
+    color: "#F6F6F6",
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  whiteFontSize16Reg: {
+    fontFamily: "Oswald_400Regular", 
+    color: "#F6F6F6",
+    fontSize: 16,
+  },
   whiteFontSize13: {
     fontFamily: "Oswald_500Medium", 
     color: "#F6F6F6",

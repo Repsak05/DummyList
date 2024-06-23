@@ -69,14 +69,14 @@ async function getAllChallenges(returnPostsOrChallenges = true)
                 {
                     for(let member of friendsTask.friendsTask)
                     {
-                        if(member.hasCompletedTask)
+                        if(member.hasCompletedTask && member.postID)
                         {
                             allPostsID.push(member.postID);
                         }
                     }
                 }
             })
-    
+            
             return allPostsID;
         }else{
             console.log("MISSING ID - called from globalFunctions" );

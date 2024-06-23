@@ -13,8 +13,11 @@ import { getUsernamesByIds } from "../../firebase"
 
 
 export default function LeaderboardPage({navigation})
-{ //TODO: //Replace Loading... with correct loading screen
+{ 
+    //! Missing to correct value: daysLeftTillChallengeEnds which gets send to ChallengeLeaderboardTitleInformation - view LeaderboardWhenChallengeIsFinished to see how its done there
+    //TODO: //Replace Loading... with correct loading screen
     //TODO: Only display people who has joined the challenge
+    //! DB can be improved - amount of times called it get image and name
     
     const route = useRoute();
     const {challenge} = route.params; 
@@ -25,9 +28,9 @@ export default function LeaderboardPage({navigation})
         async function getUsernames()
         {
             let namesToFind = [];
-            for(let friend of challenge.friends)
+            for(let friend of challenge.joinedMembers)
             {
-                namesToFind.push(friend.user); //Might want to make sure that friend has joined first?
+                namesToFind.push(friend); //Might want to make sure that friend has joined first?
             }
             try{
                 const res = await getUsernamesByIds(namesToFind);
@@ -45,9 +48,9 @@ export default function LeaderboardPage({navigation})
     {
         let placements = [];
 
-        challenge.friends.map(participant => {
-            const rank = calculatePlacement(challenge, participant.user);
-            placements.push({ id: participant.user, placement: rank });
+        challenge.joinedMembers.map(participant => {
+            const rank = calculatePlacement(challenge, participant);
+            placements.push({ id: participant, placement: rank });
             
         });
 

@@ -4,7 +4,7 @@ import style from "../style";
 import { readSingleUserInformation } from "../../firebase";
 import { getProfilePic } from "../components/GlobalFunctions";
 
-export default function LeaderboardPlacement({username, placement, challengesCompleted, amountOfChallenges, userID })
+export default function LeaderboardPlacement({username, placement, challengesCompleted, amountOfChallenges, userID, profileImage = false, specialColor = false})
 {
     const backgroundColorPlacement = [
         "#3F96E0",
@@ -12,19 +12,25 @@ export default function LeaderboardPlacement({username, placement, challengesCom
         "#003E67",
         "#002845",
         "#001223",
+        "#555",
     ]
 
     const [profilePic, setProfilePic] = useState();
 
     useEffect(() => {
-        async function getPic()
+        if(!profileImage)
         {
-            setProfilePic(await getProfilePic(userID));
+            async function getPic()
+            {
+                setProfilePic(await getProfilePic(userID));
+            }
+            getPic();
+        } else {
+            setProfilePic(profileImage);
         }
-        getPic();
     }, [])
     return (
-        <View style={[style.taskContainer, {height: 94, alignSelf: "center", backgroundColor: backgroundColorPlacement[placement-1]}]}>
+        <View style={[style.taskContainer, {height: 94, alignSelf: "center", backgroundColor: specialColor ? specialColor : backgroundColorPlacement[placement - 1] || backgroundColorPlacement[backgroundColorPlacement.length - 1]}]}>
             <Image style={[style.taskImg,{marginRight: 15, width: 50, height: 50, borderRadius: 15}]} source={profilePic} />
             <View style={style.taskTextContainer}>
                 <Text style={style.taskMainText}>@{username}</Text>

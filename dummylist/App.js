@@ -34,6 +34,7 @@ import AccountSettingsPage from './src/screens/AccountSettingsPage.js';
 import ChangeProfilePicture from './src/screens/ChangeProfilePicture.js';
 import NotificationSettingsPage from './src/screens/NotificationSettingsPage.js';
 import LanguageSettingsPage from './src/screens/LanguageSettingsPage.js';
+import LeaderboardWhenChallengeIsFinished from './src/screens/LeaderboardWhenChallengeIsFinished.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -106,6 +107,11 @@ export default function App() {
         <Stack.Screen
           name="UploadErrorPage"
           component={UploadErrorPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="LeaderboardWhenChallengeIsFinished"
+          component={LeaderboardWhenChallengeIsFinished}
           options={{ headerShown: false }}
         />
         <Stack.Screen
