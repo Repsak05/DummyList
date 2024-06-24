@@ -52,8 +52,16 @@ export default function Home({navigation})
             }
         }
 
-        getAllYourChallenges();
+        getAllYourChallenges();        
     }, []);
+
+    useEffect(() => {
+        for(let challenges in allChallenges)
+        {
+            const challenge = allChallenges[challenges];
+            checkIfChallengeIsDone(challenge);
+        }
+    }, [allChallenges])
 
     function navigateToChallenge(challenge)
     {
@@ -103,15 +111,44 @@ export default function Home({navigation})
                                 break;
                             }
                         }
-                    } else {
-                        try{
+                } else {
+                    try{
                         await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
                         setHasFinishedChallenge(challengeObj);
-                        
                     }catch(err){
                         console.log(err);
                     }
-                } // ? Else statement with addings ending stats to profiles?
+
+                    //Add stats to each profile
+                    for(let member of challengeObj.joinedMembers)
+                    {
+                        const placement = calculatePlacement(challengeObj, member, false);
+                        const amountOfMembers = challengeObj.joinedMembers.length;
+                        const obj = {placement : placement, amountOfMembers : amountOfMembers, challengeID : challengeObj.id};
+
+                        console.log(obj, member);
+                        try{
+                            await addToDocument("Users", member, "Stats", obj, true, 0, "AveragePlacement");
+                            console.log("Average placement updated for 1 person");
+                            
+                            await addToDocument("Users", member, "Stats", false, false, 1, "TimesParticipated");
+                        }catch(err){
+                            console.log(err);
+                        }
+
+                        //If player came 1st place updated amount of challenges won!
+                        if(placement == 1)
+                        {
+                            try{
+                                await addToDocument("Users", member, "Stats", false, false, 1, "ChallengesWon");
+                                console.log("Winners score was increased: " + member);
+
+                            }catch(err){
+                                console.log(err);
+                            }
+                        }
+                    }
+                }
 
                 if(shouldYouSeeFinishScreen)
                 {
@@ -201,7 +238,7 @@ export default function Home({navigation})
                 </View>
                 {allChallenges?.map((challenge, index) => (
                     <View key={index}>
-                        {differenceInTime(challenge.startingTime) <= 0 && checkIfChallengeIsDone(challenge) && (
+                        {differenceInTime(challenge.startingTime) <= 0 && (
                             <View>
                                 {challenge.isStilActive && (
                                         <View style={{width: "100%"}} key={index}>

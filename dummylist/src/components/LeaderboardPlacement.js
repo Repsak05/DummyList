@@ -22,7 +22,10 @@ export default function LeaderboardPlacement({username, placement, challengesCom
         {
             async function getPic()
             {
-                setProfilePic(await getProfilePic(userID));
+                if(userID)
+                {
+                    setProfilePic(await getProfilePic(userID));
+                }
             }
             getPic();
         } else {

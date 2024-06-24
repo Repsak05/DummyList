@@ -217,7 +217,7 @@ async function addToDocument(collectionName, documentID, field, newObject, combi
             return;
         }
 
-        if (combine){
+        if (combine && !fieldValueTwo){
             await updateDoc(docReference, {
                 [field]: arrayUnion(newObject)
             });
@@ -248,6 +248,12 @@ async function addToDocument(collectionName, documentID, field, newObject, combi
             }); 
             
             return newValue;
+        }else if (fieldValueTwo && combine && !incrementBy){
+
+            await updateDoc(docReference, {
+                [`${field}.${fieldValueTwo}`]: arrayUnion(newObject)
+            });
+
         }else {
             await updateDoc(docReference, {
                 [field]: newObject

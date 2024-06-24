@@ -11,10 +11,14 @@ import { calculateXPNeeded } from "../components/GlobalFunctions";
 
 export default function ProfilePage({navigation})
 { //TODO: Change achievements to db values (Add xp instead of level, and add achievements)
+    //Stats can be handled more effectively - in when challenge finished
+
     const [currentXP, setCurrentXP] = useState(0); //LeftOverXP
     const [currentLevel, setCurrentLevel] = useState();
     const [xpNeededToLevelUp, setXpNeededToLevelUp] = useState();
+
     const [stats, setStats] = useState();
+    const [avgPlacement, setAvgPlacement] = useState();
 
 
     useEffect(() => {
@@ -34,6 +38,26 @@ export default function ProfilePage({navigation})
 
         getPersonalInformation();
     }, [])
+
+    useEffect(() => {
+        
+        if(stats)
+        {
+            let totalPlacement = 0;
+            let totalMembers = 0;
+
+            for(let obj of stats.AveragePlacement)
+            {
+                totalPlacement += obj.placement;
+                totalMembers += obj.amountOfMembers;
+            }
+    
+            const avgPlacementNum = totalPlacement/stats.AveragePlacement.length;
+            const avgPlacementProcent = totalPlacement/totalMembers * 100; //Doesnt rlly makes sense if this format
+    
+            setAvgPlacement(avgPlacementNum);
+        }
+    }, [stats])
 
 
     return(
@@ -56,7 +80,7 @@ export default function ProfilePage({navigation})
 
             <View style={{flexDirection: "column", marginTop: 15, width: "90%", alignSelf: "center"}}>
                 <View style={{flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between"}}>
-                    <ProfileAchievements typeNumber={1} value={stats?.AveragePlacement || 0}/>
+                    <ProfileAchievements typeNumber={1} value={avgPlacement || 0}/>
                     <ProfileAchievements typeNumber={2} value={stats?.ChallengesWon || 0}/>
                 </View>
 
