@@ -88,6 +88,7 @@ export default function CameraComponent({taskRef, challengeID, navigation})
                     TaskDescription: taskRef.taskDescription,
                     PostUri: postUri,
                     LikedBy: [],
+                    TimePosted : new Date(),
                 });
 
                 await updateHasCompletedTask(challengeID, eachPlayer, taskRef, gottenPostID); //Heavy

@@ -29,7 +29,7 @@ export default function FeedPage({ navigation })
                     throw new Error("Invalid document IDs received");
                 }
 
-                let allPosts = await readDocumentsInArray("Posts", [], [], allID); //Get the posts
+                let allPosts = await readDocumentsInArray("Posts", [], [{ field: "TimePosted", direction: "desc" }], allID); //Get the posts - sorted by TimePosted
 
 
                 //Add usernames to all postCreators

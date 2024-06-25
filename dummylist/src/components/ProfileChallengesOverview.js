@@ -8,6 +8,7 @@ import { readSingleUserInformation } from "../../firebase";
 export default function ProfileChallengesOverview({navigation})
 { //TODO: Change thumbnails index depending on chosen value
     //TODO: No need to load all posts here! Find a better solution
+    //TODO: Display uploaded images in order of TimePosted?
 
     const [challengesWithPosts, setChallengesWithPosts] = useState()
 
