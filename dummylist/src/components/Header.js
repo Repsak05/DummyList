@@ -5,7 +5,7 @@ import style from "../style";
 import Notification from "./Notification";
 import { readSingleUserInformation } from "../../firebase";
 
-export default function Header({pageName, navigation, isOnHomePage = false, isOnProfilePage = false, hasNotifications = 0})
+export default function Header({pageName, navigation, isOnHomePage = false, isOnProfilePage = false, hasNotifications = 0, navigateToPage})
 {
     const [profilePicture, setProfilePicture] = useState();
    
@@ -36,12 +36,17 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
     function goBack()
     {
         if(isOnHomePage){
-            console.log("Go To Socials Page!")
-            navigation.navigate("FriendsPage")
+            console.log("Go To Socials Page!");
+            navigation.navigate("FriendsPage");
 
         } else {
-            console.log("Go back button has been clicked!")
-            navigation.navigate("Home")
+            console.log("Go back button has been clicked!");
+            if(navigateToPage)
+            {
+                navigation.navigate(navigateToPage);
+            }else{
+                navigation.navigate("Home");
+            }
         }
         
     }

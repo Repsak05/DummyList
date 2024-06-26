@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, Text, StyleSheet, Pressable } from 'react-native';
 import style from "../style";
 
-export default function GoToLeaderboard({placement, allPlayers, navigation, propsToleaderboard})
+export default function GoToLeaderboard({placement, navigation, propsToleaderboard})
 {
     const profilePicture = require("../assets/icons/exampleProfilePicture.svg")
     const rightArrowPicture = require("../assets/icons/rightArrow.svg")
@@ -21,7 +21,7 @@ export default function GoToLeaderboard({placement, allPlayers, navigation, prop
 
             <View style={[style.displayColumn, {marginRight: 40}]}>
                 <Text style={style.blackFontSize20}>Your Placement:</Text>
-                <Text style={style.greyFontSize16}>{placement || allPlayers.length}/{allPlayers.length}</Text>
+                <Text style={style.greyFontSize16}>{placement || propsToleaderboard.joinedMembers.length}/{propsToleaderboard.joinedMembers.length}</Text>
             </View>
 
             <Pressable style={[style.displayRow, style.centerVeritically]}onPress={onClickGoToLeaderBoard}>

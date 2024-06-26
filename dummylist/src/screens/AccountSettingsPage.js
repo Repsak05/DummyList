@@ -21,7 +21,7 @@ export default function AccountSettingsPage({navigation})
     return(
         <View>
             <View style={{marginTop: 55, marginBottom: 40}}>
-                <Header navigation={navigation} pageName={"Account Settings"}/>
+                <Header navigation={navigation} pageName={"Account Settings"} navigateToPage={"SettingsPage"}/>
             </View>
 
             <ImageBackground style={{ width: "100%", height: 341}} source={global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"}}>

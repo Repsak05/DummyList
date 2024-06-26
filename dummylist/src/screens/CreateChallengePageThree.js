@@ -14,12 +14,6 @@ export default function CreateChallengePageThree({navigation, route})
     const { allCurrentChallengeValues } = route.params
     const [ allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues);
 
-    console.log("allChallengeValues");
-    console.log(allChallengeValues);
-    console.log(allChallengeValues.friends);
-    console.log(allChallengeValues.invitedMembers);
-    console.log("------e---");
-
     function changeChallengeValues(value, name)
     {
         setAllChallengeValues({
@@ -33,7 +27,8 @@ export default function CreateChallengePageThree({navigation, route})
         async function createChallengePost()
         {
             console.log(allChallengeValues)
-            const givenTasks = pickNRandomTasks(allChallengeValues.taskDifficulty, allChallengeValues.amountOfTasks)
+            const exactNumberOfTasks = allChallengeValues.gameMode == "Bingo" ? 16 : allChallengeValues.amountOfTasks
+            const givenTasks = pickNRandomTasks(allChallengeValues.taskDifficulty, exactNumberOfTasks)
 
             const tasksWithFriends = givenTasks.map(task => {
                 const friendTasks = allChallengeValues.invitedMembers.map(id => ({
@@ -41,18 +36,16 @@ export default function CreateChallengePageThree({navigation, route})
                     hasCompletedTask: false
                 }));
                 return { taskDescription: task, friendsTask: friendTasks };
-            });
-
-            console.log(tasksWithFriends);
-
-
+            });            
 
             const res = await addToCollection("Challenges", {
                 ...allChallengeValues,
                 createdBy : global.userInformation?.id || "GuestUser#404",
                 isStilActive : true,
                 tasks : tasksWithFriends,
+                amountOfTasks : exactNumberOfTasks,
             });
+            console.log("Following now being added");
             console.log(res);
         }
 
@@ -190,25 +183,32 @@ export default function CreateChallengePageThree({navigation, route})
                 <ProgressBarTemplate currentXp={3} maxXp={3} text={"3/3"} setWidth={400}/>
             </View>
 
-            <View>
-                <Text style={[style.blackFontSize20, {paddingLeft: 17}]}>Choose Task Difficulty</Text>
-                <ScrollView
-                    ref={scrollViewRef}
-                    horizontal={true}
-                    style={{ marginBottom: 50, }}
-                    onScroll={calculateMiddleNumber}
-                    scrollEventThrottle={16}
-                    onContentSizeChange={onContentSizeChange}
-                >
-                    <View style={{ flexDirection: "row", marginBottom: 20}}>
-                        {options.map((val, index) => (
-                            <TouchableOpacity key={index} style={{ paddingHorizontal: 15 }}>
-                                <Text style={[style.blackFontSize64, val === middleNumber ? styles.highlightedText : null]}>{val}</Text>
-                            </TouchableOpacity>
-                        ))}
+                {allCurrentChallengeValues.gameMode != "Bingo" ? (
+                    <View>
+                        <Text style={[style.blackFontSize20, {paddingLeft: 17}]}>Choose Task Difficulty</Text>
+                        <ScrollView
+                            ref={scrollViewRef}
+                            horizontal={true}
+                            style={{ marginBottom: 50, }}
+                            onScroll={calculateMiddleNumber}
+                            scrollEventThrottle={16}
+                            onContentSizeChange={onContentSizeChange}
+                        >
+                            <View style={{ flexDirection: "row", marginBottom: 20}}>
+                                {options.map((val, index) => (
+                                    <TouchableOpacity key={index} style={{ paddingHorizontal: 15 }}>
+                                        <Text style={[style.blackFontSize64, val === middleNumber ? styles.highlightedText : null]}>{val}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                        </ScrollView>
                     </View>
-                </ScrollView>
-            </View>
+                ) : (
+                    <View style={{marginBottom: 40}}>
+                        <Text style={[style.blackFontSize20, {textAlign:"center"}]}>Amount of tasks is set to 16</Text>
+                        <Text style={[style.blackFontSize20, {textAlign:"center"}]}>because of chosen GameMode</Text>
+                    </View>
+                )}
 
             <View style={{flexDirection: "column"}}>
                 <Text style={[style.blackFontSize20, {paddingLeft: 17}]}>Choose Task Difficulty</Text>

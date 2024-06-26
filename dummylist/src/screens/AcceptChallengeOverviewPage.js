@@ -171,7 +171,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
     return(
         <View style={{flex: 1}}>
             <View style={[{marginTop: 55, marginBottom: 29,}]}>
-                <Header pageName={"Challenges"} navigation={navigation}/>
+                <Header pageName={"Challenges"} navigation={navigation} navigateToPage={"InvitedChallengesPage"}/>
             </View>
 
             <CarouselItem onPressFunction={() => console.log("Do Nothing")} hasPlacement={false} title={false}/>

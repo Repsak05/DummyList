@@ -44,7 +44,7 @@ export default function LanguageSettingsPage({navigation})
         <View style={{ flex: 1 }}>
     
             <View style={{ marginTop: 55, marginBottom: 25 }}>
-                <Header navigation={navigation} pageName={"Languages"} />
+                <Header navigation={navigation} pageName={"Languages"} navigateToPage={"SettingsPage"}/>
             </View>
 
 

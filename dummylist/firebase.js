@@ -28,8 +28,6 @@ const firestore = getFirestore(firebaseApp);
 const firebaseAuth = getAuth(firebaseApp);
 //Read users
 
-console.log("HEy")
-
 function readData(readCollection) {
     const userCollection = collection(firestore, readCollection); 
 
@@ -84,7 +82,6 @@ function readDataWithQuery(readCollection, filters = [], orderings = []) {
 // readDataWithQuery("Challenges", [{ field: "startingTime", operator: ">", value: new Date() }], [{ field: "startingTime", direction: "desc" }])
 //     .then(data => console.log(data))
 //     .catch(err => console.error(err));
-
 
 function readDocumentsInArray(readCollection, filters = [], orderings = [], documentIDs = []) {
     const userCollection = collection(firestore, readCollection); 
@@ -171,7 +168,6 @@ async function readSingleUserInformation(readCollection, userID) {
         throw err;
     }
 }
-
 
 async function updateHasCompletedTask(challengeID, eachPlayer, taskRef, postID) {
     try {
@@ -294,8 +290,6 @@ async function updateArrayFieldInDocument(collectionName, docId, arrayName, valu
     }
 }
 
-
-
 async function removeFromDocumentInArr(collectionName, documentID, field, removeItem){
     try{
         let docReference = doc(collection(firestore, collectionName), documentID);
@@ -339,7 +333,6 @@ async function getPositionInSortedCollection(collectionName, documentId, element
     }
 }
 
-
 async function getUsernamesByIds(userIds) {
     if (!Array.isArray(userIds) || userIds.length === 0) {
         throw new Error('User IDs must be a non-empty array');
@@ -365,8 +358,6 @@ async function getUsernamesByIds(userIds) {
     }
 }
 
-
-
 export {
     firestore,
     firebaseApp,
@@ -384,4 +375,4 @@ export {
     addToCollection,
     deleteCollection,
     getPositionInSortedCollection,
-  };
+};

@@ -44,7 +44,7 @@ export default function NotificationSettingsPage({navigation})
         <View style={{ flex: 1 }}>
     
             <View style={{ marginTop: 55, marginBottom: 25 }}>
-                <Header navigation={navigation} pageName={"Notification"} />
+                <Header navigation={navigation} pageName={"Notification"} navigateToPage={"SettingsPage"} />
             </View>
     
             <View style={{ alignSelf: "center", width: "90%" }}>

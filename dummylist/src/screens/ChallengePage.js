@@ -9,37 +9,14 @@ import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderb
 import TaskComponent from "../components/TaskComponent";
 
 import { calculatePlacement } from "../components/GlobalFunctions";
+import TypeFastestWins from "../components/TypeFastestWins";
+import TypeBingo from "../components/TypeBingo";
 
 export default function ChallengesPage({navigation})
 {
     const route = useRoute();
     const {challenge} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
     console.log(challenge.id)
-
-    function handleImageClick(task)
-    {
-        console.log("Challenge clicked -> Go to take photo/video!")
-        navigation.navigate('CameraPage', { task: task, challengeID : challenge.id });
-    }
-
-    function getAllMembersWhoFinnishedTheTask(task) {
-        const allFriendsIDWhoFinnished = [];
-        task.friendsTask.map(friend => {
-            if (friend.hasCompletedTask) {
-                allFriendsIDWhoFinnished.push(friend.friendID);
-            }
-        });
-        return allFriendsIDWhoFinnished;
-    }
-
-    function getAllPlayersFromChallenge() //Only use friends who has accepted the challenge
-    {
-
-        const participants = challenge.friends.map((friend) => {
-            return friend.user
-        })
-        return participants
-    }
 
     return(
         <View style={{flex: 1, flexDirection: "column", backgroundColor: "#FFDF9D"}}>
@@ -49,28 +26,23 @@ export default function ChallengesPage({navigation})
                 </View>
 
                 <View style={{marginVertical: 21}}>
-                    <GoToLeaderboard propsToleaderboard={challenge} navigation={navigation}placement={calculatePlacement(challenge)} allPlayers={getAllPlayersFromChallenge()}/>
+                    <GoToLeaderboard propsToleaderboard={challenge} navigation={navigation}placement={calculatePlacement(challenge)}/>
                 </View>
             </View>
 
 
             <View style={{flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, backgroundColor: "#D0E4FF"}}>
                 <View style={{paddingTop: 45}}>
-                    <ChallengeLeaderboardTitleInformation daysLeftTillChallengeEnds={3} isChallengeOrLeaderboard={true}/>
+                    <ChallengeLeaderboardTitleInformation daysLeftTillChallengeEnds={3} isChallengeOrLeaderboard={"Tasks"}/>
                 </View>
 
                 <ScrollView style={{marginTop: 21}}>
-                    {challenge.tasks?.map(task => (
-                        <View key={task.taskDescription}>
-                            <TaskComponent 
-                                description={task.taskDescription} 
-                                membersCompletedTask={getAllMembersWhoFinnishedTheTask(task)} 
-                                totalMembersInChallenge={task.friendsTask.length} 
-                                isCompleted={getAllMembersWhoFinnishedTheTask(task).some(friendID => friendID === global.userInformation.id)} 
-                                onPress={() => handleImageClick(task)}
-                            />
-                        </View>
-                    ))}
+                    {challenge?.gameMode == "Fastest Wins" || challenge?.gameMode == "Long List" && (
+                        <TypeFastestWins navigation={navigation} theChallenge={challenge}/>
+                    )} 
+                    {challenge?.gameMode == "Bingo" && (
+                        <TypeBingo challenge={challenge} navigation={navigation}/>
+                    )}
                 </ScrollView>                
             </View>
         </View>

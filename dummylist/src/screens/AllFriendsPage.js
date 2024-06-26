@@ -52,7 +52,7 @@ export default function AllFriendsPage({navigation, route})
     return(
         <View style={{flex: 1}}>
             <View style={{marginTop: 55, marginBottom: 49}}>
-                <Header pageName={`All Friends (${yourFriends?.length || 0})`} navigation={navigation}/>
+                <Header pageName={`All Friends (${yourFriends?.length || 0})`} navigation={navigation} navigateToPage={"FriendsPage"}/>
             </View>
 
             <ScrollView>

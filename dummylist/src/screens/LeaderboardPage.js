@@ -74,7 +74,7 @@ export default function LeaderboardPage({navigation})
 
             <View style={{flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, backgroundColor: "#D3EC9E"}}>
                 <View style={{paddingTop: 45}}>
-                    <ChallengeLeaderboardTitleInformation daysLeftTillChallengeEnds={3} isChallengeOrLeaderboard={false}/>
+                    <ChallengeLeaderboardTitleInformation daysLeftTillChallengeEnds={3} isChallengeOrLeaderboard={"Leaderboard"}/>
                 </View>
 
                 <ScrollView style={{ marginTop: 21 }}>

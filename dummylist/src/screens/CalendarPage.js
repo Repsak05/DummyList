@@ -36,7 +36,7 @@ export default function CalendarPage({navigation, route})
     return (
         <View>
             <View style={{ marginTop: 55, marginBottom: 10 }}>
-                <Header pageName={"Memories"} navigation={navigation}/>
+                <Header pageName={"Memories"} navigation={navigation} navigateToPage={"ProfilePage"}/>
             </View>
 
             { allPosts[onCurrentPost] ? (

@@ -14,7 +14,7 @@ export default function SettingsPage({navigation})
     return(
         <View>
             <View style={{marginTop: 55, marginBottom: 40}}>
-                <Header navigation={navigation} pageName={"Settings"}/>
+                <Header navigation={navigation} pageName={"Settings"} navigateToPage={"ProfilePage"}/>
             </View>
 
             <View style={{flexDirection: "column"}}>
