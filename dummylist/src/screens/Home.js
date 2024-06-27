@@ -5,7 +5,7 @@ import styles from '../style.js';
 import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
-import { readDataWithQuery, addSingleValueToDocument, addToDocument, readSingleUserInformation } from "../../firebase.js";
+import { readDataWithQuery, addSingleValueToDocument, addToDocument, readSingleUserInformation, deleteDocument } from "../../firebase.js";
 import { calculatePlacement, differenceInTime } from "../components/GlobalFunctions.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 
@@ -62,6 +62,41 @@ export default function Home({navigation})
             const challenge = allChallenges[challenges];
             checkIfChallengeIsDone(challenge);
         }
+    }, [allChallenges])
+
+    useEffect(() => {
+        //Delete all challenges that are begun and none has joined:
+        //? Maybe the user should get a notification about it?
+        let challengesAfterSomeAreRemoved = [];
+        let hasAnyBeenRemoved = false;
+        async function deleteInvalidChallenges()
+        {
+            console.log("Looking for Invalid challenges");
+            for(let challenges in allChallenges)
+            {
+                const challenge = allChallenges[challenges];
+                if(challenge.joinedMembers.length <= 1)
+                {
+                    hasAnyBeenRemoved = true;
+                    
+                    //Remove challenge from DB
+                    try{
+                        await deleteDocument("Challenges", challenge.id);
+                    }catch(err){
+                        console.log(err);
+                    }
+                } else{
+                    challengesAfterSomeAreRemoved.push(challenge);
+                }
+            }
+
+            if(hasAnyBeenRemoved){
+                setAllChallenges(challengesAfterSomeAreRemoved);
+                console.log("Challenge(s) removed");
+            }
+        }
+
+        deleteInvalidChallenges();
     }, [allChallenges])
 
     function navigateToChallenge(challenge)
@@ -267,12 +302,6 @@ export default function Home({navigation})
         }else {
             return sortedIDs;
         }
-    }
-
-    function goToFinishedChallenge(challenge)
-    {
-        //! Insert navigation to page
-        console.log("Go To Finished Challenge!\n" + challenge.challengeName);
     }
 
     const [hasFinnishedChallenge, setHasFinishedChallenge] = useState(false);

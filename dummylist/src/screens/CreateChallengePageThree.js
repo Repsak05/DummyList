@@ -7,6 +7,7 @@ import ProgressBarTemplate from "../components/ProgressBarTemplate.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 
 import {readData, addToDocument, addToCollection, readSingleUserInformation, } from "../../firebase.js";
+import SliderComponent from "../components/SliderComponent.js";
 
 
 export default function CreateChallengePageThree({navigation, route})
@@ -174,6 +175,37 @@ export default function CreateChallengePageThree({navigation, route})
         }
     };
 
+
+    useEffect(() => {
+        //Set initial values for endingTime (7-8 days into the future)
+        let today = new Date();
+
+        if(allChallengeValues?.startingTime)
+        {
+            today.setHours(allChallengeValues.startingTime.getHours() + 7*24);
+        } else {
+            today.setHours(today.getHours() + 8*24);
+        }
+
+        changeChallengeValues(today, "endingTime"); 
+    }, [])
+
+
+    function updateEndingTime(val)
+    {
+        let today = new Date();
+
+        if(allChallengeValues?.startingTime)
+        {
+            today.setHours(allChallengeValues.startingTime.getHours() + val*24);
+        } else {
+            today.setHours(today.getHours() + (val+1)*24);
+        }
+
+        changeChallengeValues(today, "endingTime");
+    }
+    
+
     return(
         <View>
             <View style={{marginTop: 55, marginBottom: 17}}>
@@ -225,6 +257,20 @@ export default function CreateChallengePageThree({navigation, route})
                     </Pressable>
                 </View>
             </View>
+
+            {allChallengeValues.gameMode == "Long List" && (
+                <View style={{marginTop: 30}}>
+                    <Text style={{ paddingLeft: 17, fontSize: 20, marginBottom: 17 }}>Select Challenge Duration</Text>
+
+                    <SliderComponent
+                        onChange={(value) => updateEndingTime(Math.round(value))}
+                        timeReference="Day"
+                        min={1}
+                        max={30}
+                        initialValue={14}
+                    />
+                </View>
+            )}
 
             <View style={{paddingHorizontal: 30, justifyContent: "space-between", flexDirection: "row", marginTop: 15}}>
                 <NextPreviousButton text={"Previous"} onPress={previousFunction}/>

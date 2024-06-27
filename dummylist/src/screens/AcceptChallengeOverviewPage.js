@@ -16,6 +16,8 @@ export default function AcceptChallengeOverviewPage({ navigation })
   //TODO: Initial "Accept-" / "Decline invite" based on correct array (joinedMembers)
   //TODO: If isOwnerOfChallenge then add edit options
   //! Remove increment of timeparticipated - happens when challenge is done instead
+  //! Remove ability to add tasks if its a Bingo
+  //TODO: Set default image to be Medium Difficulty
   
     const route = useRoute();
     const {chal} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}

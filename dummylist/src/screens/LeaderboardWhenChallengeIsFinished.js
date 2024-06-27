@@ -14,6 +14,7 @@ import { getUsernamesByIds, readSingleUserInformation } from "../../firebase"
 export default function LeaderboardWhenChallengeIsFinished({navigation})
 {
     //TODO Missing to set deafult image if value is empty in DB
+    //! Leaderboard should be dependent on gameMode (e.g. Bingo vs. Fastest Wins)
 
     const route = useRoute();
     const {challenge} = route.params; 

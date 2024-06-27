@@ -150,6 +150,19 @@ function deleteCollection(collection, id) //e.g. "Users", "ND781GH1N89CH17"
     deleteDoc(docToBeDelted);
 }
 
+async function deleteDocument(collectionName, documentId) {
+    // Reference to the document
+    const docRef = doc(firestore, collectionName, documentId);
+  
+    try {
+      // Delete the document
+      await deleteDoc(docRef);
+      console.log(`Document with ID ${documentId} has been deleted successfully.`);
+    } catch (error) {
+      console.error('Error removing document: ', error);
+    }
+  }
+
 async function readSingleUserInformation(readCollection, userID) {
     const userDocRef = doc(collection(firestore, readCollection), userID);
 
@@ -374,5 +387,6 @@ export {
     readSingleUserInformation,
     addToCollection,
     deleteCollection,
+    deleteDocument,
     getPositionInSortedCollection,
 };
