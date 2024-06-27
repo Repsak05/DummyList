@@ -15,6 +15,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
   //TODO: When clicking on the yes/no button - add/remove from joinedMembers
   //TODO: Initial "Accept-" / "Decline invite" based on correct array (joinedMembers)
   //TODO: If isOwnerOfChallenge then add edit options
+  //! Remove increment of timeparticipated - happens when challenge is done instead
   
     const route = useRoute();
     const {chal} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}

@@ -11,6 +11,7 @@ import {readData, addToDocument, addToCollection, readSingleUserInformation, } f
 
 export default function CreateChallengePageThree({navigation, route})
 { //TODO. Add task description on creation (Depending on game-mode)
+    //! Remove time addition to timeparticipated
     const { allCurrentChallengeValues } = route.params
     const [ allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues);
 

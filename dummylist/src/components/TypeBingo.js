@@ -56,7 +56,7 @@ export default function TypeFastestWins({navigation, challenge})
                     <View style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", width: '100%'}} key={index}>
                         {row.map((task, indexTwo) => (
                             <Pressable onPress={() => {handleImageClick(task);}} style={[style.roundedCornersSmall, {width: 80, height: 80, backgroundColor: checkIfTaskIsCompleted(task) ? "#F2B705" : "#001D34", margin: 4, alignItems: "center", justifyContent: "center"}]} key={indexTwo}>
-                                <Text style={[style.whiteFontSize13, {textAlign: "center", numberOfLines: 1, adjustsFontSizeToFit: true, minimumFontScale: 0.5}]}>
+                                <Text style={[style.whiteFontSize13Reg, {textAlign: "center", numberOfLines: 1, adjustsFontSizeToFit: true, minimumFontScale: 0.5}]}>
                                     {task.taskDescription}
                                 </Text>
                             </Pressable>

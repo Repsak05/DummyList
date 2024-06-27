@@ -310,6 +310,11 @@ export default StyleSheet.create({
     color: "#F6F6F6",
     fontSize: 16,
   },
+  whiteFontSize13Reg: {
+    fontFamily: "Oswald_400Regular", 
+    color: "#F6F6F6",
+    fontSize: 13,
+  },
   whiteFontSize13: {
     fontFamily: "Oswald_500Medium", 
     color: "#F6F6F6",

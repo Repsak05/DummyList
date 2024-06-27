@@ -14,6 +14,7 @@ export default function Home({navigation})
     //TODO: Create placement icon with just 1/2 and 2/2
     /*//? TODO: Dertermine wether the challenge is finished and hasBeen opened by you
         //? maybe create new collection with finished challenges - though probably not necessary*/
+    //!BINGO: End placement: Same amount of rows completed, then they should be sorted by total amount of tasks completed
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()
@@ -71,96 +72,200 @@ export default function Home({navigation})
 
     async function checkIfChallengeIsDone(challengeObj)
     {
-        let map = {};
-        
-        //Figure out how many tasks each participant has completed 
-        for(let tasks of challengeObj.tasks)
+        if(challengeObj.gameMode == "Bingo" || challengeObj.gameMode == "Fastest Wins")
         {
-            for(let friends in tasks.friendsTask)
+            let map = {};
+            
+            //Figure out how many tasks each participant has completed 
+            for(let tasks of challengeObj.tasks)
             {
-                const participantTaskObject = tasks.friendsTask[friends];
-
-                if(participantTaskObject.hasCompletedTask)
+                for(let friends in tasks.friendsTask)
                 {
-                    if(map[participantTaskObject.friendID])
+                    const participantTaskObject = tasks.friendsTask[friends];
+    
+                    if(participantTaskObject.hasCompletedTask)
                     {
-                        map[participantTaskObject.friendID] += 1;
-
+                        if(map[participantTaskObject.friendID])
+                        {
+                            map[participantTaskObject.friendID] += 1;
+    
+                        } else {
+                            map[participantTaskObject.friendID] = 1;
+    
+                        }
+                    }
+                }
+            }
+            
+            //Check wether anyone has completed all challenges:
+            for(let amountOfCompletedTasks in map)
+            {
+                const amountCompleted = map[amountOfCompletedTasks];
+                if(amountCompleted == challengeObj.tasks.length)
+                {
+                    //Ensure that you've not alredy seen the end page:
+                    let shouldYouSeeFinishScreen = true; 
+                    if(challengeObj.peopleSeenFinishScreen)
+                    {
+                        for(let member of challengeObj.peopleSeenFinishScreen)
+                            {
+                                if(member == global.userInformation.id){
+                                    shouldYouSeeFinishScreen = false;
+                                    break;
+                                }
+                            }
                     } else {
-                        map[participantTaskObject.friendID] = 1;
+                        try{
+                            await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
+                            setHasFinishedChallenge(challengeObj);
+                        }catch(err){
+                            console.log(err);
+                        }
+    
+                        
+                        //Calculate palcement of all players on bingoboard
+                        let allBingoPlacements = [];
+                        if(challengeObj.gameMode == "Bingo"){allBingoPlacements = calculateBingoPlacement(challengeObj);}
+                        
+                        //Add stats to each profile
+                        for(let member of challengeObj.joinedMembers)
+                        {
+                            let placement = challengeObj.joinedMembers.length; //Set inital value
+                            if(challengeObj.gameMode == "Fastest Wins" || challengeObj.gameMode == "Long List")
+                            {
+                                placement = calculatePlacement(challengeObj, member, false);
 
+                            }else if(challengeObj.gameMode == "Bingo"){
+                                placement = allBingoPlacements[member] || challengeObj.joinedMembers.length;
+                            }
+
+                            const amountOfMembers = challengeObj.joinedMembers.length;
+                            const obj = {placement : placement, amountOfMembers : amountOfMembers, challengeID : challengeObj.id};
+    
+                            console.log(obj, member);
+                            //Add stats to induvidual players
+                            try{
+                                await addToDocument("Users", member, "Stats", obj, true, 0, "AveragePlacement");
+                                console.log("Average placement updated for 1 person");
+                                
+                                await addToDocument("Users", member, "Stats", false, false, 1, "TimesParticipated");
+                            }catch(err){
+                                console.log(err);
+                            }
+    
+                            //If player came 1st place updated amount of challenges won!
+                            if(placement == 1)
+                            {
+                                try{
+                                    await addToDocument("Users", member, "Stats", false, false, 1, "ChallengesWon");
+                                    console.log("Winners score was increased: " + member);
+    
+                                }catch(err){
+                                    console.log(err);
+                                }
+                            }
+                        }
+                    }
+    
+                    if(shouldYouSeeFinishScreen)
+                    {
+                        try{
+                            //? This very next line should maybe first happen when clicking continue of view leaderboard
+                            await addToDocument("Challenges", challengeObj.id, "peopleSeenFinishScreen", global.userInformation.id, true); 
+                            setHasFinishedChallenge(challengeObj);
+                        }catch(err){
+                            console.log(err);
+                        }
                     }
                 }
             }
         }
-        
-        //Check wether anyone has completed all challenges:
-        for(let amountOfCompletedTasks in map)
+    }
+
+    function calculateBingoPlacement(challenge, returnPlacementInsertID) //GameMode fastest wins
+    {
+        //Create grid with true false depending on whether task is completed
+        let rowMember = {}
+        let gridMember = {}
+
+        for(let participant of challenge.joinedMembers)
         {
-            const amountCompleted = map[amountOfCompletedTasks];
-            if(amountCompleted == challengeObj.tasks.length)
+            rowMember[participant] = []
+            gridMember[participant] = []
+        }
+
+        let columnNumber = 0;   
+
+        for(let task of challenge.tasks)
+        {
+            columnNumber++;
+            const allPlayers = task.friendsTask;
+
+            for(let friends of allPlayers)
             {
-                //Ensure that you've not alredy seen the end page:
-                let shouldYouSeeFinishScreen = true; 
-                if(challengeObj.peopleSeenFinishScreen)
+                if(friends.hasCompletedTask)
                 {
-                    for(let member of challengeObj.peopleSeenFinishScreen)
-                        {
-                            if(member == global.userInformation.id){
-                                shouldYouSeeFinishScreen = false;
-                                break;
-                            }
-                        }
-                } else {
-                    try{
-                        await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
-                        setHasFinishedChallenge(challengeObj);
-                    }catch(err){
-                        console.log(err);
-                    }
-
-                    //Add stats to each profile
-                    for(let member of challengeObj.joinedMembers)
-                    {
-                        const placement = calculatePlacement(challengeObj, member, false);
-                        const amountOfMembers = challengeObj.joinedMembers.length;
-                        const obj = {placement : placement, amountOfMembers : amountOfMembers, challengeID : challengeObj.id};
-
-                        console.log(obj, member);
-                        try{
-                            await addToDocument("Users", member, "Stats", obj, true, 0, "AveragePlacement");
-                            console.log("Average placement updated for 1 person");
-                            
-                            await addToDocument("Users", member, "Stats", false, false, 1, "TimesParticipated");
-                        }catch(err){
-                            console.log(err);
-                        }
-
-                        //If player came 1st place updated amount of challenges won!
-                        if(placement == 1)
-                        {
-                            try{
-                                await addToDocument("Users", member, "Stats", false, false, 1, "ChallengesWon");
-                                console.log("Winners score was increased: " + member);
-
-                            }catch(err){
-                                console.log(err);
-                            }
-                        }
-                    }
-                }
-
-                if(shouldYouSeeFinishScreen)
-                {
-                    try{
-                        //? This very next line should maybe first happen when clicking continue of view leaderboard
-                        await addToDocument("Challenges", challengeObj.id, "peopleSeenFinishScreen", global.userInformation.id, true); 
-                        setHasFinishedChallenge(challengeObj);
-                    }catch(err){
-                        console.log(err);
-                    }
+                    const participantWhoHasCompletedTask = friends.friendID;
+                    rowMember[participantWhoHasCompletedTask].push(true);
                 }
             }
+
+            if(columnNumber >= 4)
+            {
+                for(let participant of challenge.joinedMembers)
+                {
+                    gridMember[participant].push([...rowMember[participant]]);
+                    rowMember[participant] = [];
+                }
+                columnNumber = 0;
+            }
+        }
+
+        //map with player and amount of rows complete:
+        let playersAmountOfRowsComplete = {}
+        for(let players in gridMember)
+        {
+            const player = gridMember[players];
+            let rowsComplete = 0;
+
+            for(let row of player)
+            {
+                if(row.length == 4)
+                {
+                    rowsComplete++;
+                }
+            }
+            playersAmountOfRowsComplete[players] = rowsComplete;
+        }
+
+        //Create an array which displays the placement of each member (sorted by amount of rows completed);
+        const entries = Object.entries(playersAmountOfRowsComplete);
+        entries.sort((a, b) => b[1] - a[1]);
+        const sortedIDs = entries.map(entry => entry[0]);
+        
+        
+        //Conosle.log all useable information
+        console.log("grid ->");
+        console.log(gridMember);
+        
+        
+        console.log("playersAmountOfRowsComplete");
+        console.log(playersAmountOfRowsComplete)
+        
+        console.log("sortedIDs");
+        console.log(sortedIDs);
+
+        if(returnPlacementInsertID)
+        {
+            for(let i = 0; i< sortedIDs.length; i++)
+            {
+                if(sortedIDs[i] == returnPlacementInsertID)
+                {
+                    return i+1;
+                }
+            }
+        }else {
+            return sortedIDs;
         }
     }
 
@@ -178,9 +283,17 @@ export default function Home({navigation})
     useEffect(() => {
         if(hasFinnishedChallenge)
         {
-            const allPlayersAmountCompleted = calculatePlacement(hasFinnishedChallenge, false, false, true);
-            const sortedEntries = Object.entries(allPlayersAmountCompleted).sort((a, b) => b[1] - a[1]);
-            const sortedKeys = sortedEntries.map(entry => entry[0]);
+            let sortedKeys = [];
+            
+            if(hasFinnishedChallenge.gameMode == "Fastest Wins" || hasFinnishedChallenge.gameMode == "Long List")
+            {
+                const allPlayersAmountCompleted = calculatePlacement(hasFinnishedChallenge, false, false, true);
+                const sortedEntries = Object.entries(allPlayersAmountCompleted).sort((a, b) => b[1] - a[1]);
+                sortedKeys = sortedEntries.map(entry => entry[0]);
+
+            } else if (hasFinnishedChallenge.gameMode == "Bingo"){
+                sortedKeys = calculateBingoPlacement(hasFinnishedChallenge);
+            }
             
             setLeaderboard(sortedKeys);
             console.log(sortedKeys);
