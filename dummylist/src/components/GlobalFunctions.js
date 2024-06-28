@@ -140,4 +140,35 @@ async function getProfilePic(userID) //?DB can probably be improved by only retr
     }
 }
 
-export {differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}
+function calculateTimeLeft(challenge, getFloatValueInHours = false)
+{
+    if(challenge.gameMode == "Long List")
+    {
+        if (!challenge.endingTime || typeof challenge.endingTime.seconds === 'undefined' || typeof challenge.endingTime.nanoseconds === 'undefined') {
+            console.error('Invalid endingTime format:', challenge.endingTime, " in ", challenge.id, " was probably made without endingTime");
+            return 'Invalid endingTime';
+        }
+
+        let currentDate = new Date();
+        let endTime = new Date(challenge.endingTime.seconds * 1000 + challenge.endingTime.nanoseconds / 1000000); // Convert timestamp to Date object
+    
+        let timeLeftMilliseconds = endTime - currentDate; // Time left in milliseconds
+        let timeLeftHours = timeLeftMilliseconds / (1000 * 60 * 60); // Convert milliseconds to hours
+
+        if(getFloatValueInHours){
+            return timeLeftHours;
+        }
+
+        if(timeLeftHours > 24)
+        {
+            const timeLeftDays = timeLeftHours/24
+            return `${timeLeftDays.toFixed(2)} days`;
+        }
+
+        return `${timeLeftHours.toFixed(2)} hours`;
+    }else {
+        return `No Time Limit`;
+    }
+}
+
+export {calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}

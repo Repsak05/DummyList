@@ -8,7 +8,7 @@ import GoToTasks from "../components/GoToTasks";
 import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderboardTitleInformation";
 import LeaderboardPlacement from "../components/LeaderboardPlacement";
 
-import { calculatePlacement } from "../components/GlobalFunctions";
+import { calculatePlacement, calculateTimeLeft } from "../components/GlobalFunctions";
 import { getUsernamesByIds } from "../../firebase"
 
 
@@ -74,7 +74,7 @@ export default function LeaderboardPage({navigation})
 
             <View style={{flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, backgroundColor: "#D3EC9E"}}>
                 <View style={{paddingTop: 45}}>
-                    <ChallengeLeaderboardTitleInformation daysLeftTillChallengeEnds={3} isChallengeOrLeaderboard={"Leaderboard"}/>
+                    <ChallengeLeaderboardTitleInformation otherText={calculateTimeLeft(challenge)} isChallengeOrLeaderboard={"Leaderboard"}/>
                 </View>
 
                 <ScrollView style={{ marginTop: 21 }}>

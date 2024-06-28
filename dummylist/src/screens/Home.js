@@ -6,7 +6,7 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 import { readDataWithQuery, addSingleValueToDocument, addToDocument, readSingleUserInformation, deleteDocument } from "../../firebase.js";
-import { calculatePlacement, differenceInTime } from "../components/GlobalFunctions.js";
+import { calculatePlacement, calculateTimeLeft, differenceInTime } from "../components/GlobalFunctions.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 
 export default function Home({navigation})  
@@ -105,114 +105,184 @@ export default function Home({navigation})
         navigation.navigate("ChallengePage", {challenge})
     }
 
+    function lookAtFinishScreen(challengeObj)
+    {
+        let shouldYouSeeFinishScreen = true; 
+        if(challengeObj.peopleSeenFinishScreen)
+        {
+            for(let member of challengeObj.peopleSeenFinishScreen)
+                {
+                    if(member == global.userInformation.id){
+                        shouldYouSeeFinishScreen = false;
+                        break;
+                    }
+                }
+        }
+
+        return shouldYouSeeFinishScreen;
+    }
+
     async function checkIfChallengeIsDone(challengeObj)
     {
-        if(challengeObj.gameMode == "Bingo" || challengeObj.gameMode == "Fastest Wins")
+        
+        function determineWhetherChallengeIsComplete(getAmountOfChallengesComplete = false)
         {
-            let map = {};
-            
-            //Figure out how many tasks each participant has completed 
-            for(let tasks of challengeObj.tasks)
+            if(challengeObj.gameMode == "Long List")
             {
-                for(let friends in tasks.friendsTask)
+                return calculateTimeLeft(challengeObj, true) < 0;
+            }
+
+            if(challengeObj.gameMode == "Bingo" || challengeObj.gameMode == "Fastest Wins")
+            {
+                let map = {};
+            
+                //Figure out how many tasks each participant has completed 
+                for(let tasks of challengeObj.tasks)
                 {
-                    const participantTaskObject = tasks.friendsTask[friends];
-    
-                    if(participantTaskObject.hasCompletedTask)
+                    for(let friends in tasks.friendsTask)
                     {
-                        if(map[participantTaskObject.friendID])
+                        const participantTaskObject = tasks.friendsTask[friends];
+        
+                        if(participantTaskObject.hasCompletedTask)
                         {
-                            map[participantTaskObject.friendID] += 1;
-    
-                        } else {
-                            map[participantTaskObject.friendID] = 1;
-    
+                            if(map[participantTaskObject.friendID])
+                            {
+                                map[participantTaskObject.friendID] += 1;
+        
+                            } else {
+                                map[participantTaskObject.friendID] = 1;
+        
+                            }
                         }
                     }
                 }
+                if(getAmountOfChallengesComplete){return map;}
+
+                //Check wether anyone has completed all challenges:
+                for(let amountOfCompletedTasks in map)
+                {
+                    const amountCompleted = map[amountOfCompletedTasks];
+                    if(amountCompleted == challengeObj.tasks.length)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
+        async function setIsStillActiveFalse()
+        {
+            try{
+                await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
+                setHasFinishedChallenge(challengeObj);
+            }catch(err){
+                console.log(err);
+            }
+
+        }
+
+        function getPlacementOfAllPlayers()
+        {
+            let allBingoPlacements = [];
+            if(challengeObj.gameMode == "Bingo")
+            {
+                allBingoPlacements = calculateBingoPlacement(challengeObj);
             }
             
-            //Check wether anyone has completed all challenges:
-            for(let amountOfCompletedTasks in map)
+            if(challengeObj.gameMode == "Long List" || challengeObj.gameMode == "Fastest Wins")
             {
-                const amountCompleted = map[amountOfCompletedTasks];
-                if(amountCompleted == challengeObj.tasks.length)
-                {
-                    //Ensure that you've not alredy seen the end page:
-                    let shouldYouSeeFinishScreen = true; 
-                    if(challengeObj.peopleSeenFinishScreen)
-                    {
-                        for(let member of challengeObj.peopleSeenFinishScreen)
-                            {
-                                if(member == global.userInformation.id){
-                                    shouldYouSeeFinishScreen = false;
-                                    break;
-                                }
-                            }
-                    } else {
-                        try{
-                            await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
-                            setHasFinishedChallenge(challengeObj);
-                        }catch(err){
-                            console.log(err);
-                        }
-    
-                        
-                        //Calculate palcement of all players on bingoboard
-                        let allBingoPlacements = [];
-                        if(challengeObj.gameMode == "Bingo"){allBingoPlacements = calculateBingoPlacement(challengeObj);}
-                        
-                        //Add stats to each profile
-                        for(let member of challengeObj.joinedMembers)
-                        {
-                            let placement = challengeObj.joinedMembers.length; //Set inital value
-                            if(challengeObj.gameMode == "Fastest Wins" || challengeObj.gameMode == "Long List")
-                            {
-                                placement = calculatePlacement(challengeObj, member, false);
+                const amountOfTasksComplete = determineWhetherChallengeIsComplete(true);
+                
+                let scoresArray = Object.entries(amountOfTasksComplete);
+                scoresArray.sort((a, b) => b[1] - a[1]);
+                allBingoPlacements = scoresArray.map(entry => entry[0]);
+            }
 
-                            }else if(challengeObj.gameMode == "Bingo"){
-                                placement = allBingoPlacements[member] || challengeObj.joinedMembers.length;
-                            }
+            console.log("allBingoPlacements");
+            console.log(allBingoPlacements);
+            return allBingoPlacements //= ["idplacement1", "idplacement2", ...]
+        }
 
-                            const amountOfMembers = challengeObj.joinedMembers.length;
-                            const obj = {placement : placement, amountOfMembers : amountOfMembers, challengeID : challengeObj.id};
-    
-                            console.log(obj, member);
-                            //Add stats to induvidual players
-                            try{
-                                await addToDocument("Users", member, "Stats", obj, true, 0, "AveragePlacement");
-                                console.log("Average placement updated for 1 person");
-                                
-                                await addToDocument("Users", member, "Stats", false, false, 1, "TimesParticipated");
-                            }catch(err){
-                                console.log(err);
-                            }
-    
-                            //If player came 1st place updated amount of challenges won!
-                            if(placement == 1)
-                            {
-                                try{
-                                    await addToDocument("Users", member, "Stats", false, false, 1, "ChallengesWon");
-                                    console.log("Winners score was increased: " + member);
-    
-                                }catch(err){
-                                    console.log(err);
-                                }
-                            }
-                        }
-                    }
-    
-                    if(shouldYouSeeFinishScreen)
-                    {
-                        try{
-                            //? This very next line should maybe first happen when clicking continue of view leaderboard
-                            await addToDocument("Challenges", challengeObj.id, "peopleSeenFinishScreen", global.userInformation.id, true); 
-                            setHasFinishedChallenge(challengeObj);
-                        }catch(err){
-                            console.log(err);
-                        }
-                    }
+        async function giveChallengeFinishedStats(participant, obj, placement)
+        {
+            try{
+                await addToDocument("Users", participant, "Stats", obj, true, 0, "AveragePlacement");                                
+                await addToDocument("Users", participant, "Stats", false, false, 1, "TimesParticipated");
+            }catch(err){
+                console.log(err);
+            }
+            
+            //If player came 1st place updated amount of challenges won!
+            if(placement == 1)
+            {
+                try{
+                    await addToDocument("Users", participant, "Stats", false, false, 1, "ChallengesWon");
+                    console.log("Winners score was increased: " + participant);
+
+                }catch(err){
+                    console.log(err);
                 }
+            }
+        }
+
+        function calculatePlacement(challengeObj, placementOfAllPlayersInSortedArr, participant, )
+        {
+            let placement = challengeObj.joinedMembers.length;
+            for(let i = 0; i<placementOfAllPlayersInSortedArr.length; i++)
+            {
+                if(participant == placementOfAllPlayersInSortedArr[i])
+                {
+                    placement = i+1;
+                    break;
+                }
+            }
+            return placement;
+        }
+        
+        async function screenHasNowBeenSeen()
+        {
+            try{
+                //? This very next line should maybe first happen when clicking continue of view leaderboard
+                await addToDocument("Challenges", challengeObj.id, "peopleSeenFinishScreen", global.userInformation.id, true); 
+                setHasFinishedChallenge(challengeObj);
+            }catch(err){
+                console.log(err);
+            }
+        }
+
+        //Setting inital values
+        const isChallengeComplete = determineWhetherChallengeIsComplete();
+        const shouldGiveAwardsToEveryone = Boolean(!challengeObj.peopleSeenFinishScreen);
+        const shouldDisplayFinishScreen = lookAtFinishScreen(challengeObj);
+
+        if(isChallengeComplete)
+        {
+            const placementOfAllPlayers = getPlacementOfAllPlayers(); // = ["IDplacement1", "IDplacement2", ...]
+            setLeaderboard(placementOfAllPlayers);
+            setImagesAndNames(placementOfAllPlayers);
+
+            if(shouldGiveAwardsToEveryone) //Meaning its the first time its seen complete
+            {
+                //Set challenge is complete:
+                setIsStillActiveFalse();
+                                
+                //Give stats to everyone
+                for(let participant of challengeObj.joinedMembers)
+                {
+                    //Calculate placement and stats
+                    const placement = calculatePlacement(challengeObj, placementOfAllPlayers, participant);
+                    const amountOfMembers = challengeObj.joinedMembers.length;
+                    const obj = {placement : placement, amountOfMembers : amountOfMembers, challengeID : challengeObj.id};
+                    
+                    //Update stats
+                    giveChallengeFinishedStats(participant, obj, placement);
+                }
+            }
+
+            if(shouldDisplayFinishScreen)
+            {
+                screenHasNowBeenSeen();
             }
         }
     }
@@ -280,15 +350,15 @@ export default function Home({navigation})
         
         
         //Conosle.log all useable information
-        console.log("grid ->");
-        console.log(gridMember);
+        // console.log("grid ->");
+        // console.log(gridMember);
         
         
-        console.log("playersAmountOfRowsComplete");
-        console.log(playersAmountOfRowsComplete)
+        // console.log("playersAmountOfRowsComplete");
+        // console.log(playersAmountOfRowsComplete)
         
-        console.log("sortedIDs");
-        console.log(sortedIDs);
+        // console.log("sortedIDs");
+        // console.log(sortedIDs);
 
         if(returnPlacementInsertID)
         {
@@ -309,56 +379,33 @@ export default function Home({navigation})
     const [topThreeInformation, setTopThreeInformation] = useState(false);
     const [shouldStillSeeLeaderboard, setShouldStillSeeLeaderboard] = useState(true);
 
-    useEffect(() => {
-        if(hasFinnishedChallenge)
+    async function setImagesAndNames(ids)
+    {
+        let arr = [] // [[n1, i1], [n2, i2], [n3, i3]]
+        for(let id of ids.slice(0, 3))
         {
-            let sortedKeys = [];
-            
-            if(hasFinnishedChallenge.gameMode == "Fastest Wins" || hasFinnishedChallenge.gameMode == "Long List")
-            {
-                const allPlayersAmountCompleted = calculatePlacement(hasFinnishedChallenge, false, false, true);
-                const sortedEntries = Object.entries(allPlayersAmountCompleted).sort((a, b) => b[1] - a[1]);
-                sortedKeys = sortedEntries.map(entry => entry[0]);
-
-            } else if (hasFinnishedChallenge.gameMode == "Bingo"){
-                sortedKeys = calculateBingoPlacement(hasFinnishedChallenge);
-            }
-            
-            setLeaderboard(sortedKeys);
-            console.log(sortedKeys);
-
-            setImagesAndNames(sortedKeys);
+            const values = await returnImageAndNameFromID(id);
+            arr.push(values);
         }
 
-        async function setImagesAndNames(ids)
-        {
-            let arr = [] // [[n1, i1], [n2, i2], [n3, i3]]
-            for(let id of ids.slice(0, 3))
-            {
-                const values = await returnImageAndNameFromID(id);
-                arr.push(values);
-            }
-
-            setTopThreeInformation(arr);
-            console.log(arr);
-        }
-
-    }, [hasFinnishedChallenge])
-
+        setTopThreeInformation(arr);
+        // console.log(arr);
+    }
+    
     async function returnImageAndNameFromID(id) //! Can diffently be improved (useState)
     {
         const standardProfilePic = "https://media.macphun.com/img/uploads/customer/how-to/608/15542038745ca344e267fb80.28757312.jpg?q=85&w=1340"
         if(id == global.userInformation.id && global.userInformation.Username)
         {
             const profilePic = global.userInformation.ProfilePicture || standardProfilePic;
-            console.log([global.userInformation.Username, profilePic])
+            // console.log([global.userInformation.Username, profilePic])
             return [global.userInformation.Username, {uri : profilePic}];
         }else {
             try{
                 const res = await readSingleUserInformation("Users", id);
 
                 const profilPic = res.ProfilePicture || standardProfilePic;
-                console.log([res.Username, profilPic])
+                // console.log([res.Username, profilPic])
                 return [res.Username, {uri : profilPic}];
 
             }catch(err){
@@ -413,9 +460,9 @@ export default function Home({navigation})
                     <>
                         {shouldStillSeeLeaderboard && (
                             <View style={{position: "absolute", left: 0, top: 0, right: 0, bottom: 0, backgroundColor: "#001D34", opacity: 0.95}}>
-                                {leaderboard && topThreeInformation && (
+                                {leaderboard && topThreeInformation &&(
                                     <View style={{position: "absolute", bottom: "57%", left: 0, right: 0, alignItems: "flex-end", flexDirection: "row", justifyContent: "center"}}>
-                                        {leaderboard.length >= 3 && (
+                                        {leaderboard.length >= 3 && topThreeInformation.length >= 3 && (
                                             <View>
                                                 <Image style={{marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center"}} source={topThreeInformation[1][1]}/>
     
@@ -425,7 +472,7 @@ export default function Home({navigation})
                                                 </View>
                                             </View>
                                         )}
-                                        {leaderboard.length >= 1 && (
+                                        {leaderboard.length >= 1 && topThreeInformation.length >= 1 && (
                                             <View>
                                                 <Image style={{marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center"}} source={topThreeInformation[0][1]}/>
     
@@ -435,7 +482,7 @@ export default function Home({navigation})
                                                 </View>
                                             </View>
                                         )}
-                                        {leaderboard.length >= 2 && (
+                                        {leaderboard.length >= 2 && topThreeInformation.length >= 2 && (
                                             <View>
                                                 <Image style={{marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center"}} source={topThreeInformation[2][1]}/>
                                                 

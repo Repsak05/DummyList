@@ -57,9 +57,6 @@ export default function LeaderboardWhenChallengeIsFinished({navigation})
             setUsernamesInChallenges(placements);
         });
 
-        console.log(usernamesInChallenges);
-        console.log(yourInformation);
-
     }, [challenge])
 
     return(
