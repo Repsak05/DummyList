@@ -129,16 +129,6 @@ export default function AcceptChallengeOverviewPage({ navigation })
         }
     }
 
-    async function incrementTimesParticipatedStats(incrementValue)
-    {
-        try{
-            await addToDocument("Users", global.userInformation.id, "Stats", false, false, incrementValue, "TimesParticipated");
-
-        }catch(err){
-            console.error(err);
-        }
-    }
-
     function checkWetherMembersHasJoined(memberID)
     {
         for(let members in challenge.challenge.joinedMembers)
@@ -150,7 +140,6 @@ export default function AcceptChallengeOverviewPage({ navigation })
         }
         return false;
     }
-
 
     const [profilePics, setProfilePics] = useState({});
 
@@ -231,14 +220,14 @@ export default function AcceptChallengeOverviewPage({ navigation })
                                 <Pressable onPress={() => {tAreYouParticipating(false); setHasAnswered(true); setHasAcceptedOrDeclined(false);}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", marginRight: 13}]}>
                                     <Text style={[style.blackFontSize16Medium, {textAlign: "center"}]}>Decline Invite</Text>     
                                 </Pressable>
-                                <Pressable onPress={() => {tAreYouParticipating(true); setHasAnswered(true); setHasAcceptedOrDeclined(true); incrementTimesParticipatedStats(1);}} style={[style.roundedCornersSmall, {width: 185, height: 50, borderWidth: 5, borderColor: "#D0E4FF", justifyContent: "center"}]}>
+                                <Pressable onPress={() => {tAreYouParticipating(true); setHasAnswered(true); setHasAcceptedOrDeclined(true); }} style={[style.roundedCornersSmall, {width: 185, height: 50, borderWidth: 5, borderColor: "#D0E4FF", justifyContent: "center"}]}>
                                     <Text style={[style.blackFontSize16Medium, {textAlign: "center"}]}>Accept Invite</Text>
                                 </Pressable>
                             </View>
                         ): (
                             <View>
                                 {!challenge.isOwner && (
-                                    <Pressable  onPress={() => {setHasAnswered(false); if(hasAcceptedOrDeclined){incrementTimesParticipatedStats(-1);} setHasAcceptedOrDeclined(null); tAreYouParticipating(false);}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", alignContent: "center", }]}>
+                                    <Pressable  onPress={() => {setHasAnswered(false); setHasAcceptedOrDeclined(null); tAreYouParticipating(false);}} style={[style.roundedCornersSmall, {width: 132, height: 50, borderWidth: 5, borderColor: "#775A0B", justifyContent: "center", alignContent: "center", }]}>
                                         <Text style={[style.blackFontSize16Medium, {textAlign: "center"}]}>Cancel</Text>
                                     </Pressable>
                                 )}

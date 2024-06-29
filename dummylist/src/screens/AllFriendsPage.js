@@ -10,11 +10,12 @@ export default function AllFriendsPage({navigation, route})
 { //TODO: Update to actual profilePicture
     //Maybe use global.userInformation?
 
-
     // ? Might need to create a useEffect if route.params is empty (in case of: link to the page - no navigation)
     const { allFriends } = route.params;
     const { allUsers } = route.params; //Can be used for DB improvement
 
+    // console.log("allUsers");
+    // console.log(allUsers);
 
     const exampleProfilePicture = "https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg";
     const [yourFriends, setYourFriends] = useState([])

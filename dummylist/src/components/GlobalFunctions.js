@@ -162,10 +162,10 @@ function calculateTimeLeft(challenge, getFloatValueInHours = false)
         if(timeLeftHours > 24)
         {
             const timeLeftDays = timeLeftHours/24
-            return `${timeLeftDays.toFixed(2)} days`;
+            return `${timeLeftDays.toFixed(2)} Days Left`;
         }
 
-        return `${timeLeftHours.toFixed(2)} hours`;
+        return `${timeLeftHours.toFixed(2)} Hours Left`;
     }else {
         return `No Time Limit`;
     }

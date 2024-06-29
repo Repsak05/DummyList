@@ -158,13 +158,14 @@ export default function FriendsPage({navigation})
 
     function getImageFromID(id)
     {
+        // console.log(allUsers);
         for(let users in allUsers)
         {
             const user = allUsers[users];
 
             if(user.id == id)
             {
-                return user.image;
+                return user.ProfilePicture; //!Doesnt seem to work 
             }
 
         }

@@ -26,7 +26,7 @@ export default function FriendOverviewComponent({id, name, image, level})
                     }
                     if(!theImage){
                         const exampleImage = "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"
-                        setTheImage(image || {uri : exampleImage})
+                        setTheImage(res.ProfilePicture ? {uri: res.ProfilePicture} : {uri : exampleImage});
                     }
 
                 }catch(err){
@@ -35,12 +35,14 @@ export default function FriendOverviewComponent({id, name, image, level})
             }
         }
         getData();
-    }, [])
+    }, [id])
 
 
     return(
         <View style={[style.roundedCorners, {backgroundColor: "#FFDAD2", width: 184, height: 167, padding: 9, flexDirection: "column"}]}>
-            <Image source={theImage} style={[style.roundedCorners, {width: 166, height: 117}]}/>
+            {theImage && (
+                <Image source={theImage} style={[style.roundedCorners, {width: 166, height: 117}]}/>
+            )}
             <View style={{flexDirection: "row", marginTop: 8, justifyContent: "space-between"}}>
                 <Text style={style.redFontSize16}>@{theName}</Text>
                 <Text style={style.redFontSize16Regular}>Level {theLevel}</Text>

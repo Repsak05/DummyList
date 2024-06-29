@@ -14,9 +14,7 @@ import { getUsernamesByIds } from "../../firebase"
 
 export default function LeaderboardPage({navigation})
 { 
-    //! Missing to correct value: daysLeftTillChallengeEnds which gets send to ChallengeLeaderboardTitleInformation - view LeaderboardWhenChallengeIsFinished to see how its done there
     //TODO: //Replace Loading... with correct loading screen
-    //TODO: Only display people who has joined the challenge
     //! DB can be improved - amount of times called it get image and name
     
     const route = useRoute();

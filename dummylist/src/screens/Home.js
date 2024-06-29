@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ImageBackground, Image, ScrollView } from 'react-native';
 import styles from '../style.js'; 
 
 import Header from "../components/Header.js";
@@ -7,13 +7,11 @@ import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 import { readDataWithQuery, addSingleValueToDocument, addToDocument, readSingleUserInformation, deleteDocument } from "../../firebase.js";
 import { calculatePlacement, calculateTimeLeft, differenceInTime } from "../components/GlobalFunctions.js";
-import NextPreviousButton from "../components/NextPreviousButton.js";
 
 export default function Home({navigation})  
 {   //TODO: Fix background colors on create challenge and active challenges
     //TODO: Create placement icon with just 1/2 and 2/2
-    /*//? TODO: Dertermine wether the challenge is finished and hasBeen opened by you
-        //? maybe create new collection with finished challenges - though probably not necessary*/
+    // ? Check what happens if multiple un-seen finished challenges  
     //!BINGO: End placement: Same amount of rows completed, then they should be sorted by total amount of tasks completed
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
@@ -288,7 +286,7 @@ export default function Home({navigation})
     }
 
     function calculateBingoPlacement(challenge, returnPlacementInsertID) //GameMode fastest wins
-    {
+    { //TODO: If someone has same amount of rows complete, it should be dependent on amount of tasks complete
         //Create grid with true false depending on whether task is completed
         let rowMember = {}
         let gridMember = {}
