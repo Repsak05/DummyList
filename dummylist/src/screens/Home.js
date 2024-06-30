@@ -13,6 +13,7 @@ export default function Home({navigation})
     //TODO: Create placement icon with just 1/2 and 2/2
     // ? Check what happens if multiple un-seen finished challenges  
     //!BINGO: End placement: Same amount of rows completed, then they should be sorted by total amount of tasks completed
+    //!Long List placement, should depend on (in case that multipe has completed the challenge before time has run out) who finished all tasks first
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()
@@ -69,7 +70,7 @@ export default function Home({navigation})
         let hasAnyBeenRemoved = false;
         async function deleteInvalidChallenges()
         {
-            console.log("Looking for Invalid challenges");
+            // console.log("Looking for Invalid challenges");
             for(let challenges in allChallenges)
             {
                 const challenge = allChallenges[challenges];
@@ -196,9 +197,6 @@ export default function Home({navigation})
                 scoresArray.sort((a, b) => b[1] - a[1]);
                 allBingoPlacements = scoresArray.map(entry => entry[0]);
             }
-
-            console.log("allBingoPlacements");
-            console.log(allBingoPlacements);
             return allBingoPlacements //= ["idplacement1", "idplacement2", ...]
         }
 
@@ -216,7 +214,7 @@ export default function Home({navigation})
             {
                 try{
                     await addToDocument("Users", participant, "Stats", false, false, 1, "ChallengesWon");
-                    console.log("Winners score was increased: " + participant);
+                    // console.log("Winners score was increased: " + participant);
 
                 }catch(err){
                     console.log(err);

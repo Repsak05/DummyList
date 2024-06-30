@@ -145,7 +145,7 @@ function calculateTimeLeft(challenge, getFloatValueInHours = false)
     if(challenge.gameMode == "Long List")
     {
         if (!challenge.endingTime || typeof challenge.endingTime.seconds === 'undefined' || typeof challenge.endingTime.nanoseconds === 'undefined') {
-            console.error('Invalid endingTime format:', challenge.endingTime, " in ", challenge.id, " was probably made without endingTime");
+            // console.error('Invalid endingTime format:', challenge.endingTime, " in ", challenge.id, " was probably made without endingTime");
             return 'Invalid endingTime';
         }
 

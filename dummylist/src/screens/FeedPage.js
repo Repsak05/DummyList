@@ -24,13 +24,12 @@ export default function FeedPage({ navigation })
             try {
                 let allID = await getAllChallenges(); //Gets all postsID of challenges you're in
 
-                console.log(allID);
                 if (!allID || !Array.isArray(allID) || allID.some(id => typeof id !== 'string')) {
                     throw new Error("Invalid document IDs received");
                 }
 
+                //Some (only old) might be excluded bacuase of missing TimePosted 
                 let allPosts = await readDocumentsInArray("Posts", [], [{ field: "TimePosted", direction: "desc" }], allID); //Get the posts - sorted by TimePosted
-
 
                 //Add usernames to all postCreators
                 let allPostsWithUsername = await Promise.all(allPosts.map(async post => {

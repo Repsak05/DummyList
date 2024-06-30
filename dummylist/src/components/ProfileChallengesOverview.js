@@ -31,7 +31,7 @@ export default function ProfileChallengesOverview({navigation})
                     {
                         for(let member of friendsTask.friendsTask)
                         {
-                            if(member.friendID == global.userInformation.id && member.hasCompletedTask){
+                            if(member.friendID == global.userInformation.id && member.hasCompletedTask && member.postID ){
                                 postIDsPerChallenge.push(member.postID)
                             }
                         }
@@ -43,19 +43,19 @@ export default function ProfileChallengesOverview({navigation})
                 })
 
                 //Replace postID's with posts
-                let allPosts = []
-                await Promise.all(allYourPostID.map(async perChallenge => {
-                    let postsPerChallenge = [];
-                
-                    for (let postID of perChallenge) {
-                        const res = await readSingleUserInformation("Posts", postID);
-                        postsPerChallenge.push(res);
-                    }
-                
-                    allPosts.push(postsPerChallenge);
-                }));
+                let allPost1 = [];
+                for(let perChallenge of allYourPostID)
+                {
+                    let postPrChallenge1 = [];
 
-                setChallengesWithPosts(allPosts)
+                    for(let postID of perChallenge)
+                    {
+                        const res = await readSingleUserInformation("Posts", postID);
+                        postPrChallenge1.push(res);
+                    }
+                    allPost1.push(postPrChallenge1);
+                }
+                setChallengesWithPosts(allPost1)
 
             } catch(err){
                 console.error(err)

@@ -102,7 +102,7 @@ function readDocumentsInArray(readCollection, filters = [], orderings = [], docu
     if (documentIDs.length > 0) {
         q = query(q, where(documentId(), 'in', documentIDs));
     }
-
+    
     return new Promise((resolve, reject) => {
         getDocs(q)
             .then((res) => {
