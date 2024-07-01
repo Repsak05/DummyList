@@ -4,40 +4,61 @@ import style from "../style";
 
 import SettingsButton from "../components/SettingsButton";
 import Header from "../components/Header";
+import { createOrUpdateDocument, readSingleUserInformation } from "../../firebase";
 
 export default function LanguageSettingsPage({navigation})
-{ //TODO: Load and set values from and to db
-    const [languages, setLanguages] = useState({
-        "English" : true,
-        "Dansk" : false,
-        "Español" : false,
-        "Deutsch" : false,
-        "Français" : false,
-        "Svenska" : false,
-        "Norsk" : false,
-        "Nederlands" : false,
-    })
+{
+    let [chosenLanguage, setChosenLanguage] = useState("English"); //Initial value == "English"
+    const allPossibleLanguages = ["English", "Dansk", "Español", "Deutsch", "Français", "Svenska", "Norsk", "Nederlands"];
+    
+    const [languages, setLanguages] = useState(convertToObject());
+    
+    useEffect(() => {
+        //Gettings values from DB
+        async function getInitialValues()
+        {
+            try{
+                const res = await readSingleUserInformation("Settings", global.userInformation.id);
+                if(res.language){
+                    setChosenLanguage(res.language);
+                } 
+    
+            }catch(err){
+                console.log(err)
+            }
+        }
 
-    function changeLanguage(newLanguage) 
+        getInitialValues();
+    }, [])
+
+
+    useEffect(() => {
+        setLanguages(convertToObject());
+
+        //Update DB on change
+        async function updateDB()
+        {
+            try{
+                await createOrUpdateDocument("Settings", global.userInformation.id, {language : chosenLanguage});
+
+            }catch(err){
+                console.log(err);
+            }
+        }
+
+        updateDB();
+
+    }, [chosenLanguage])
+    
+    function convertToObject()
     {
-        let valueChanged = false;
-    
-        const updatedLanguages = { ...languages };
-    
-        for (let language in updatedLanguages) {
-            if (updatedLanguages[language] === true) {
-                updatedLanguages[language] = false; 
-            }
-    
-            if (language === newLanguage) {
-                updatedLanguages[language] = true; 
-                valueChanged = true;
-            }
+        const obj = {};
+        for(let language of allPossibleLanguages)
+        {
+            obj[language] = language == chosenLanguage;
         }
-    
-        if (valueChanged) {
-            setLanguages(updatedLanguages)
-        }
+
+        return obj;
     }
     
     return(
@@ -52,7 +73,7 @@ export default function LanguageSettingsPage({navigation})
             <Text style={[style.blackFontSize20, { textAlign: "left", marginTop: 18, marginBottom: 15, }]}>Languages</Text>
                 {Object.entries(languages).map(([language, value], index) => (
                     <View key={index}>
-                        <SettingsButton name={language} isPressed={value} onPress={() => changeLanguage(language)} />
+                        <SettingsButton name={language} isPressed={value} onPress={() => setChosenLanguage(language)} />
                     </View>
                 ))}
             </View>

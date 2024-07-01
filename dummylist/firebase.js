@@ -371,10 +371,32 @@ async function getUsernamesByIds(userIds) {
     }
 }
 
+async function createOrUpdateDocument(collection, docId, data) {
+    try {
+        // Get a reference to the document
+        const docRef = doc(firestore, collection, docId);
+
+        // Check if the document exists
+        const docSnapshot = await getDoc(docRef);
+        if (docSnapshot.exists()) {
+            // If document exists, update it
+            await setDoc(docRef, data, { merge: true });
+            console.log('Document updated with ID:', docId);
+        } else {
+            // If document does not exist, create a new one
+            await setDoc(docRef, data);
+            console.log('Document created with ID:', docId);
+        }
+    } catch (error) {
+        console.error('Error creating or updating document: ', error);
+    }
+}
+
 export {
     firestore,
     firebaseApp,
     firebaseAuth,
+    createOrUpdateDocument,
     updateArrayFieldInDocument,
     readDocumentsInArray,
     getUsernamesByIds,
