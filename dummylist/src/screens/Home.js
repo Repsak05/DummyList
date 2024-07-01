@@ -14,6 +14,7 @@ export default function Home({navigation})
     // ? Check what happens if multiple un-seen finished challenges  
     //!BINGO: End placement: Same amount of rows completed, then they should be sorted by total amount of tasks completed
     //!Long List placement, should depend on (in case that multipe has completed the challenge before time has run out) who finished all tasks first
+    //TODO: Remove all usage of challengeid.friends (should never be used - use invited- and joinedMembers (alredy being used))
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()

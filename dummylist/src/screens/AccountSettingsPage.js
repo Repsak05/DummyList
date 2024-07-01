@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import EnterInformationLogInComponent from "../components/EnterInformationLogInComponent";
 
 export default function AccountSettingsPage({navigation})
-{ //TODO: Load user information and possible change it
+{ //TODO: Missing functionality: username and password can't currently be changed on demand 
     //Handle change in information (update database)
         //Ensure new username it not being used
 

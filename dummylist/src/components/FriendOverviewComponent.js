@@ -5,7 +5,6 @@ import { readSingleUserInformation } from "../../firebase.js";
 
 export default function FriendOverviewComponent({id, name, image, level})
 {
-
     //Create function that gets all props from id
     const [theName, setTheName] = useState(name || "loading...")
     const [theLevel, setTheLevel] = useState(level || 404)

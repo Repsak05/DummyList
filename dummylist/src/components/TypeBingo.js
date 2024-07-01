@@ -5,7 +5,6 @@ import style from "../style";
 
 export default function TypeFastestWins({navigation, challenge})
 {
-    console.log(challenge);
     const [rowsOfTasks, setRowsOfTasks] = useState([]);
 
     useEffect(() => {

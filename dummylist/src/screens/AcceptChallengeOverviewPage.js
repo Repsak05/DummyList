@@ -7,7 +7,7 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import EnterTaskDescription from "../components/EnterTaskDescription.js";
 
-import { addToDocument, updateArrayFieldInDocument } from "../../firebase.js";
+import { addSingleValueToDocument, addToDocument, updateArrayFieldInDocument } from "../../firebase.js";
 import { differenceInTime, getProfilePic } from "../components/GlobalFunctions.js";
 
 export default function AcceptChallengeOverviewPage({ navigation })
@@ -16,8 +16,9 @@ export default function AcceptChallengeOverviewPage({ navigation })
   //TODO: Initial "Accept-" / "Decline invite" based on correct array (joinedMembers)
   //TODO: If isOwnerOfChallenge then add edit options
   //! Remove increment of timeparticipated - happens when challenge is done instead
-  //! Remove ability to add tasks if its a Bingo
-  //TODO: Set default image to be Medium Difficulty
+  //! Remove ability to add tasks if its a Bingo - Or add it, and only the rest should be random
+  //TODO: Start Early button looks bad - refine its styling
+    //! On start early: In case of long list (time limit) - the ending time should be ajusted to fit the chosen duration
   
     const route = useRoute();
     const {chal} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
@@ -160,6 +161,18 @@ export default function AcceptChallengeOverviewPage({ navigation })
 
     const [textInputToCreateNewChallenge, setTextInputToCreateNewChallenge] = useState("");
 
+    async function startNow()
+    {
+        try{
+            const newStartingTime = new Date();
+            await addSingleValueToDocument("Challenges", challenge.challenge.id, "startingTime", newStartingTime);
+            navigation.navigate("Home");
+
+        }catch(err){
+            console.log(err);
+        }
+    }
+
     return(
         <View style={{flex: 1}}>
             <View style={[{marginTop: 55, marginBottom: 29,}]}>
@@ -178,7 +191,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
 
                     <View style={{flexDirection: "column"}}>
                         <Text style={[style.blackFontSize20]}>{challenge.challenge.gameMode}</Text>
-                        <Text style={[style.blackFontSize16]}>Tasks: {challenge.challenge.amountOfTasks} • {challenge.challenge.taskDifficulty} Difficulty</Text>
+                        <Text style={[style.blackFontSize16]}>Tasks: {challenge.challenge.amountOfTasks} • {challenge.challenge.taskDifficulty || "Medium"} Difficulty</Text>
                     </View>
                 </View>
                 
@@ -201,16 +214,25 @@ export default function AcceptChallengeOverviewPage({ navigation })
                 </View>
 
                 <View style={{flexDirection: "column", }}>
-                    <View style={{flexDirection: "row", marginBottom: 5}}>
+                    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                        <View style={{flexDirection: "row", marginBottom: 5}}>
 
-                        {hasAnswered && hasAcceptedOrDeclined && !challenge.isOwner &&(
-                            <Text style={[style.blackFontSize16]}>You've Accepted! </Text>
-                        )}
-                        <Text style={[style.blackFontSize16]}>This Challenge Starts in </Text>
+                            {hasAnswered && hasAcceptedOrDeclined && !challenge.isOwner &&(
+                                <Text style={[style.blackFontSize16]}>You've Accepted! </Text>
+                            )}
+                            <Text style={[style.blackFontSize16]}>This Challenge Starts in </Text>
 
-                        <Text style={[style.blackFontSize16Medium]}>{differenceInTime(challenge.challenge.startingTime).toFixed(2)} Hours.</Text>
-                        {!hasAnswered && !challenge.isOwner && (
-                            <Text style={[style.blackFontSize16]}> Do You Want to Accept? </Text>
+                            <Text style={[style.blackFontSize16Medium]}>{differenceInTime(challenge.challenge.startingTime).toFixed(2)} Hours.</Text>
+                            {!hasAnswered && !challenge.isOwner && (
+                                <Text style={[style.blackFontSize16]}> Do You Want to Accept? </Text>
+                            )}
+                        </View>
+
+                        {challenge.isOwner && challenge.challenge.joinedMembers.length >= 2 && (
+                            <Pressable onPress={startNow} style={[style.roundedCornersSmall, {marginRight: 50, borderWidth: 2, borderColor: "#3A8453", paddingHorizontal: 10}]}>
+                                <Text style={style.blackFontSize16}>Start Early</Text>
+                            </Pressable>
+
                         )}
                     </View>
 

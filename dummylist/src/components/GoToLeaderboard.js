@@ -4,7 +4,6 @@ import style from "../style";
 
 export default function GoToLeaderboard({placement, navigation, propsToleaderboard})
 {
-    const profilePicture = require("../assets/icons/exampleProfilePicture.svg")
     const rightArrowPicture = require("../assets/icons/rightArrow.svg")
 
     //The component itself

@@ -7,13 +7,13 @@ import SwitchButton from "../components/SwitchButton.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 
-
 import { readDataWithQuery } from "../../firebase.js";
 import { differenceInTime } from "../components/GlobalFunctions.js";
 
 
 export default function InvitedChallengesPage({navigation})
-{ //TODO ___something is wrong if you are the guest user
+{ 
+    //TODO ___something is wrong if you are the guest user
     //TODO: Dont know why scrollview is not working properly
 
     function handlePressLeft()

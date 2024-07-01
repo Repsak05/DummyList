@@ -11,9 +11,10 @@ import FriendOverviewComponent from "../components/FriendOverviewComponent.js";
 import { readData, readSingleUserInformation, addToDocument, removeFromDocumentInArr } from "../../firebase.js";
 
 export default function FriendsPage({navigation})
-{ //TODO: Change to use DB values (Profilepicture, mutualFriends...)
+{ 
+    //TODO: Change to use DB values (Profilepicture, mutualFriends...)
     //TODO: Maybe remove friends which you are awaiting response from, remove them from being searchable
-    //TODO: Take care of situation where someone has sent you a friend request, and you also have send them a friendrequest
+        //TODO: Take care of situation where someone has sent you a friend request, and you also have send them a friendrequest
     
     const [searchUsername, setSearchUsername] = useState("");
     const [hasFoundUser, setHasFoundUser] = useState(false);

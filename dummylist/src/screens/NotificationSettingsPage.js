@@ -7,7 +7,7 @@ import SettingsSwitch from "../components/SettingsSwitch.js";
 import { createOrUpdateDocument, readSingleUserInformation } from "../../firebase.js";
 
 export default function NotificationSettingsPage({navigation})
-{ //TODO: Update DB
+{
     const [allSettings, setAllSettings] = useState(null)
     const initialSettings = {
         "Challenges" : {

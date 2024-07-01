@@ -13,22 +13,11 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
     const mostRightPicture = isOnProfilePage ? require("../assets/icons/settingsIcon.png") : require("../assets/icons/exampleProfilePicture.svg");
     
     useEffect(() => {
-        async function getYourProfilePicture()
-        {
-            try{
-                // const profileInfo = await readSingleUserInformation("Users", global.userInformation.id);
-                isOnProfilePage ? setProfilePicture(require("../assets/icons/settingsIcon.png")) : setProfilePicture({uri: global.userInformation.ProfilePicture} || setProfilePicture(require("../assets/icons/exampleProfilePicture.svg")));
-
-            }catch(err){
-                console.error(err);
-            }
-        }
-
         const interval = setInterval(() => {
             if (global.userInformation && global.userInformation.id) {
                 console.log(global.userInformation.id);
                 clearInterval(interval);
-                getYourProfilePicture();
+                isOnProfilePage ? setProfilePicture(require("../assets/icons/settingsIcon.png")) : setProfilePicture({uri: global.userInformation.ProfilePicture} || setProfilePicture(require("../assets/icons/exampleProfilePicture.svg")));
             }
         }, 300);
 

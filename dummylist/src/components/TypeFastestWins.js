@@ -6,6 +6,7 @@ import TaskComponent from "./TaskComponent";
 
 export default function TypeFastestWins({navigation, theChallenge})
 {
+    console.log(theChallenge);
     function getAllMembersWhoFinnishedTheTask(task) {
         const allFriendsIDWhoFinnished = [];
         task.friendsTask.map(friend => {

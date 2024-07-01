@@ -43,19 +43,19 @@ export default function ProfileChallengesOverview({navigation})
                 })
 
                 //Replace postID's with posts
-                let allPost1 = [];
+                let allPost = [];
                 for(let perChallenge of allYourPostID)
                 {
-                    let postPrChallenge1 = [];
+                    let postPrChallenge = [];
 
                     for(let postID of perChallenge)
                     {
                         const res = await readSingleUserInformation("Posts", postID);
-                        postPrChallenge1.push(res);
+                        postPrChallenge.push(res);
                     }
-                    allPost1.push(postPrChallenge1);
+                    allPost.push(postPrChallenge);
                 }
-                setChallengesWithPosts(allPost1)
+                setChallengesWithPosts(allPost)
 
             } catch(err){
                 console.error(err)

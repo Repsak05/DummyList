@@ -36,7 +36,7 @@ export default function ChallengesPage({navigation})
                 </View>
 
                 <ScrollView style={{marginTop: 21}}>
-                    {challenge?.gameMode == "Fastest Wins" || challenge?.gameMode == "Long List" && (
+                    {(challenge?.gameMode == "Fastest Wins" || challenge?.gameMode == "Long List") && (
                         <TypeFastestWins navigation={navigation} theChallenge={challenge}/>
                     )} 
                     {challenge?.gameMode == "Bingo" && (

@@ -8,7 +8,7 @@ import { createOrUpdateDocument, readSingleUserInformation } from "../../firebas
 
 export default function LanguageSettingsPage({navigation})
 {
-    let [chosenLanguage, setChosenLanguage] = useState("English"); //Initial value == "English"
+    const [chosenLanguage, setChosenLanguage] = useState("English"); //Initial value == "English"
     const allPossibleLanguages = ["English", "Dansk", "Español", "Deutsch", "Français", "Svenska", "Norsk", "Nederlands"];
     
     const [languages, setLanguages] = useState(convertToObject());

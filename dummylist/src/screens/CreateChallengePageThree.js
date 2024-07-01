@@ -30,6 +30,7 @@ export default function CreateChallengePageThree({navigation, route})
         {
             console.log(allChallengeValues)
             const exactNumberOfTasks = allChallengeValues.gameMode == "Bingo" ? 16 : allChallengeValues.amountOfTasks
+            const taskDifficulty = allChallengeValues.taskDifficulty || "medium";
             const givenTasks = pickNRandomTasks(allChallengeValues.taskDifficulty, exactNumberOfTasks)
 
             const tasksWithFriends = givenTasks.map(task => {
@@ -46,24 +47,13 @@ export default function CreateChallengePageThree({navigation, route})
                 isStilActive : true,
                 tasks : tasksWithFriends,
                 amountOfTasks : exactNumberOfTasks,
+                taskDifficulty : taskDifficulty,
             });
             console.log("Following now being added");
             console.log(res);
         }
 
-        // ? Add one to times participated in a challenge (Might want to do it another place, but idk)
-        async function addTimesParticipatedToStats()
-        {
-            try{
-                await addToDocument("Users", global.userInformation.id, "Stats", false, false, 1, "TimesParticipated");
-            }catch(err){
-                console.error(err);
-            }
-        }
-
         createChallengePost();
-        addTimesParticipatedToStats();
-
 
         console.log("Create clicked:");
         console.log(allChallengeValues);
@@ -178,16 +168,19 @@ export default function CreateChallengePageThree({navigation, route})
 
     useEffect(() => {
         //Set initial values for endingTime (7-8 days into the future)
-        let today = new Date();
-
-        if(allChallengeValues?.startingTime)
+        if(allChallengeValues.gameMode == "Long List")
         {
-            today.setHours(allChallengeValues.startingTime.getHours() + 7*24);
-        } else {
-            today.setHours(today.getHours() + 8*24);
+            let today = new Date();
+    
+            if(allChallengeValues?.startingTime)
+            {
+                today.setHours(allChallengeValues.startingTime.getHours() + 7*24);
+            } else {
+                today.setHours(today.getHours() + 8*24);
+            }
+    
+            changeChallengeValues(today, "endingTime"); 
         }
-
-        changeChallengeValues(today, "endingTime"); 
     }, [])
 
 
