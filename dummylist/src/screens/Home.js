@@ -122,6 +122,34 @@ export default function Home({navigation})
         return shouldYouSeeFinishScreen;
     }
 
+    function mapOfHowManyTasksEachPlayerHasCompleted(challengeObj)
+    {
+        let map = {};
+            
+        //Figure out how many tasks each participant has completed 
+        for(let tasks of challengeObj.tasks)
+        {
+            for(let friends in tasks.friendsTask)
+            {
+                const participantTaskObject = tasks.friendsTask[friends];
+
+                if(participantTaskObject.hasCompletedTask)
+                {
+                    if(map[participantTaskObject.friendID])
+                    {
+                        map[participantTaskObject.friendID] += 1;
+
+                    } else {
+                        map[participantTaskObject.friendID] = 1;
+
+                    }
+                }
+            }
+        }
+
+        return map;
+    }
+
     async function checkIfChallengeIsDone(challengeObj)
     {
         
@@ -134,28 +162,8 @@ export default function Home({navigation})
 
             if(challengeObj.gameMode == "Bingo" || challengeObj.gameMode == "Fastest Wins")
             {
-                let map = {};
-            
-                //Figure out how many tasks each participant has completed 
-                for(let tasks of challengeObj.tasks)
-                {
-                    for(let friends in tasks.friendsTask)
-                    {
-                        const participantTaskObject = tasks.friendsTask[friends];
-        
-                        if(participantTaskObject.hasCompletedTask)
-                        {
-                            if(map[participantTaskObject.friendID])
-                            {
-                                map[participantTaskObject.friendID] += 1;
-        
-                            } else {
-                                map[participantTaskObject.friendID] = 1;
-        
-                            }
-                        }
-                    }
-                }
+                const map = mapOfHowManyTasksEachPlayerHasCompleted(challengeObj);
+                
                 if(getAmountOfChallengesComplete){return map;}
 
                 //Check wether anyone has completed all challenges:
@@ -179,19 +187,20 @@ export default function Home({navigation})
             }catch(err){
                 console.log(err);
             }
-
         }
 
         function getPlacementOfAllPlayers()
         {
             let allBingoPlacements = [];
-            if(challengeObj.gameMode == "Bingo")
+            if(challengeObj.gameMode == "Bingo") //Sort by amount of rows;
             {
+                //! Improve sorting: If multiple has same amount of rows completed, it should be based on amount of finished tasks.
                 allBingoPlacements = calculateBingoPlacement(challengeObj);
             }
             
-            if(challengeObj.gameMode == "Long List" || challengeObj.gameMode == "Fastest Wins")
+            if(challengeObj.gameMode == "Long List" || challengeObj.gameMode == "Fastest Wins") //Sort by amount of tasks completed
             {
+                //! Create better sorting for Long List (In case of multiple completing all tasks within timeframe (save completion-time in DB))
                 const amountOfTasksComplete = determineWhetherChallengeIsComplete(true);
                 
                 let scoresArray = Object.entries(amountOfTasksComplete);
