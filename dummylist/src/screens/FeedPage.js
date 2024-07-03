@@ -23,6 +23,7 @@ export default function FeedPage({ navigation })
             try {
                 let allID = await getAllChallenges(); //Gets all postsID of challenges you're in
 
+                console.log(allID);
                 if (!allID || !Array.isArray(allID) || allID.some(id => typeof id !== 'string')) {
                     throw new Error("Invalid document IDs received");
                 }
@@ -69,6 +70,7 @@ export default function FeedPage({ navigation })
                             postUri={post.PostUri} 
                             likedBy={post.LikedBy}
                             postID={post.id}
+                            challengeID={post.FromChallenge || false}
                         />
                     </View>
                 )) : (

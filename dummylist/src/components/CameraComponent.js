@@ -13,6 +13,7 @@ import { calculateLevel } from './GlobalFunctions';
 export default function CameraComponent({taskRef, challengeID, navigation}) 
 { //TODO: Rewards should be depending on taskDifficulty
     //DB: Reads/writes can be done more efficiently
+    //! Possible to update values in challenge immediately?
     
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [image, setImage] = useState(null);
@@ -89,6 +90,7 @@ export default function CameraComponent({taskRef, challengeID, navigation})
                     PostUri: postUri,
                     LikedBy: [],
                     TimePosted : new Date(),
+                    FromChallenge : challengeID,
                 });
 
                 await updateHasCompletedTask(challengeID, eachPlayer, taskRef, gottenPostID); //Heavy

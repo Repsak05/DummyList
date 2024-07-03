@@ -20,6 +20,8 @@ export default function TypeFastestWins({navigation, theChallenge})
     function handleImageClick(task)
     {
         console.log("Challenge clicked -> Go to take photo/video!")
+        console.log(task);
+        console.log("ABONEBE IS TAKS");
         navigation.navigate('CameraPage', { task: task, challengeID : theChallenge.id });
     }
 

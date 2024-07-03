@@ -5,13 +5,13 @@ import style from "../style";
 import FeedInformation from "../components/FeedInformation";
 import FeedLikedBy from "../components/FeedLikedBy";
 
-import { addToDocument, removeFromDocumentInArr } from "../../firebase";
+import { addToDocument, readSingleUserInformation, removeFromDocumentInArr } from "../../firebase";
 
-export default function UploadedChallengeToFeed({username, profilePicture, description, postUri, likedBy, postID}) //arr looks like this: //[username, profilepic, title, Uri, likedBy]
+export default function UploadedChallengeToFeed({navigation, username, profilePicture, description, postUri, likedBy, postID, challengeID}) //arr looks like this: //[username, profilepic, title, Uri, likedBy]
 {   //TODO: Onlike show images (Currently thinking likedBy is img sources, tho its ID's)
     //set to Database value
     
-    const hasCompleteChallenge = false; 
+    const [hasCompleteChallenge, setHasCompletedChallenge] = useState({value : false});  //Value shouldn't be fixed
     const [isLiked, setIsLiked] = useState(null); //Read value from database | on change: add new Value to database
     const [allLikedBy, setAllLikedBy] = useState(likedBy);
     
@@ -26,7 +26,58 @@ export default function UploadedChallengeToFeed({username, profilePicture, descr
             }
             setIsLiked(false);
         }
+
+        //Determine wether you've finished the task
+        if(challengeID)
+        {
+            async function getChallenge()
+            {
+                try{
+                    const res = await readSingleUserInformation("Challenges", challengeID);
+
+                    //Find the task which was referenced
+                    for(let task of res.tasks)
+                    {
+                        if(task.taskDescription == description)
+                        {
+                            for(let friend of task.friendsTask)
+                            {
+                                //Determine whether you've completed the task
+                                if(friend.friendID == global.userInformation.id && friend.hasCompletedTask)
+                                {
+                                    console.log("Has set true");
+                                    setHasCompletedChallenge({value : true});
+                                    return;
+                                }
+                            }
+
+                            console.log(task);
+                            setHasCompletedChallenge({value: false, heh: "ehe", task : {taskDescription : task.taskDescription, friendsTask: task.friendsTask}})
+                            return;
+                        }
+                    }
+                    console.log("No tasks seems to match :(");
+
+                }catch(err){
+                    console.log(err);
+                }
+            }
+
+            getChallenge();
+        }
     }, [])
+
+    function takePic()
+    {
+        if(!hasCompleteChallenge.value && hasCompleteChallenge.task)
+        {
+            navigation.navigate('CameraPage', { task: hasCompleteChallenge.task, challengeID : challengeID })
+        }
+
+        console.log(`Value: ${hasCompleteChallenge.value} | Task : ${hasCompleteChallenge.task}`);
+        console.log(hasCompleteChallenge.task);
+        console.log(hasCompleteChallenge);
+    }
 
     async function updateLikedByDB()
     {
@@ -66,12 +117,12 @@ export default function UploadedChallengeToFeed({username, profilePicture, descr
                     <Pressable onPress={() => updateLikedByDB()}>
                         <Image source={isLiked ? require("../assets/icons/isLiked.svg") : require("../assets/icons/notLiked.svg")} />
                     </Pressable>
-                    {hasCompleteChallenge ? (
+                    {hasCompleteChallenge.value ? (
                         <Pressable onPress={() => console.log("Challenge is alredy complete")}>
-                            <Image style={{width: 60, height: 60}}source={require("../assets/icons/checkmarkIcon.svg")}/>
+                            <Image style={{width: 60, height: 60, backgroundColor: "#F2B705", borderBottomLeftRadius: 15}}source={require("../assets/icons/checkmarkIcon.svg")}/>
                         </Pressable>
                     ) : (
-                        <Pressable onPress={() => console.log("Navigate to your post / your camera ")}>
+                        <Pressable onPress={() => {console.log("Navigate to your post / your camera "); takePic();}}>
                             <Image style={{width: 60, height: 60}}source={require("../assets/icons/cameraFeedIcon.svg")} />
                         </Pressable>
                     )}

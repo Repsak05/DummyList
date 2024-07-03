@@ -11,13 +11,13 @@ import { addSingleValueToDocument, addToDocument, updateArrayFieldInDocument } f
 import { differenceInTime, getProfilePic } from "../components/GlobalFunctions.js";
 
 export default function AcceptChallengeOverviewPage({ navigation })
-{ //TODO: If there's more than 9 tasks in a challenge, then it should be scrollable
-  //TODO: When clicking on the yes/no button - add/remove from joinedMembers
-  //TODO: Initial "Accept-" / "Decline invite" based on correct array (joinedMembers)
-  //TODO: If isOwnerOfChallenge then add edit options
-  //! Remove increment of timeparticipated - happens when challenge is done instead
-  //! Remove ability to add tasks if its a Bingo - Or add it, and only the rest should be random
-  //TODO: Start Early button looks bad - refine its styling
+{ 
+    //TODO: If there's more than 9 tasks in a challenge, then it should be scrollable
+    //TODO: When clicking on the yes/no button - add/remove from joinedMembers
+    //TODO: Initial "Accept-" / "Decline invite" based on correct array (joinedMembers)
+    //TODO: If isOwnerOfChallenge then add edit options
+    //! Remove ability to add tasks if its a Bingo - Or add it, and only the rest should be random
+    //TODO: Start Early button looks bad - refine its styling
     //! On start early: In case of long list (time limit) - the ending time should be ajusted to fit the chosen duration
   
     const route = useRoute();
@@ -34,8 +34,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
         
         for(let eachTask of tasksInformation)
         {
-            //TODO: isMadeByYourself needs to be set correctly
-            tasks.push({taskDescription : eachTask.taskDescription, isMadeByYourself : false});
+            tasks.push({taskDescription : eachTask.taskDescription, homemade : eachTask.homemade || false});
         }
 
         setAllTasks(tasks);
@@ -116,15 +115,15 @@ export default function AcceptChallengeOverviewPage({ navigation })
         }
 
         //Create tasks. object structure
-        const newTaskObject = {taskDescription : taskDescription, friendsTask : membersID};
+        const newTaskObject = {taskDescription : taskDescription, friendsTask : membersID, homemade: true };
 
         try{
             //Add the new object to the DB
             await addToDocument("Challenges", challenge.challenge.id, "tasks", newTaskObject, true);
             console.log("Task added!");
 
-            //Make it display on screen instantaneously                   //! Should this be removed or added to DB (Only difference is color)
-            setAllTasks([...allTasks, { taskDescription: taskDescription, isMadeByYourself: false }]);
+            //Make new task display on screen instantaneously                  
+            setAllTasks([...allTasks, { taskDescription: taskDescription, homemade: true }]);
         }catch(err){
             console.error(err);
         }
@@ -269,11 +268,11 @@ export default function AcceptChallengeOverviewPage({ navigation })
 
                 <View style={[{flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between"}]}>
                     {allTasks?.map((task, index) => (
-                        <Pressable onPress={() => {console.log("Open stuff");}} key={index} style={[, {borderRadius: 15, backgroundColor: task.isMadeByYourself ? "#FFDF9D" : "#32618D", flexDirection: "row", flexWrap: "nowrap", justifyContent: "space-between", width: 100, height: 30, alignItems: "center", overflow: "hidden", marginBottom: 10}]}>
-                            <Text numberOfLines={1} style={[style.blackFontSize10, {width: 60, heigth: 15, color: task.isMadeByYourself ? "#251A00" :  "#FFFFFF", marginLeft: 11, flexWrap: "nowrap"}]}>{task.taskDescription}</Text>
+                        <Pressable onPress={() => {console.log("Open stuff");}} key={index} style={[, {borderRadius: 15, backgroundColor: task.homemade ? "#FFDF9D" : "#32618D", flexDirection: "row", flexWrap: "nowrap", justifyContent: "space-between", width: 100, height: 30, alignItems: "center", overflow: "hidden", marginBottom: 10}]}>
+                            <Text numberOfLines={1} style={[style.blackFontSize10, {width: 60, heigth: 15, color: task.homemade ? "#251A00" :  "#FFFFFF", marginLeft: 11, flexWrap: "nowrap"}]}>{task.taskDescription}</Text>
                             
                             <Pressable onPress={() => {console.log("Should be removed");}} style={{marginRight: 10}}>
-                                <Text style={{color : task.isMadeByYourself ? "#251A00" :  "#FFFFFF"}}>X</Text>
+                                <Text style={{color : task.homemade ? "#251A00" :  "#FFFFFF"}}>X</Text>
                             </Pressable>
                         </Pressable>
                     ))}
