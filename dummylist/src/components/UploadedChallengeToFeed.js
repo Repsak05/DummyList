@@ -8,11 +8,11 @@ import FeedLikedBy from "../components/FeedLikedBy";
 import { addToDocument, readSingleUserInformation, removeFromDocumentInArr } from "../../firebase";
 
 export default function UploadedChallengeToFeed({navigation, username, profilePicture, description, postUri, likedBy, postID, challengeID}) //arr looks like this: //[username, profilepic, title, Uri, likedBy]
-{   //TODO: Onlike show images (Currently thinking likedBy is img sources, tho its ID's)
-    //set to Database value
+{
+    //! Is challenge is complete - (complete task icon) should be different if you havent completed it
     
-    const [hasCompleteChallenge, setHasCompletedChallenge] = useState({value : false});  //Value shouldn't be fixed
-    const [isLiked, setIsLiked] = useState(null); //Read value from database | on change: add new Value to database
+    const [hasCompleteChallenge, setHasCompletedChallenge] = useState({value : false});
+    const [isLiked, setIsLiked] = useState(null);
     const [allLikedBy, setAllLikedBy] = useState(likedBy);
     
     useEffect(() => {
@@ -27,56 +27,76 @@ export default function UploadedChallengeToFeed({navigation, username, profilePi
             setIsLiked(false);
         }
 
-        //Determine wether you've finished the task
-        if(challengeID)
-        {
-            async function getChallenge()
-            {
-                try{
+       
+    }, [])
+
+
+    useEffect(() => {
+         //Determine wether you've finished the task
+         if(challengeID) //Problem: Only seems to be running for the first? - look from another acc
+         {
+             async function getChallenge()
+             {
+                 try
+                 {
                     const res = await readSingleUserInformation("Challenges", challengeID);
-
+ 
                     //Find the task which was referenced
-                    for(let task of res.tasks)
+                    console.log(res.isStilActive);
+                    if(res.isStilActive) //! Not quite like this: Should still show if its completed
                     {
-                        if(task.taskDescription == description)
+                        for(let task of res.tasks)
                         {
-                            for(let friend of task.friendsTask)
+                            if(task.taskDescription == description)
                             {
-                                //Determine whether you've completed the task
-                                if(friend.friendID == global.userInformation.id && friend.hasCompletedTask)
+                                for(let friend of task.friendsTask)
                                 {
-                                    console.log("Has set true");
-                                    setHasCompletedChallenge({value : true});
-                                    return;
+                                    //Determine whether you've completed the task
+                                    if(friend.friendID == global.userInformation.id && friend.hasCompletedTask)
+                                    {
+                                        console.log("Has set true");
+                                        setHasCompletedChallenge({value : true});
+                                        return;
+                                    }
                                 }
+    
+                                console.log(task);
+                                setHasCompletedChallenge({value: false, task : task});
+                                return;
                             }
-
-                            console.log(task);
-                            setHasCompletedChallenge({value: false, heh: "ehe", task : {taskDescription : task.taskDescription, friendsTask: task.friendsTask}})
-                            return;
                         }
+
+                    }else {
+                        console.log("Challenge Complete - can't complete task | Maybe show it as an icon");
                     }
                     console.log("No tasks seems to match :(");
+ 
+                 }catch(err){
+                     console.log(err);
+                 }
+             }
+ 
+             getChallenge();
+            //  setHasCompletedChallenge(prev => ({...prev, hasGottenValue: true}));
+         }else{
+            console.log("No challengeID available | From postID: " + postID);
+         }
 
-                }catch(err){
-                    console.log(err);
-                }
-            }
+    }, [postID, challengeID, description, allLikedBy])
 
-            getChallenge();
-        }
-    }, [])
+    useEffect(() => {
+        console.log(hasCompleteChallenge);
+
+    }, [hasCompleteChallenge])
 
     function takePic()
     {
+        console.log(`Value: ${hasCompleteChallenge.value} | Task : ${hasCompleteChallenge.task}`);
+        console.log(hasCompleteChallenge);
         if(!hasCompleteChallenge.value && hasCompleteChallenge.task)
         {
-            navigation.navigate('CameraPage', { task: hasCompleteChallenge.task, challengeID : challengeID })
+                navigation.navigate('CameraPage', { task: hasCompleteChallenge.task, challengeID : challengeID })
         }
-
-        console.log(`Value: ${hasCompleteChallenge.value} | Task : ${hasCompleteChallenge.task}`);
-        console.log(hasCompleteChallenge.task);
-        console.log(hasCompleteChallenge);
     }
 
     async function updateLikedByDB()
@@ -118,7 +138,7 @@ export default function UploadedChallengeToFeed({navigation, username, profilePi
                         <Image source={isLiked ? require("../assets/icons/isLiked.svg") : require("../assets/icons/notLiked.svg")} />
                     </Pressable>
                     {hasCompleteChallenge.value ? (
-                        <Pressable onPress={() => console.log("Challenge is alredy complete")}>
+                        <Pressable onPress={() => {console.log("Challenge is alredy complete"); console.log(hasCompleteChallenge)}}>
                             <Image style={{width: 60, height: 60, backgroundColor: "#F2B705", borderBottomLeftRadius: 15}}source={require("../assets/icons/checkmarkIcon.svg")}/>
                         </Pressable>
                     ) : (

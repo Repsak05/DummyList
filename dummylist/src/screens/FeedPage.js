@@ -71,6 +71,7 @@ export default function FeedPage({ navigation })
                             likedBy={post.LikedBy}
                             postID={post.id}
                             challengeID={post.FromChallenge || false}
+                            navigation={navigation}
                         />
                     </View>
                 )) : (
