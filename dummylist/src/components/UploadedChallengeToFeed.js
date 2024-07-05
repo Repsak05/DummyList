@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, Pressable, ImageBackground} from 'react-native';
+import { View, Image, Pressable, ImageBackground, Text} from 'react-native';
 import style from "../style";
 
 import FeedInformation from "../components/FeedInformation";
@@ -8,9 +8,7 @@ import FeedLikedBy from "../components/FeedLikedBy";
 import { addToDocument, readSingleUserInformation, removeFromDocumentInArr } from "../../firebase";
 
 export default function UploadedChallengeToFeed({navigation, username, profilePicture, description, postUri, likedBy, postID, challengeID}) //arr looks like this: //[username, profilepic, title, Uri, likedBy]
-{
-    //! Is challenge is complete - (complete task icon) should be different if you havent completed it
-    
+{    
     const [hasCompleteChallenge, setHasCompletedChallenge] = useState({value : false});
     const [isLiked, setIsLiked] = useState(null);
     const [allLikedBy, setAllLikedBy] = useState(likedBy);
@@ -43,32 +41,34 @@ export default function UploadedChallengeToFeed({navigation, username, profilePi
  
                     //Find the task which was referenced
                     console.log(res.isStilActive);
-                    if(res.isStilActive) //! Not quite like this: Should still show if its completed
+                    
+                    for(let task of res.tasks)
                     {
-                        for(let task of res.tasks)
+                        if(task.taskDescription == description)
                         {
-                            if(task.taskDescription == description)
+                            for(let friend of task.friendsTask)
                             {
-                                for(let friend of task.friendsTask)
+                                //Determine whether you've completed the task
+                                if(friend.friendID == global.userInformation.id && friend.hasCompletedTask)
                                 {
-                                    //Determine whether you've completed the task
-                                    if(friend.friendID == global.userInformation.id && friend.hasCompletedTask)
-                                    {
-                                        console.log("Has set true");
-                                        setHasCompletedChallenge({value : true});
-                                        return;
-                                    }
+                                    console.log("Has set true");
+                                    setHasCompletedChallenge({value : true});
+                                    return;
                                 }
-    
-                                console.log(task);
-                                setHasCompletedChallenge({value: false, task : task});
-                                return;
                             }
-                        }
 
-                    }else {
-                        console.log("Challenge Complete - can't complete task | Maybe show it as an icon");
+                            console.log(task);
+                            if(res.isStilActive)
+                            {
+                                setHasCompletedChallenge({value: false, task : task});
+                            }else {
+                                console.log("Challenge Complete - can't complete task | Maybe show it as an icon");
+                                setHasCompletedChallenge({value: "Invalid"})
+                            }
+                            return;
+                        }
                     }
+
                     console.log("No tasks seems to match :(");
  
                  }catch(err){
@@ -138,9 +138,17 @@ export default function UploadedChallengeToFeed({navigation, username, profilePi
                         <Image source={isLiked ? require("../assets/icons/isLiked.svg") : require("../assets/icons/notLiked.svg")} />
                     </Pressable>
                     {hasCompleteChallenge.value ? (
-                        <Pressable onPress={() => {console.log("Challenge is alredy complete"); console.log(hasCompleteChallenge)}}>
-                            <Image style={{width: 60, height: 60, backgroundColor: "#F2B705", borderBottomLeftRadius: 15}}source={require("../assets/icons/checkmarkIcon.svg")}/>
-                        </Pressable>
+                        <>
+                            {hasCompleteChallenge.value == "Invalid" ? (
+                                <Pressable onPress={() => {console.log("Invalid option")}}>
+                                    <Image style={{width: 60, height: 60, backgroundColor: "#444", borderBottomLeftRadius: 15}} source={require("../assets/icons/whiteCross.svg")}/>
+                                </Pressable>
+                            ) : (
+                                <Pressable onPress={() => {console.log("Challenge is alredy complete"); console.log(hasCompleteChallenge)}}>
+                                    <Image style={{width: 60, height: 60, backgroundColor: "#F2B705", borderBottomLeftRadius: 15}} source={require("../assets/icons/checkmarkIcon.svg")}/>
+                                </Pressable>
+                            )}
+                        </>
                     ) : (
                         <Pressable onPress={() => {console.log("Navigate to your post / your camera "); takePic();}}>
                             <Image style={{width: 60, height: 60}}source={require("../assets/icons/cameraFeedIcon.svg")} />
