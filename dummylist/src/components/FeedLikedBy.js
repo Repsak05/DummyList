@@ -3,6 +3,7 @@ import { View, Image, Text, TouchableOpacity } from 'react-native';
 // import LinearGradient from 'react-native-linear-gradient'; //Apparently doesnt work
 import style from "../style";
 import { getProfilePic } from "./GlobalFunctions";
+import { defaultImage } from "../defaultValues";
 
 export default function FeedLikedBy({peopleWhoLikedThePost})
 {   //TODO: Change from ID to ID's user: shownLikedPosts should contain ID's???
@@ -44,7 +45,8 @@ export default function FeedLikedBy({peopleWhoLikedThePost})
                     for(let id of themPics)
                     {
                         const personPic = await getProfilePic(id);
-                        allPics[id] = personPic;
+
+                        personPic ? allPics[id] = personPic : allPics[id] = defaultImage;
                     }
 
                     setShownPic(allPics);

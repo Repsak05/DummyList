@@ -9,6 +9,7 @@ import AddFriends from "../components/AddFriends.js";
 import FriendOverviewComponent from "../components/FriendOverviewComponent.js";
 
 import { readData, readSingleUserInformation, addToDocument, removeFromDocumentInArr } from "../../firebase.js";
+import { defaultAmountOfMutualFriends, defaultImage } from "../defaultValues.js";
 
 export default function FriendsPage({navigation})
 { 
@@ -28,8 +29,8 @@ export default function FriendsPage({navigation})
                 const usersInDatabase = res.map(user => ({
                     username    : user.Username,
                     level       : user.Level,
-                    picture     : user.ProfilePicture ? {uri: user.ProfilePicture} : {uri : "https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg"},
-                    mutual      : 404,
+                    picture     : user.ProfilePicture ? {uri: user.ProfilePicture} : {uri : defaultImage},
+                    mutual      : false || defaultAmountOfMutualFriends,
                     id          : user.id
                 }));
 
@@ -85,7 +86,6 @@ export default function FriendsPage({navigation})
     }, [searchUsername, allUsers]);
     
     
-    const exampleMutualFriends = 404;
     const exampleTimeAgo = "1 d";
 
     const [yourFriends, setYourFriends] = useState(null);                             //Your Friends
@@ -220,7 +220,7 @@ export default function FriendsPage({navigation})
 
                             {yourPendingFriendRequests?.map((id, index) => (
                                 <View key={index}>
-                                    <AddFriends id={id} image={getImageFromID(id)} showMutualFriends={true} amountOfMutualFriends={exampleMutualFriends} showTimeAgo={true} timeAgo={exampleTimeAgo} showAcceptFriend={true} onPressAcceptFriend={() => {console.log("Friend Request got accepted"); acceptFriendRequest(id);}} onPressDenyFriend={() => {console.log("Friend Request got Denied"); declineFriendRequest(id);}}/>
+                                    <AddFriends id={id} image={getImageFromID(id)} showMutualFriends={true} amountOfMutualFriends={defaultAmountOfMutualFriends} showTimeAgo={true} timeAgo={exampleTimeAgo} showAcceptFriend={true} onPressAcceptFriend={() => {console.log("Friend Request got accepted"); acceptFriendRequest(id);}} onPressDenyFriend={() => {console.log("Friend Request got Denied"); declineFriendRequest(id);}}/>
                                 </View>
                             ))}
                         </View>

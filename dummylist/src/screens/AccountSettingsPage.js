@@ -4,14 +4,15 @@ import style from "../style";
 
 import Header from "../components/Header";
 import EnterInformationLogInComponent from "../components/EnterInformationLogInComponent";
+import { defaultEmail, defaultImage, defaultName } from "../defaultValues";
 
 export default function AccountSettingsPage({navigation})
 { //TODO: Missing functionality: username and password can't currently be changed on demand 
     //Handle change in information (update database)
         //Ensure new username it not being used
 
-    const [username, setUsername] = useState(global.userInformation?.Username || "Guest404")
-    const [email, setEmail] = useState(global.userInformation?.Email || "Guest404@gmail.com")
+    const [username, setUsername] = useState(global.userInformation?.Username || defaultName);
+    const [email, setEmail] = useState(global.userInformation?.Email || defaultEmail);
 
     function editProfileImage()
     {
@@ -24,7 +25,7 @@ export default function AccountSettingsPage({navigation})
                 <Header navigation={navigation} pageName={"Account Settings"} navigateToPage={"SettingsPage"}/>
             </View>
 
-            <ImageBackground style={{ width: "100%", height: 341}} source={global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"}}>
+            <ImageBackground style={{ width: "100%", height: 341}} source={global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: defaultImage}}>
                 <Pressable onPress={() => editProfileImage()} style={{position: "absolute", bottom: 20, right: 20, width: 45, height: 45, borderRadius: "50%", backgroundColor: "#0477BF", alignItems: "center", justifyContent: "center"}}>
                     <Image style={{width:24, height: 24, }} source={require("../assets/icons/editIcon.svg")}/>
                 </Pressable>

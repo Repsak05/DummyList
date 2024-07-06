@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, ScrollView, Text, StyleSheet, Dimensions, TouchableOpacity, Pressable, Image } from 'react-native';
 import style from '../style.js'; 
 import { readSingleUserInformation } from "../../firebase.js";
+import { defaultImage, defaultLevel, defaultName } from "../defaultValues.js";
 
 export default function FriendOverviewComponent({id, name, image, level})
 {
@@ -18,14 +19,13 @@ export default function FriendOverviewComponent({id, name, image, level})
                     const res = await readSingleUserInformation("Users", id)
 
                     if(theName == "loading..."){
-                        setTheName(name || res.Username || "Invalid");
+                        setTheName(name || res.Username || defaultName);
                     }
                     if(theLevel == 404){
-                        setTheLevel(level || res.Level || 1337);
+                        setTheLevel(level || res.Level || defaultLevel);
                     }
                     if(!theImage){
-                        const exampleImage = "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"
-                        setTheImage(res.ProfilePicture ? {uri: res.ProfilePicture} : {uri : exampleImage});
+                        setTheImage(res.ProfilePicture ? {uri: res.ProfilePicture} : {uri : defaultImage});
                     }
 
                 }catch(err){

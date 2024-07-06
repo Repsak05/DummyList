@@ -7,6 +7,7 @@ import UploadedChallengeToFeed from "../components/UploadedChallengeToFeed";
 
 import { readData, readSingleUserInformation, readDocumentsInArray } from "../../firebase";
 import {getAllChallenges} from "../components/GlobalFunctions"
+import { defaultImage } from "../defaultValues";
 
 export default function FeedPage({ navigation }) 
 {   //TODO: Replace Loading... with correct loading screen
@@ -39,7 +40,7 @@ export default function FeedPage({ navigation })
                     return {
                         ...post,
                         PostedByUsername: users.Username || "Unknown User",
-                        PostedByProfilePicture : users.ProfilePicture || "https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg"
+                        PostedByProfilePicture : users.ProfilePicture || defaultImage
                     };
                 }));
 

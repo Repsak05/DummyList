@@ -3,29 +3,39 @@ import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 
 import { readSingleUserInformation } from "../../firebase";
+import { defaultImage } from "../defaultValues";
 
 export default function AddFriends({id, name, image, hasLine = true, showLevel = false, level, showMutualFriends = false, amountOfMutualFriends, showTimeAgo = false, timeAgo, showAddFriend = false, onPressAddFriend, showFriendAdded = true, showAcceptFriend = false, onPressAcceptFriend, onPressDenyFriend, showCancelFriend = false, onPressCancel})
 {
     //Might wanna do the same (the following) with amountOfMutualFriends, showTimeAgo...
+
+
     const [theUsername, setTheUsername] = useState(name || "loading...");
     const [theLevel, setTheLevel] = useState(level || 404);
+    const [imageSource, setImageSource] = useState(image || false);
     
     useEffect(() => {
         async function getData()
         {
             if(id){
-                try{
-                    const res = await readSingleUserInformation("Users", id)
-
-                    if(theUsername == "loading..."){
-                        setTheUsername(name || res.Username || "Invalid")
+                if(!name || !image || !level) //Only read db if any information is missing
+                {
+                    try{
+                        const res = await readSingleUserInformation("Users", id);
+    
+                        if(theUsername == "loading..."){
+                            setTheUsername(name || res.Username || "Invalid");
+                        }
+                        if(showLevel && theLevel == 404){
+                            setTheLevel(level || res.Level || 1337);
+                        }
+                        if(!image){
+                            setImageSource(res.ProfilePicture || {uri: defaultImage});
+                        }
+    
+                    } catch(err){
+                        console.error(err)
                     }
-                    if(showLevel && theLevel == 404){
-                        setTheLevel(level || res.Level || 1337)
-                    }
-
-                } catch(err){
-                    console.error(err)
                 }
             }
         } 
@@ -56,7 +66,7 @@ export default function AddFriends({id, name, image, hasLine = true, showLevel =
     return(
         <View style={{flexDirection: "column",}}>
             <View style={{flexDirection: "row", paddingLeft: 50, paddingBottom: 8}}>
-                <Image source={image} style={{alignSelf: "center", width: 40, height: 40, borderRadius: 5, marginRight: 18}}/>
+                <Image source={imageSource} style={{alignSelf: "center", width: 40, height: 40, borderRadius: 5, marginRight: 18}}/>
                 <View style={{flexDirection: "column"}}>
                     <Text style={style.blackFontSize20}>@{theUsername}</Text>
                     <Text style={style.greyFontSize13}>{stringContaining}</Text>

@@ -5,6 +5,7 @@ import style from '../style.js';
 import Header from "../components/Header.js";
 import AddFriends from "../components/AddFriends.js";
 import { readSingleUserInformation } from "../../firebase.js";
+import { defaultImage, defaultLevel } from "../defaultValues.js";
 
 export default function AllFriendsPage({navigation, route})
 { //TODO: Update to actual profilePicture
@@ -17,7 +18,6 @@ export default function AllFriendsPage({navigation, route})
     // console.log("allUsers");
     // console.log(allUsers);
 
-    const exampleProfilePicture = "https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg";
     const [yourFriends, setYourFriends] = useState([])
 
     useEffect(() => {
@@ -33,8 +33,8 @@ export default function AllFriendsPage({navigation, route})
 
                     let personInformation = {
                         Username : res.Username,
-                        ProfilePicture : {uri : res.ProfilePicture || exampleProfilePicture},
-                        Level : res.Level,
+                        ProfilePicture : {uri : res.ProfilePicture || defaultImage},
+                        Level : res.Level || defaultLevel,
                     }
 
                     friendsInformation.push(personInformation);

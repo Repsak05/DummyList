@@ -8,6 +8,7 @@ import ProfileAchievements from "../components/ProfileAchievements";
 import ProfileChallengesOverview from "../components/ProfileChallengesOverview";
 import { readSingleUserInformation } from "../../firebase";
 import { calculateXPNeeded } from "../components/GlobalFunctions";
+import { defaultEmail, defaultImage, defaultLevel, defaultName } from "../defaultValues";
 
 export default function ProfilePage({navigation})
 { //TODO: Change achievements to db values (Add xp instead of level, and add achievements)
@@ -62,7 +63,7 @@ export default function ProfilePage({navigation})
 
     return(
         <View style={{flex: 1, flexDirection: "column", backgroundColor: "#D0E4FF", position: "relative"}}>
-            <Image style={{ width: "100%", height: 341}} source={global.userInformation?.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"}}/>
+            <Image style={{ width: "100%", height: 341}} source={global.userInformation?.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: defaultImage}}/>
             
             <View style={{position: "absolute", top: 55, left: 0, width: "100%"}}>
                 <Header pageName={" "} navigation={navigation} isOnProfilePage={true}/>
@@ -70,9 +71,9 @@ export default function ProfilePage({navigation})
 
             <View style={{marginTop: 28}}>
                 <ProfileUserInformation 
-                    username={global.userInformation?.Username || "GuestUser#404"}
-                    email={global.userInformation?.Email || "GuestEmail404@gmail.com"}
-                    level={currentLevel || global.userInformation?.Level || 404}
+                    username={global.userInformation?.Username || defaultName}
+                    email={global.userInformation?.Email || defaultEmail}
+                    level={currentLevel || global.userInformation?.Level || defaultLevel}
                     xpCurrent={currentXP}
                     xpToLevelUp={xpNeededToLevelUp}
                 />

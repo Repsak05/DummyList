@@ -9,6 +9,7 @@ import EnterTaskDescription from "../components/EnterTaskDescription.js";
 
 import { addSingleValueToDocument, addToDocument, updateArrayFieldInDocument } from "../../firebase.js";
 import { differenceInTime, getProfilePic } from "../components/GlobalFunctions.js";
+import { defaultImage } from "../defaultValues.js";
 
 export default function AcceptChallengeOverviewPage({ navigation })
 { 
@@ -64,7 +65,6 @@ export default function AcceptChallengeOverviewPage({ navigation })
     
     let displayedImage          = challengeIconBackground[challenge.challenge.gameMode]?.displayedImage     || require("../assets/icons/deleteIcon.svg");
     let setBackgroundColor      = challengeIconBackground[challenge.challenge.gameMode]?.setBackgroundColor || "#57C945";
-    const exampleProfilePicture = "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&fl=progressive&q=70&fm=jpg";
 
     async function tAreYouParticipating(ans)
     {
@@ -150,7 +150,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
             let pics = {};
 
             for (let member of challenge.challenge.invitedMembers) {
-                pics[member] = await getProfilePic(member);
+                pics[member] = await getProfilePic(member) || defaultImage;
             }
             setProfilePics(pics);
         }
