@@ -15,8 +15,7 @@ export default function CreateChallengePageOne({navigation, route})
     const [allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues || {
         challengeName: "",
         gameMode: "",
-        friends: [],
-        startingTime: 24,
+        startingTime: 24, //This is now how its being set (Being done later (pageTwo))
         amountOfTasks: 5,
         taskDifficulty: "",
     })

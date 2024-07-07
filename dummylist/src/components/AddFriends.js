@@ -3,33 +3,33 @@ import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 
 import { readSingleUserInformation } from "../../firebase";
-import { defaultImage } from "../defaultValues";
+import { defaultImage, defaultLevel, defaultName } from "../defaultValues";
 
 export default function AddFriends({id, name, image, hasLine = true, showLevel = false, level, showMutualFriends = false, amountOfMutualFriends, showTimeAgo = false, timeAgo, showAddFriend = false, onPressAddFriend, showFriendAdded = true, showAcceptFriend = false, onPressAcceptFriend, onPressDenyFriend, showCancelFriend = false, onPressCancel})
 {
-    //Might wanna do the same (the following) with amountOfMutualFriends, showTimeAgo...
+    //? Function getData if statement: (haven't been clarified whether it works properly)
+    //Might wanna do something (the same (default values?? useState??)) with amountOfMutualFriends, showTimeAgo...
 
-
-    const [theUsername, setTheUsername] = useState(name || "loading...");
-    const [theLevel, setTheLevel] = useState(level || 404);
-    const [imageSource, setImageSource] = useState(image || false);
+    const [theUsername, setTheUsername] = useState(name || defaultName);
+    const [theLevel, setTheLevel] = useState(level || defaultLevel);
+    const [imageSource, setImageSource] = useState(image || defaultImage);
     
     useEffect(() => {
         async function getData()
         {
             if(id){
-                if(!name || !image || !level) //Only read db if any information is missing
+                if(!name || name == defaultName || !image || image == defaultImage || !level || level == defaultLevel) //Only read db if any information is missing 
                 {
                     try{
                         const res = await readSingleUserInformation("Users", id);
     
-                        if(theUsername == "loading..."){
-                            setTheUsername(name || res.Username || "Invalid");
+                        if(theUsername == defaultName){
+                            setTheUsername(name || res.Username || defaultName);
                         }
-                        if(showLevel && theLevel == 404){
-                            setTheLevel(level || res.Level || 1337);
+                        if(showLevel && theLevel == defaultLevel){
+                            setTheLevel(level || res.Level || defaultLevel);
                         }
-                        if(!image){
+                        if(!image || image == defaultImage){
                             setImageSource(res.ProfilePicture || {uri: defaultImage});
                         }
     
@@ -55,7 +55,7 @@ export default function AddFriends({id, name, image, hasLine = true, showLevel =
         stringContaining += " | "
     }
     if(showMutualFriends){
-        const addingVal = amountOfMutualFriends ? amountOfMutualFriends + " Mutual Friends": "No Mutual Friends";
+        const addingVal = amountOfMutualFriends ? amountOfMutualFriends + " Mutual Friends" : "No Mutual Friends";
         stringContaining += addingVal
     }
     if (showTimeAgo && timeAgo !== undefined) 

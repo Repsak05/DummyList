@@ -1,4 +1,5 @@
 import { readData, readSingleUserInformation, readDataWithQuery } from "../../firebase";
+import { defaultImage } from "../defaultValues";
 
 function calculatePlacement(challenge, id = global.userInformation.id, getNumberOfCompletedChallenges = false, getAllPlacements = false)
 {
@@ -118,18 +119,18 @@ function differenceInTime(beginningTime)
     return timeDifferenceHours;
 }
 
-const defaultImage = {uri : "https://marketplace.canva.com/EAFHfL_zPBk/1/0/1600w/canva-yellow-inspiration-modern-instagram-profile-picture-kpZhUIzCx_w.jpg"};
+const theDefaultImage = {uri : defaultImage};
 async function getProfilePic(userID) //?DB can probably be improved by only retrieving .ProfilePicture
 {
     try{
         let profilePic;
         if(userID == global.userInformation.id)
         {
-            profilePic = global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : defaultImage;
+            profilePic = global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : theDefaultImage;
 
         }else {
             const profileInfo = await readSingleUserInformation("Users", userID);
-            profilePic = profileInfo.ProfilePicture ? {uri: profileInfo.ProfilePicture} : defaultImage;
+            profilePic = profileInfo.ProfilePicture ? {uri: profileInfo.ProfilePicture} : theDefaultImage;
         }
 
         return profilePic

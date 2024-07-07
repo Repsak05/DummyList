@@ -16,11 +16,6 @@ export default function CreateChallengePageTwo({ navigation, route })
         ...allChallengeValues,
 
         //Adding yourself to friends (should be called participants/ChallengeMembers)
-        friends : allChallengeValues.friends 
-            ? [...allChallengeValues.friends, {user: global.userInformation.id, hasJoined: true}] 
-            : {user: global.userInformation.id, hasJoined: true},
-
-
         invitedMembers :  allChallengeValues.invitedMembers 
             ? [...allChallengeValues.invitedMembers, global.userInformation.id]
             : [global.userInformation.id],
@@ -43,8 +38,11 @@ export default function CreateChallengePageTwo({ navigation, route })
             }
         }
         getAllUsers();
+    }, [allCurrentChallengeValues.invitedMembers]);
+    
+    useEffect(() => {
         updateStartingTime(24); //Set initial starting time to be in one day
-    }, [allCurrentChallengeValues.friends]);
+    }, [])
 
     function updateStartingTime(val) {
         //Convert val to timestamp
@@ -55,17 +53,6 @@ export default function CreateChallengePageTwo({ navigation, route })
             ...allCurrentChallengeValues,
             startingTime: today
         });
-
-        console.log(today);
-    }
-
-    function addFriendToChallenge(id) {
-        if (!allCurrentChallengeValues.friends.some(friend => friend.user === id)) {
-            setAllCurrentChallengeValues({
-                ...allCurrentChallengeValues,
-                friends: [...allCurrentChallengeValues.friends, { user: id, hasJoined: false }]
-            });
-        }
     }
 
     function tAddFriendToChallenge(id){
@@ -91,13 +78,6 @@ export default function CreateChallengePageTwo({ navigation, route })
             } 
         }
         return false;
-    }
-
-    function removeFriendFromChallenge(id) {
-        setAllCurrentChallengeValues({
-            ...allCurrentChallengeValues,
-            friends: allCurrentChallengeValues.friends.filter(friend => friend.user !== id)
-        });
     }
 
     function nextFunction() {
@@ -135,8 +115,8 @@ export default function CreateChallengePageTwo({ navigation, route })
                             showCancelFriend={tHasFriendBeenInvited(id)}
                             showAddFriend={!tHasFriendBeenInvited(id)}
                             showFriendAdded={false}
-                            onPressCancel={() => {removeFriendFromChallenge(id); console.log("cliked"); tRemoveFriendFromChallenge(id)}}
-                            onPressAddFriend={() => {addFriendToChallenge(id); console.log("cliekeke"); tAddFriendToChallenge(id)}}
+                            onPressCancel={() => {tRemoveFriendFromChallenge(id)}}
+                            onPressAddFriend={() => {tAddFriendToChallenge(id)}}
                         />
                     </View>
                 ))}
