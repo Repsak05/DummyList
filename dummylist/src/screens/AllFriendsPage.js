@@ -51,7 +51,7 @@ export default function AllFriendsPage({navigation, route})
     }, [])
 
     return(
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={{marginTop: 55, marginBottom: 49}}>
                 <Header pageName={`All Friends (${yourFriends?.length || 0})`} navigation={navigation} navigateToPage={"FriendsPage"}/>
             </View>

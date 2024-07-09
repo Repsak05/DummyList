@@ -4,6 +4,7 @@ import style from "../style";
 
 import Notification from "./Notification";
 import { readSingleUserInformation } from "../../firebase";
+import colors from "../colors";
 
 export default function Header({pageName, navigation, isOnHomePage = false, isOnProfilePage = false, hasNotifications = 0, navigateToPage})
 {
@@ -53,7 +54,7 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
     }
 
     return(
-        <View style={{paddingHorizontal: 30, justifyContent: "space-between", alignItems: "center", flexDirection: "row", }}>
+        <View style={{paddingHorizontal: 30, justifyContent: "space-between", alignItems: "center", flexDirection: "row",}}>
             <Pressable onPress={() => goBack()}>
                 <Image style={{width: 45, height: 45}} source={mostLeftPicture}/>
 

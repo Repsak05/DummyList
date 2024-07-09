@@ -189,7 +189,7 @@ export default function FriendsPage({navigation})
         return false;
     }
     return(
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={{marginTop: 55, marginBottom: 20}}>
                 <Header pageName={"Friendship"} navigation={navigation}/>
             </View>

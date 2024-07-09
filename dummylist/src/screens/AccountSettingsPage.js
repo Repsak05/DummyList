@@ -20,7 +20,7 @@ export default function AccountSettingsPage({navigation})
         navigation.navigate("ChangeProfilePicture");
     }
     return(
-        <View>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={{marginTop: 55, marginBottom: 40}}>
                 <Header navigation={navigation} pageName={"Account Settings"} navigateToPage={"SettingsPage"}/>
             </View>

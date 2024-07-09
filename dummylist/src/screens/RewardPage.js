@@ -67,7 +67,7 @@ const startIncrementAnimation = () => {
 
 
     return (
-        <View>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <Image source={require("../assets/icons/rewardCelebrations.svg")} style={{alignSelf: "center", marginTop: 320, width: 307, height: 267}}/>
             <Text style={[style.blackFontSize40, {textAlign: "center", marginBottom: 23, marginTop: 8}]}>Upload Succesful</Text>
             <View style={{flexDirection: "row", justifyContent: "space-around", marginHorizontal: 20}}>

@@ -86,7 +86,7 @@ export default function InvitedChallengesPage({navigation})
 
 
     return(
-        <ScrollView horizontal={false}>
+        <ScrollView horizontal={false} style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={[{width: "100%", marginTop: 55, marginBottom: 20,}]}>
                 <Header pageName={"Challenges"} navigation={navigation}/>
             </View>

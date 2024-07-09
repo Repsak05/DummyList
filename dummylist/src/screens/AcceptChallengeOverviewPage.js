@@ -173,7 +173,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
     }
 
     return(
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={[{marginTop: 55, marginBottom: 29,}]}>
                 <Header pageName={"Challenges"} navigation={navigation} navigateToPage={"InvitedChallengesPage"}/>
             </View>

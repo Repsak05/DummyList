@@ -56,7 +56,7 @@ export default function FeedPage({ navigation })
     }, [])
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
              <View style={{ marginTop: 55, marginBottom: 10 }}>
                 <Header navigation={navigation} pageName={"Feed"} />
             </View>

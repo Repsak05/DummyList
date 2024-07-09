@@ -60,7 +60,7 @@ export default function LeaderboardWhenChallengeIsFinished({navigation})
     }, [challenge])
 
     return(
-        <View style={{flex: 1, flexDirection: "column", backgroundColor: "#FFF8F7"}}>
+        <View style={{flex: 1, flexDirection: "column", backgroundColor: "#f8f9ff"}}>
             <View>
                 <View style={{marginTop: 55,}}>
                     <Header navigation={navigation} pageName={challenge?.challengeName}/>

@@ -200,7 +200,7 @@ export default function CreateChallengePageThree({navigation, route})
     
 
     return(
-        <View>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={{marginTop: 55, marginBottom: 17}}>
                 <Header pageName={"Create Challenge"} navigation={navigation}/>
             </View>

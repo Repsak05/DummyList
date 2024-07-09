@@ -5,7 +5,7 @@ import style from "../style";
 export default function UploadErrorPage({ navigation })
 { //TODO: Missing navigation to "Try Again": Might need ref to uri/task
     return(
-        <View style={{flex: 1, justifyContent: "center", alignItems:"center", flexDirection: "column"}}>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff", justifyContent: "center", alignItems:"center", flexDirection: "column"}}>
             <Image source={require("../assets/icons/uploadErrorIcon.svg")} style={{width: 307, height: 261}}/>
 
 

@@ -91,7 +91,7 @@ export default function ChangeProfilePicture({ navigation })
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
       {isLoading && <ActivityIndicator size="large" color="#0000ff" />}
       {!image ? (
         !mode ? (

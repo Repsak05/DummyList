@@ -12,7 +12,7 @@ export default function CameraPage({navigation, route})
     const { challengeID } = route.params || " ";
     
     return(
-        <View style={{}}>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             
             <View style={{marginTop: 55}}>
                 <Header navigation={navigation} pageName={`"${task.taskDescription}"` || "Camera"}/>

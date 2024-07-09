@@ -81,7 +81,7 @@ export default function NotificationSettingsPage({navigation})
     }
     
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
     
             <View style={{ marginTop: 55, marginBottom: 25 }}>
                 <Header navigation={navigation} pageName={"Notification"} navigateToPage={"SettingsPage"} />

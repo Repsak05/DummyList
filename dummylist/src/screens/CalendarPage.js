@@ -34,7 +34,7 @@ export default function CalendarPage({navigation, route})
     }
 
     return (
-        <View>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={{ marginTop: 55, marginBottom: 10 }}>
                 <Header pageName={"Memories"} navigation={navigation} navigateToPage={"ProfilePage"}/>
             </View>

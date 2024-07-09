@@ -7,9 +7,10 @@ import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 import { readDataWithQuery, addSingleValueToDocument, addToDocument, readSingleUserInformation, deleteDocument } from "../../firebase.js";
 import { calculatePlacement, calculateTimeLeft, differenceInTime } from "../components/GlobalFunctions.js";
+import { defaultImage } from "../defaultValues.js";
 
 export default function Home({navigation})  
-{   //TODO: Fix background colors on create challenge and active challenges
+{
     //TODO: Create placement icon with just 1/2 and 2/2
     // ? Check what happens if multiple un-seen finished challenges  
     //!BINGO: End placement: Same amount of rows completed, then they should be sorted by total amount of tasks completed
@@ -355,18 +356,6 @@ export default function Home({navigation})
         const entries = Object.entries(playersAmountOfRowsComplete);
         entries.sort((a, b) => b[1] - a[1]);
         const sortedIDs = entries.map(entry => entry[0]);
-        
-        
-        //Conosle.log all useable information
-        // console.log("grid ->");
-        // console.log(gridMember);
-        
-        
-        // console.log("playersAmountOfRowsComplete");
-        // console.log(playersAmountOfRowsComplete)
-        
-        // console.log("sortedIDs");
-        // console.log(sortedIDs);
 
         if(returnPlacementInsertID)
         {
@@ -402,17 +391,16 @@ export default function Home({navigation})
     
     async function returnImageAndNameFromID(id) //! Can diffently be improved (useState)
     {
-        const standardProfilePic = "https://media.macphun.com/img/uploads/customer/how-to/608/15542038745ca344e267fb80.28757312.jpg?q=85&w=1340"
         if(id == global.userInformation.id && global.userInformation.Username)
         {
-            const profilePic = global.userInformation.ProfilePicture || standardProfilePic;
+            const profilePic = global.userInformation.ProfilePicture || defaultImage;
             // console.log([global.userInformation.Username, profilePic])
             return [global.userInformation.Username, {uri : profilePic}];
         }else {
             try{
                 const res = await readSingleUserInformation("Users", id);
 
-                const profilPic = res.ProfilePicture || standardProfilePic;
+                const profilPic = res.ProfilePicture || defaultImage;
                 // console.log([res.Username, profilPic])
                 return [res.Username, {uri : profilPic}];
 
@@ -423,7 +411,7 @@ export default function Home({navigation})
     }
 
     return(
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={[{width: "100%", marginTop: 55, marginBottom: 29,}]}>
                 <Header pageName={"Home"} navigation={navigation} isOnHomePage={true} hasNotifications={amountOfNotifications}/>
             </View>
@@ -438,7 +426,7 @@ export default function Home({navigation})
                         {differenceInTime(challenge.startingTime) <= 0 && (
                             <View>
                                 {challenge.isStilActive && (
-                                        <View style={{width: "100%"}} key={index}>
+                                        <View style={{width: "100%",}} key={index}>
                                             <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
                                         </View>
                                     )
