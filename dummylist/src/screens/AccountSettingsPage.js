@@ -5,6 +5,7 @@ import style from "../style";
 import Header from "../components/Header";
 import EnterInformationLogInComponent from "../components/EnterInformationLogInComponent";
 import { defaultEmail, defaultImage, defaultName } from "../defaultValues";
+import { firebaseAuth } from "../../firebase";
 
 export default function AccountSettingsPage({navigation})
 { //TODO: Missing functionality: username and password can't currently be changed on demand 

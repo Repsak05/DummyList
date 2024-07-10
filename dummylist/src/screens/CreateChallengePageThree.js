@@ -13,7 +13,8 @@ import SliderComponent from "../components/SliderComponent.js";
 export default function CreateChallengePageThree({navigation, route})
 { //TODO. Add task description on creation (Depending on game-mode)
     //! Remove time addition to timeparticipated
-    const { allCurrentChallengeValues } = route.params
+    const { allCurrentChallengeValues } = route.params;
+    const amountOfPages = allCurrentChallengeValues.gameMode == "Team-Mode" ? 4 : 3;
     const [ allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues);
 
     function changeChallengeValues(value, name)
@@ -206,7 +207,7 @@ export default function CreateChallengePageThree({navigation, route})
             </View>
 
             <View style={{alignSelf: "center", marginBottom: 127}}>
-                <ProgressBarTemplate currentXp={3} maxXp={3} text={"3/3"} setWidth={400}/>
+                <ProgressBarTemplate currentXp={amountOfPages} maxXp={amountOfPages} text={`${amountOfPages}/${amountOfPages}`} setWidth={400}/>
             </View>
 
                 {allCurrentChallengeValues.gameMode != "Bingo" ? (

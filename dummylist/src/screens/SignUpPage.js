@@ -107,7 +107,8 @@ export default function SignUpPage({navigation})
     {
         if(currentState == 1)
         {
-            navigation.navigate("WelcomePage")
+            console.log("Going to WelcomePage");
+            navigation.navigate("WelcomePage");
         } else {
             setCurrentState(currentState-1);
         }
@@ -124,26 +125,29 @@ export default function SignUpPage({navigation})
                     <View style={{marginBottom: 20}}>
                         {currentState == 1 && (
                             <EnterInformationLogInComponent
-                                value={username}
+                                // value={username}
                                 image={require("../assets/icons/userIcon.svg")}
                                 placeholder={"Username"}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChangeText={setUsername}
+                                // onChange={(e) => setUsername(e.target.value)}
                             />
                         )}
                         {currentState == 2 && (
                             <EnterInformationLogInComponent
-                                value={email}
+                                // value={email}
                                 image={require("../assets/icons/emailIcon.svg")}
                                 placeholder={'Email'}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChangeText={setEmail}
+                                // onChange={(e) => setEmail(e.target.value)}
                             />
                         )}
                         {currentState == 3 && (
                             <EnterInformationLogInComponent
-                                value={password}
+                                // value={password}
+                                onChangeText={setPassword}
                                 image={require("../assets/icons/passwordIcon.svg")}
                                 placeholder={'Password'}
-                                onChange={(e) => setPassword(e.target.value)}
+                                // onChange={(e) => setPassword(e.target.value)}
                                 imageTwo={require("../assets/icons/cantSeeIcon.svg")}
                                 onPressImageTwo={() => setTypeTextSecure(!typeTextSecure)}
                                 typePassword={typeTextSecure}

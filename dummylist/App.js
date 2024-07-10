@@ -20,6 +20,7 @@ import InvitedChallengesPage from './src/screens/InvitedChallengesPage.js';
 import CreateChallengePageOne from './src/screens/CreateChallengePageOne.js';
 import CreateChallengePageTwo from './src/screens/CreateChallengePageTwo.js';
 import CreateChallengePageThree from './src/screens/CreateChallengePageThree.js';
+import CreateChallengeTeamModePage from './src/screens/CreateChallengeTeamModePage.js';
 import AllFriendsPage from './src/screens/AllFriendsPage.js';
 import CameraPage from './src/screens/CameraPage.js';
 import ChallengePage from './src/screens/ChallengePage.js';
@@ -192,6 +193,11 @@ export default function App() {
         <Stack.Screen
           name="CreateChallengePageThree"
           component={CreateChallengePageThree}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreateChallengeTeamModePage"
+          component={CreateChallengeTeamModePage}
           options={{ headerShown: false }}
         />
         <Stack.Screen

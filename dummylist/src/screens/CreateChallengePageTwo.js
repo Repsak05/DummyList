@@ -11,7 +11,10 @@ export default function CreateChallengePageTwo({ navigation, route })
 { //Maybe use global.userInformation
     //TODO: Replace with the t-functions like: replace addFriendToChallenge with tAddFriendToChallenge
     //TODO: Missing to replace "Starts in..."/"Not accepted" statement depending on the right joinedMembers array
+    //TODO: Correct navigation if TeamMode (With params)
     const { allChallengeValues } = route.params;
+    const amountOfPages = allChallengeValues.gameMode == "Team-Mode" ? 4 : 3;
+
     const [allCurrentChallengeValues, setAllCurrentChallengeValues] = useState({
         ...allChallengeValues,
 
@@ -84,9 +87,13 @@ export default function CreateChallengePageTwo({ navigation, route })
         console.log("Go to next!");        
 
 
-        navigation.navigate("CreateChallengePageThree", {
-            allCurrentChallengeValues
-        });
+        if(allChallengeValues.gameMode == "Team-Mode"){
+            navigation.navigate("CreateChallengeTeamModePage", {challenge : allCurrentChallengeValues});
+        }else{
+            navigation.navigate("CreateChallengePageThree", {
+                allCurrentChallengeValues
+            });
+        }
     }
 
     function previousFunction() {
@@ -96,6 +103,7 @@ export default function CreateChallengePageTwo({ navigation, route })
         });
     }
 
+
     return (
         <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={{ marginTop: 55, marginBottom: 17 }}>
@@ -103,7 +111,7 @@ export default function CreateChallengePageTwo({ navigation, route })
             </View>
 
             <View style={{ alignSelf: "center", marginBottom: 127 }}>
-                <ProgressBarTemplate currentXp={2} maxXp={3} text={"2/3"} setWidth={400} />
+                <ProgressBarTemplate currentXp={2} maxXp={amountOfPages} text={`2/${amountOfPages}`} setWidth={400} />
             </View>
 
             <ScrollView style={{ maxHeight: 300 }}>

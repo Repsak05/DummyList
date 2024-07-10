@@ -1,9 +1,16 @@
 import { View, Text, ImageBackground, Pressable, Image   } from 'react-native';
 import styles from '../style.js'; 
 
-export default function CarouselItem({navigation, isPlacedInTheMiddle = false, title = "De Ekstreme Bananer", hasPlacement = true, extraStylesToBackground, extraText, onPressFunction})
+export default function CarouselItem({navigation, amountOfComponents = 3, isPlacedInTheMiddle = false, title = "De Ekstreme Bananer", hasPlacement = true, extraStylesToBackground, extraText, onPressFunction})
 {
-    const indicationImage = isPlacedInTheMiddle ? require("../assets/icons/placedInTheMiddle.svg") : require("../assets/icons/placedMostRight.svg");
+    let indicationImage = require("../assets/icons/placedInTheMiddle.svg");
+    if(amountOfComponents ==  1){
+        return;
+    } else if(amountOfComponents == 2){
+        indicationImage = require("../assets/icons/twoIconsPlacedMostRight.svg");
+    } else if(amountOfComponents >= 3){
+        indicationImage = isPlacedInTheMiddle ? require("../assets/icons/placedInTheMiddle.svg") : require("../assets/icons/placedMostRight.svg");
+    }
         
     return(
         <View style={[{justifyContent: 'flex-start', alignItems: 'center', alignSelf: 'center', width: "95%",  backgroundColor: "#f8f9ff"}]}>

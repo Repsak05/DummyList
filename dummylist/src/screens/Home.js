@@ -11,6 +11,7 @@ import { defaultImage } from "../defaultValues.js";
 
 export default function Home({navigation})  
 {
+    //PageTwo : If no friends: Display ability to add friends?
     //TODO: Create placement icon with just 1/2 and 2/2
     // ? Check what happens if multiple un-seen finished challenges  
     //!BINGO: End placement: Same amount of rows completed, then they should be sorted by total amount of tasks completed
@@ -419,7 +420,7 @@ export default function Home({navigation})
 
             <View style={[styles.wrapper, {flexDirection: 'row', overflow: "scroll", marginBottom: 12 }]}>
                 <View style={{width: "100%",}}> 
-                    <CreateChallengeComponent navigation={navigation} />
+                    <CreateChallengeComponent navigation={navigation} amountOfComponents={allChallenges?.length + 1 || 1} />
                 </View>
                 {allChallenges?.map((challenge, index) => (
                     <View key={index}>
@@ -427,7 +428,7 @@ export default function Home({navigation})
                             <View>
                                 {challenge.isStilActive && (
                                         <View style={{width: "100%",}} key={index}>
-                                            <CarouselItem title={challenge.challengeName} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
+                                            <CarouselItem title={challenge.challengeName} amountOfComponents={allChallenges?.length + 1 || 3} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
                                         </View>
                                     )
                                 }

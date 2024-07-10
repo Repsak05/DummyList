@@ -2,8 +2,17 @@ import React from "react";
 import { View, Text, Image, Pressable   } from 'react-native';
 import style from '../style.js'; 
 
-export default function CreateChallengeComponent({navigation, showAmount = true})
+export default function CreateChallengeComponent({navigation, showAmount = true, amountOfComponents = 3})
 {
+    let indicationImage
+    if(amountOfComponents == 1){
+        indicationImage = require("../assets/icons/OnlyCreateChallengeIcon.svg");
+    }else if(amountOfComponents == 2) {
+        indicationImage = require("../assets/icons/twoIconsPlacedMostLeft.svg");
+    } else {
+        indicationImage = require("../assets/icons/placedMostLeft.svg");
+    }
+
     function openCreateChallenge()
     {
         console.log("Create challenge clicked!")
@@ -19,7 +28,7 @@ export default function CreateChallengeComponent({navigation, showAmount = true}
                 </View>
             </Pressable> 
             {showAmount && (
-                <Image style={{alignSelf: "center"}} source={require("../assets/icons/placedMostLeft.svg")}/>
+                <Image style={{alignSelf: "center"}} source={indicationImage}/>
             )}
         </View>
     )
