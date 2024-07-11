@@ -5,6 +5,7 @@ import colors from "../colors.js";
 import Header from "../components/Header.js";
 import ProgressBarTemplate from "../components/ProgressBarTemplate.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
+import NumberWheel from "../components/NumberWheel.js";
 
 export default function CreateChallengeTeamModePage({navigation, route})
 {
@@ -15,7 +16,11 @@ export default function CreateChallengeTeamModePage({navigation, route})
     const [challengeValues, setChallengeValues] = useState({
         ...challenge,
         teams : []
-    })
+    });
+
+    const [numberOfTeams, setNumberOfTeams] = useState(2);
+
+
     
     const amountOfTeams = 2; //Temp
     const totalInvitedMembers = 20;
@@ -51,6 +56,14 @@ export default function CreateChallengeTeamModePage({navigation, route})
         console.log("Choosing Random Team");
     }
 
+    useEffect(() => {
+        //Update DB values: Teams
+        setChallengeValues((prev) => ({
+            ...prev,
+            teams: numberOfTeams
+        }));
+    }, [numberOfTeams])
+
     return(
         <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={{ marginTop: 55, marginBottom: 17 }}>
@@ -61,6 +74,14 @@ export default function CreateChallengeTeamModePage({navigation, route})
                 <ProgressBarTemplate currentXp={3} maxXp={4} text={"3/4"} setWidth={400} />
             </View>
 
+
+            <Text style={[style.blackFontSize20, { paddingLeft: 17, fontSize: 20, marginBottom: 17 }]}>Choose Amount Of Teams</Text>
+            <NumberWheel
+                totalNumberOfValues={2}
+                deviderValue={2}
+                minNumber={2}
+                onValueChange={(value) => setNumberOfTeams(value)}
+            />
 
             <Text style={[style.blackFontSize20, { paddingLeft: 17, fontSize: 20, marginBottom: 17 }]}>Choose Teams for the Challenge</Text>
             <View style={{paddingHorizontal: 0}}>
