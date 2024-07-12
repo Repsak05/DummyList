@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { View, Button, TextInput, Text, StyleSheet, Pressable, ImageBackground, Image   } from 'react-native';
 import style from '../style.js'; 
 
@@ -10,15 +10,26 @@ import NextPreviousButton from "../components/NextPreviousButton.js";
 
 export default function CreateChallengePageOne({navigation, route})
 {
-    const { allCurrentChallengeValues } = route.params || 0      
+    const { allCurrentChallengeValues } = route.params || {}; //?Was set to 0 before (havent been tested since)      
 
     const [allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues || {
         challengeName: "",
         gameMode: "",
-        startingTime: 24, //This is now how its being set (Being done later (pageTwo))
+        startingTime: 24, //This is not how its being set (Being done later (pageTwo))
         amountOfTasks: 5,
         taskDifficulty: "",
     })
+
+    const [numberOfPages, setNumberOfPages] = useState(3);
+
+    useEffect(() => { //Ajust how many pages is needed to be filled out
+        if(allChallengeValues.gameMode == "Team-Mode"){
+            setNumberOfPages(4);
+        }else {
+            setNumberOfPages(3);
+        }
+
+    }, [allChallengeValues])
 
     function changeChallengeValues(value, name)
     {
@@ -27,13 +38,13 @@ export default function CreateChallengePageOne({navigation, route})
             [name] : value
         })
     }
+
     function previousFunction()
     {
         console.log("Go to Previos!");
         navigation.navigate("Home")
     }
-        
-        
+          
     function nextFunction()
     {
         if(!allChallengeValues.challengeName)
@@ -57,9 +68,7 @@ export default function CreateChallengePageOne({navigation, route})
                 allChallengeValues
             })
         }
-
     }
-
 
     return(
         <View style={{flex: 1, backgroundColor: "#f8f9ff"}}> 
@@ -68,7 +77,7 @@ export default function CreateChallengePageOne({navigation, route})
             </View>
 
             <View style={{alignSelf: "center", marginBottom: 127}}>
-                <ProgressBarTemplate currentXp={1} maxXp={3} text={"1/3"} setWidth={400}/>
+                <ProgressBarTemplate currentXp={1} maxXp={numberOfPages} text={"1/" +numberOfPages} setWidth={400}/>
             </View>
 
             <InputFieldWithBlueOutline onChange={(e) => changeChallengeValues(e.target.value, "challengeName")} startingValue="Enter Challenge Name"/>

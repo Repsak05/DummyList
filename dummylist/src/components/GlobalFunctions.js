@@ -172,4 +172,8 @@ function calculateTimeLeft(challenge, getFloatValueInHours = false)
     }
 }
 
-export {calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}
+function getRandomNumber(x, y) {
+    return Math.floor(Math.random() * (y - x + 1)) + x;
+}
+
+export {getRandomNumber, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}

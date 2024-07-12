@@ -12,6 +12,7 @@ import { addToCollection } from "../../firebase.js";
 
 export default function CreateChallengePageThree({ navigation, route }) {
     const { allCurrentChallengeValues } = route.params;
+    console.log(allCurrentChallengeValues)
     const amountOfPages = allCurrentChallengeValues.gameMode == "Team-Mode" ? 4 : 3;
     const [allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues);
     const [middleNumber, setMiddleNumber] = useState(allCurrentChallengeValues.amountOfTasks || 1); // Initial value
@@ -124,7 +125,7 @@ export default function CreateChallengePageThree({ navigation, route }) {
             </View>
 
             {allCurrentChallengeValues.gameMode != "Bingo" ? (
-                <View>
+                <View style={{marginBottom: 50}}>
                     <Text style={[style.blackFontSize20, { paddingLeft: 17 }]}>Choose Number of Tasks</Text>
                     <NumberWheel
                         totalNumberOfValues={20}
