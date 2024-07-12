@@ -36,6 +36,7 @@ import ChangeProfilePicture from './src/screens/ChangeProfilePicture.js';
 import NotificationSettingsPage from './src/screens/NotificationSettingsPage.js';
 import LanguageSettingsPage from './src/screens/LanguageSettingsPage.js';
 import LeaderboardWhenChallengeIsFinished from './src/screens/LeaderboardWhenChallengeIsFinished.js';
+import JoinTeamModeChallenge from './src/screens/JoinTeamModeChallenge.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -173,6 +174,11 @@ export default function App() {
         <Stack.Screen
           name="AcceptChallengeOverviewPage"
           component={AcceptChallengeOverviewPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="JoinTeamModeChallenge"
+          component={JoinTeamModeChallenge}
           options={{ headerShown: false }}
         />
         <Stack.Screen

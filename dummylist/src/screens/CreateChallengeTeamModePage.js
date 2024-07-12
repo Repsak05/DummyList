@@ -7,9 +7,12 @@ import ProgressBarTemplate from "../components/ProgressBarTemplate.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 import NumberWheel from "../components/NumberWheel.js";
 import { getRandomNumber } from "../components/GlobalFunctions.js";
+import ChooseTeamButton from "../components/ChooseTeamButton.js";
 
 export default function CreateChallengeTeamModePage({navigation, route})
 {
+    //TODO: Structure of Teams need to be remade: Can't be nested arrays :(
+
     const { challenge } = route.params || {};
     const [challengeValues, setChallengeValues] = useState({
         ...challenge,
@@ -21,13 +24,6 @@ export default function CreateChallengeTeamModePage({navigation, route})
     const maxNumberOfTeams = Math.max(totalInvitedMembers / 2) || 1;
     const [chosenTeam, setChosenTeam] = useState(false);
     
-    const teamColors = [
-        ["#D3EC9E", "#141F00"],
-        ["#D0E4FF", "#001D34"],
-        ["#A6290D", "#111"],
-        ["#F2E2C4", "#111"],
-    ];
-
     function previousFunction(){
         console.log("Previous pressed");
         navigation.navigate("CreateChallengePageTwo", {allChallengeValues : challengeValues});
@@ -109,17 +105,20 @@ export default function CreateChallengeTeamModePage({navigation, route})
                             <View style={{paddingHorizontal: 0}}>
                                 <View style={{flexDirection: "row", flexWrap: "wrap", justifyContent: "space-evenly", alignItems:"center"}}>
                                     {Array.from({ length: numberOfTeams }).map((_, index) => (
-                                        <Pressable onPress={ () => chooseTeam(index+1)} key={index} style={[style.roundedCornersSmall, chosenTeam == index+1 ? style.isPicked : style.isNotPicked, { backgroundColor: teamColors[index % teamColors.length][0], padding: 10, margin: 5, width: 100, height: 100, }]}>
-                                            <Text style={[style.blackFontSize40, { textAlign: "center", color: teamColors[index % teamColors.length][1] }]}>{index + 1}.</Text>
-                                            <Text style={[style.blackFontSize16, { textAlign: "center", color: teamColors[index % teamColors.length][1] }]}>Team</Text>
-                                            <Text style={[style.blackFontSize13, { position: "absolute", top: 3, right: 3 }]}>{chosenTeam == index + 1 ? 1 : 0}/{totalInvitedMembers}</Text>
-                                        </Pressable>
+                                        <ChooseTeamButton
+                                            key={index}
+                                            onPress={() => chooseTeam(index+1)}
+                                            index={index}
+                                            textTopRight={`${chosenTeam === index + 1 ? "1" : "0"}/${totalInvitedMembers}`}
+                                            valueToCheckIfEqualIndex={chosenTeam}
+                                        />
                                     ))}
 
-                                    <Pressable onPress={chooseRandomTeam} style={[style.roundedCornersSmall, chosenTeam == false ? style.isPicked : style.isNotPicked, {backgroundColor: "#FFDF9D", padding: 10, margin: 5, width: 100, height: 100}]}>
-                                        <Image source={require("../assets/icons/randomIcon.svg")} style={{width: 45, heigth: 44, alignSelf: "center", marginTop: 10}}/>
-                                        <Text style={[style.blackFontSize16, { textAlign: "center",  color: "#251A00", marginTop: 10 }]}>Random</Text>
-                                    </Pressable>
+                                    <ChooseTeamButton
+                                        isRandomButton={true}
+                                        onPress={chooseRandomTeam}
+                                        valueToCheckIfEqualIndex={chosenTeam}
+                                    />
                                 </View>
                             </View>
                         </View>

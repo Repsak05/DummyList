@@ -1,3 +1,10 @@
+const teamColors = [
+    ["#D3EC9E", "#141F00"],
+    ["#D0E4FF", "#001D34"],
+    ["#A6290D", "#111"],
+    ["#F2E2C4", "#111"],
+];
+
 const darkColors = 
 {
     primary: '#9ecafc',
@@ -114,6 +121,7 @@ const keyColors =
   
 export default
 {
+    teamColors,
     lightColors,
     darkColors,
     keyColors
