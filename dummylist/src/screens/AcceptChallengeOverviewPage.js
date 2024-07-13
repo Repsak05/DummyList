@@ -20,7 +20,7 @@ export default function AcceptChallengeOverviewPage({ navigation })
     //! Remove ability to add tasks if its a Bingo - Or add it, and only the rest should be random
     //TODO: Start Early button looks bad - refine its styling
     //! On start early: In case of long list (time limit) - the ending time should be ajusted to fit the chosen duration
-    //! !If gameMode is TeamMode: On accept send player to JoinTeamModeChallenge.js page
+    //!If gameMode is TeamMode: And you a have alredy joined a team but decide to cancel, it should remove you from your team
   
     const route = useRoute();
     const {chal} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}

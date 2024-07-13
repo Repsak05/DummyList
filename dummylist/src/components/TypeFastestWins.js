@@ -3,19 +3,12 @@ import { View, Image, Text, ScrollView } from 'react-native';
 import style from "../style";
 
 import TaskComponent from "./TaskComponent";
+import { getAllMembersWhoFinnishedTheTask } from "./GlobalFunctions";
 
 export default function TypeFastestWins({navigation, theChallenge})
 {
     console.log(theChallenge);
-    function getAllMembersWhoFinnishedTheTask(task) {
-        const allFriendsIDWhoFinnished = [];
-        task.friendsTask.map(friend => {
-            if (friend.hasCompletedTask) {
-                allFriendsIDWhoFinnished.push(friend.friendID);
-            }
-        });
-        return allFriendsIDWhoFinnished;
-    }
+
 
     function handleImageClick(task)
     {
@@ -32,7 +25,7 @@ export default function TypeFastestWins({navigation, theChallenge})
                     <TaskComponent 
                         description={task.taskDescription} 
                         membersCompletedTask={getAllMembersWhoFinnishedTheTask(task)} 
-                        totalMembersInChallenge={task.friendsTask.length} 
+                        totalMembersInChallenge={theChallenge.joinedMembers.length} 
                         isCompleted={getAllMembersWhoFinnishedTheTask(task).some(friendID => friendID === global.userInformation.id)} 
                         onPress={() => handleImageClick(task)}
                     />

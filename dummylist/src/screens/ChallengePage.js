@@ -10,9 +10,11 @@ import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderb
 import { calculatePlacement, calculateTimeLeft } from "../components/GlobalFunctions";
 import TypeFastestWins from "../components/TypeFastestWins";
 import TypeBingo from "../components/TypeBingo";
+import TypeTeamMode from "../components/TypeTeamMode";
 
 export default function ChallengesPage({navigation})
 {
+    //TODO: calculate placement should be regulared depending of gameMode
     const route = useRoute();
     const {challenge} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
     console.log(challenge.id)
@@ -37,10 +39,13 @@ export default function ChallengesPage({navigation})
 
                 <ScrollView style={{marginTop: 21}}>
                     {(challenge?.gameMode == "Fastest Wins" || challenge?.gameMode == "Long List") && (
-                        <TypeFastestWins navigation={navigation} theChallenge={challenge}/>
+                        <TypeFastestWins theChallenge={challenge} navigation={navigation}/>
                     )} 
                     {challenge?.gameMode == "Bingo" && (
                         <TypeBingo challenge={challenge} navigation={navigation}/>
+                    )}
+                    {challenge?.gameMode == "Team-Mode" && (
+                        <TypeTeamMode challenge={challenge} navigation={navigation}/>
                     )}
                 </ScrollView>                
             </View>

@@ -30,8 +30,8 @@ function calculatePlacement(challenge, id = global.userInformation.id, getNumber
             }
         }        
         //Ensure that if not all completed a task, that they still have a placement
-        if(countPairs.length < challenge.friends.length){
-            for(let i = countPairs.length; i<challenge.friends.length; i++){
+        if(countPairs.length < challenge.joinedMembers.length){
+            for(let i = countPairs.length; i<challenge.joinedMembers.length; i++){
                 return i+1;
             }
         }
@@ -203,4 +203,14 @@ function getRandomNumber(x, y) {
     return Math.floor(Math.random() * (y - x + 1)) + x;
 }
 
-export {getRandomNumber, getTeams, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}
+function getAllMembersWhoFinnishedTheTask(task) {
+    const allFriendsIDWhoFinnished = [];
+    task.friendsTask.map(friend => {
+        if (friend.hasCompletedTask) {
+            allFriendsIDWhoFinnished.push(friend.friendID);
+        }
+    });
+    return allFriendsIDWhoFinnished;
+}
+
+export {getAllMembersWhoFinnishedTheTask, getRandomNumber, getTeams, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}
