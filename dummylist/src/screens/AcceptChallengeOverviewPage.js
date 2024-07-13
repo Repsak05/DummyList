@@ -24,8 +24,11 @@ export default function AcceptChallengeOverviewPage({ navigation })
   
     const route = useRoute();
     const {chal} = route.params; //Object: {isOwner: boolean, challenge : {x: y, z: n, ...}}
+
+    const ifTeamModeAndAccepted = chal.isAccepted || false;
     const [challenge, setChallenge] = useState(chal);
     
+
     const [allTasks, setAllTasks] = useState([]);
     
     useEffect(() => {
@@ -41,6 +44,14 @@ export default function AcceptChallengeOverviewPage({ navigation })
 
         setAllTasks(tasks);
     }, [])
+
+    useEffect(() => {
+        if(ifTeamModeAndAccepted && challenge.challenge.gameMode == "Team-Mode")
+        {
+            tAreYouParticipating(true);
+        }
+
+    }, [ifTeamModeAndAccepted])
 
     function tStartingStatus() //Check wether you have accepted
     {
@@ -67,8 +78,24 @@ export default function AcceptChallengeOverviewPage({ navigation })
     let displayedImage          = challengeIconBackground[challenge.challenge.gameMode]?.displayedImage     || require("../assets/icons/deleteIcon.svg");
     let setBackgroundColor      = challengeIconBackground[challenge.challenge.gameMode]?.setBackgroundColor || "#57C945";
 
-    async function tAreYouParticipating(ans)
+    async function tAreYouParticipating(ans) //Accept of decline
     {
+        //Send to other page to accept if TeamMode
+        if(challenge.challenge.gameMode == "Team-Mode")
+        {
+            if(ans && !ifTeamModeAndAccepted)
+            {
+                ans = false;
+
+                navigation.navigate("JoinTeamModeChallenge", {
+                    challenge
+                });
+                
+                return;
+            }
+        }
+
+        //Update participating answer
         try{
             await updateArrayFieldInDocument("Challenges", challenge.challenge.id, "joinedMembers", global.userInformation.id, ans)
 

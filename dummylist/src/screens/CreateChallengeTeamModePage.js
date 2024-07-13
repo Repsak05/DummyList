@@ -6,7 +6,7 @@ import Header from "../components/Header.js";
 import ProgressBarTemplate from "../components/ProgressBarTemplate.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 import NumberWheel from "../components/NumberWheel.js";
-import { getRandomNumber } from "../components/GlobalFunctions.js";
+import { getRandomNumber, getTeams } from "../components/GlobalFunctions.js";
 import ChooseTeamButton from "../components/ChooseTeamButton.js";
 
 export default function CreateChallengeTeamModePage({navigation, route})
@@ -29,23 +29,6 @@ export default function CreateChallengeTeamModePage({navigation, route})
         navigation.navigate("CreateChallengePageTwo", {allChallengeValues : challengeValues});
     }
 
-    function getTeams(theChosenTeamNum = chosenTeam)
-    {
-        let teams = [];
-
-        for(let i = 1; i <= maxNumberOfTeams; i++)
-        {
-            if(theChosenTeamNum == i){
-                teams.push([global.userInformation.id]);
-            }else{
-                teams.push([]);
-            }
-        }
-
-        console.log(teams);
-        return teams;
-    }
-
     function nextFunction()
     {
         //Select chosen team
@@ -60,7 +43,7 @@ export default function CreateChallengeTeamModePage({navigation, route})
         navigation.navigate("CreateChallengePageThree", {
             allCurrentChallengeValues : {
                 ...challengeValues,
-                teams : getTeams(teamNum)}
+                teams : getTeams(teamNum, maxNumberOfTeams)}
         });
     }
 

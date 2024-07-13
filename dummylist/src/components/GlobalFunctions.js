@@ -172,8 +172,35 @@ function calculateTimeLeft(challenge, getFloatValueInHours = false)
     }
 }
 
+function getTeams(theChosenTeamNum = chosenTeam, maxNumberOfTeams)
+{
+    let teams = [];
+
+
+    //Create team structure: [{members : []}, {members : [user1, user2]}, {members: [user3]}]
+    for(let i = 0; i<maxNumberOfTeams; i++)
+    {
+        if(theChosenTeamNum == i + 1)
+        {
+            if(!teams[i]){
+                teams[i] = { members: [global.userInformation.id] };
+            }else {
+                teams[i].members.push(global.userInformation.id);
+            }
+
+        }else {
+            if(!teams[i]){
+                teams[i] = { members : []};
+            }
+        }
+    }
+
+    console.log(teams);
+    return teams;
+}
+
 function getRandomNumber(x, y) {
     return Math.floor(Math.random() * (y - x + 1)) + x;
 }
 
-export {getRandomNumber, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}
+export {getRandomNumber, getTeams, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}

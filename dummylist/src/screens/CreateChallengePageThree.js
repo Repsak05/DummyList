@@ -12,7 +12,6 @@ import { addToCollection } from "../../firebase.js";
 
 export default function CreateChallengePageThree({ navigation, route }) {
     const { allCurrentChallengeValues } = route.params;
-    console.log(allCurrentChallengeValues)
     const amountOfPages = allCurrentChallengeValues.gameMode == "Team-Mode" ? 4 : 3;
     const [allChallengeValues, setAllChallengeValues] = useState(allCurrentChallengeValues);
     const [middleNumber, setMiddleNumber] = useState(allCurrentChallengeValues.amountOfTasks || 1); // Initial value
@@ -46,7 +45,6 @@ export default function CreateChallengePageThree({ navigation, route }) {
                 amountOfTasks: exactNumberOfTasks,
                 taskDifficulty: taskDifficulty,
             });
-            console.log(res);
         }
 
         await createChallengePost();

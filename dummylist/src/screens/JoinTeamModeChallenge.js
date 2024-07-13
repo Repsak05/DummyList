@@ -5,21 +5,40 @@ import style from '../style.js';
 import Header from "../components/Header.js";
 import NextPreviousButton from "../components/NextPreviousButton.js";
 import ChooseTeamButton from "../components/ChooseTeamButton.js";
+import { getRandomNumber, getTeams } from "../components/GlobalFunctions.js";
+import { addUserToTeam } from "../../firebase.js";
 
 export default function JoinTeamModeChallenge({navigation, route})
 {
     //TODO: Need to replace: textTopRight
     //TODO: Missing to add id to chosen team
-    
-    const challenge = route.params || {};
+    //TODO: Needs to be conditions to check if teams can be joined
+    //TOP right text is not int
 
-    function challengeJoined()
+    const preChal = route.params || {}; //Is apprently needed
+    const chal = preChal.challenge || {}; //{isOwner: boolean, challenge : {x: y, z: n, ...}}
+    let challenge = chal.challenge || {}; //Only challenge obj
+    const [chosenTeam, setChosenTeam] = useState(false);
+    
+    async function challengeJoined()
     {
-        //!Add values to DB
+        //Local creation of teams
+        const teamNum = chosenTeam ? chosenTeam : getRandomNumber(1, challenge.teams.length);
+        challenge.teams = getTeams(teamNum, challenge.teams.length);
+        
+        //Add values to DB
+        await addUserToTeam(challenge.id, teamNum, global.userInformation.id);
+
         console.log("Joining Challenge");
+        navigation.navigate("AcceptChallengeOverviewPage", {
+            chal : {
+                ...chal,
+                challenge : challenge,
+                isAccepted : true,
+            }
+        });
     }
 
-    const [chosenTeam, setChosenTeam] = useState(false);
     return(
         <View style={{flex: 1, backgroundColor: "#f8f9ff"}}>
             <View style={{marginTop: 55, marginBottom: 17}}>
@@ -35,13 +54,14 @@ export default function JoinTeamModeChallenge({navigation, route})
                             index={index}
                             onPress={() => setChosenTeam(index + 1)}
                             valueToCheckIfEqualIndex={chosenTeam}
-                            textTopRight={`${chosenTeam === index + 1 ? "1" : "0"}/404`}
+                            
+                            textTopRight={`${chosenTeam === index + 1 ? challenge.teams[index].members.length + 1  : challenge.teams[index].members.length}/${Math.max(challenge.invitedMembers.length / challenge.teams.length)}`}
                         />
                     ))}
 
                     <ChooseTeamButton
                         isRandomButton={true}
-                        index={index}
+                        valueToCheckIfEqualIndex={chosenTeam}
                         onPress={() => setChosenTeam(false)}
                     />
                 </View>

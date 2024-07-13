@@ -392,10 +392,41 @@ async function createOrUpdateDocument(collection, docId, data) {
     }
 }
 
+async function addUserToTeam(challengeID, teamNumber, userId) {
+    try {
+        // Document reference
+        const challengeDocRef = doc(firestore, 'Challenges', challengeID);
+
+        // Read the current state of the teams field
+        const challengeDoc = await getDoc(challengeDocRef);
+        const currentTeams = challengeDoc.data().teams || [];
+
+        // Ensure the team array has the correct structure
+        if (!currentTeams[teamNumber - 1]) {
+            currentTeams[teamNumber - 1] = { members: [] };
+        }
+
+        // Add the user ID to the specific team's members array if not already present
+        if (!currentTeams[teamNumber - 1].members.includes(userId)) {
+            currentTeams[teamNumber - 1].members.push(userId);
+        }
+
+        // Update the Firestore document with the modified teams array
+        await updateDoc(challengeDocRef, {
+            teams: currentTeams
+        });
+
+        console.log(`User ${userId} added to team ${teamNumber}`);
+    } catch (error) {
+        console.error("Error adding user to team: ", error);
+    }
+}
+
 export {
     firestore,
     firebaseApp,
     firebaseAuth,
+    addUserToTeam,
     createOrUpdateDocument,
     updateArrayFieldInDocument,
     readDocumentsInArray,
