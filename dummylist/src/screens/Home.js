@@ -6,7 +6,7 @@ import Header from "../components/Header.js";
 import CarouselItem from "../components/CarouselItem.js";
 import CreateChallengeComponent from "../components/CreateChallengeComponent.js";
 import { readDataWithQuery, addSingleValueToDocument, addToDocument, readSingleUserInformation, deleteDocument } from "../../firebase.js";
-import { calculatePlacement, calculateTimeLeft, differenceInTime } from "../components/GlobalFunctions.js";
+import { calculatePlacement, calculateTimeLeft, differenceInTime, getAllTeams, getHowManyTasksEachTeamHasCompleted, getLeaderboard} from "../components/GlobalFunctions.js";
 import { defaultImage } from "../defaultValues.js";
 
 export default function Home({navigation})  
@@ -152,95 +152,41 @@ export default function Home({navigation})
         return map;
     }
 
-    async function checkIfChallengeIsDone(challengeObj)
-    {
-        
-        function determineWhetherChallengeIsComplete(getAmountOfChallengesComplete = false)
+    async function screenHasNowBeenSeen(challengeObj)
         {
-            if(challengeObj.gameMode == "Long List")
-            {
-                return calculateTimeLeft(challengeObj, true) < 0;
+            try{
+                //? This very next line should maybe first happen when clicking continue of view leaderboard
+                await addToDocument("Challenges", challengeObj.id, "peopleSeenFinishScreen", global.userInformation.id, true); 
+            }catch(err){
+                console.log(err);
             }
+    }
 
-            if(challengeObj.gameMode == "Bingo" || challengeObj.gameMode == "Fastest Wins")
+    function calculatePlacementFromSortedArr(challengeObj, placementOfAllPlayersInSortedArr, participant, )
+    {
+        let placement = challengeObj.joinedMembers.length;
+
+        if(challengeObj.gameMode == "Team-Mode")
+        {
+            const teams = getAllTeams(challengeObj);
+            let incrementingPlacement = 1;
+
+            for(let teamStrings of placementOfAllPlayersInSortedArr)
             {
-                const map = mapOfHowManyTasksEachPlayerHasCompleted(challengeObj);
+                const indexTeam = parseInt(teamStrings.split("Team")[1].trim()) - 1;
                 
-                if(getAmountOfChallengesComplete){return map;}
-
-                //Check wether anyone has completed all challenges:
-                for(let amountOfCompletedTasks in map)
+                
+                for(let member of teams[indexTeam])
                 {
-                    const amountCompleted = map[amountOfCompletedTasks];
-                    if(amountCompleted == challengeObj.tasks.length)
-                    {
-                        return true;
+                    if(member == participant){
+                        placement = incrementingPlacement;
+                        return placement;
                     }
                 }
-                return false;
+                incrementingPlacement++;
             }
-        }
 
-        async function setIsStillActiveFalse()
-        {
-            try{
-                await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
-                setHasFinishedChallenge(challengeObj);
-            }catch(err){
-                console.log(err);
-            }
-        }
-
-        function getPlacementOfAllPlayers()
-        {
-            let placements = [];
-            if(challengeObj.gameMode == "Bingo") //Sort by amount of rows;
-            {
-                //! Improve sorting: If multiple has same amount of rows completed, it should be based on amount of finished tasks.
-                placements = calculateBingoPlacement(challengeObj);
-            }
-            
-            if(challengeObj.gameMode == "Long List" || challengeObj.gameMode == "Fastest Wins") //Sort by amount of tasks completed
-            {
-                //! Create better sorting for Long List (In case of multiple completing all tasks within timeframe (save completion-time in DB))
-                const amountOfTasksComplete = determineWhetherChallengeIsComplete(true);
-                console.log(amountOfTasksComplete);
-                
-                let scoresArray = Object.entries(amountOfTasksComplete);
-                scoresArray.sort((a, b) => b[1] - a[1]);
-                placements = scoresArray.map(entry => entry[0]);
-                console.log("placements");
-                console.log(placements);
-                
-            }
-            return placements //= ["idplacement1", "idplacement2", ...]
-        }
-
-        async function giveChallengeFinishedStats(participant, obj, placement)
-        {
-            try{
-                await addToDocument("Users", participant, "Stats", obj, true, 0, "AveragePlacement");                                
-                await addToDocument("Users", participant, "Stats", false, false, 1, "TimesParticipated");
-            }catch(err){
-                console.log(err);
-            }
-            
-            //If player came 1st place updated amount of challenges won!
-            if(placement == 1)
-            {
-                try{
-                    await addToDocument("Users", participant, "Stats", false, false, 1, "ChallengesWon");
-                    // console.log("Winners score was increased: " + participant);
-
-                }catch(err){
-                    console.log(err);
-                }
-            }
-        }
-
-        function calculatePlacement(challengeObj, placementOfAllPlayersInSortedArr, participant, )
-        {
-            let placement = challengeObj.joinedMembers.length;
+        }else {
             for(let i = 0; i<placementOfAllPlayersInSortedArr.length; i++)
             {
                 if(participant == placementOfAllPlayersInSortedArr[i])
@@ -249,45 +195,150 @@ export default function Home({navigation})
                     break;
                 }
             }
-            return placement;
+        }
+        return placement;
+    }
+
+    function getPlacementOfAllPlayers(challengeObj)
+    {
+        let placements = [];
+        if(challengeObj.gameMode == "Bingo") //Sort by amount of rows;
+        {
+            //! Improve sorting: If multiple has same amount of rows completed, it should be based on amount of finished tasks.
+            placements = calculateBingoPlacement(challengeObj);
         }
         
-        async function screenHasNowBeenSeen()
+        else if(challengeObj.gameMode == "Long List" || challengeObj.gameMode == "Fastest Wins") //Sort by amount of tasks completed
+        {
+            //! Create better sorting for Long List (In case of multiple completing all tasks within timeframe (save completion-time in DB))
+            const amountOfTasksComplete = determineWhetherChallengeIsComplete(challengeObj, true);
+            
+            let scoresArray = Object.entries(amountOfTasksComplete);
+            scoresArray.sort((a, b) => b[1] - a[1]);
+            placements = scoresArray.map(entry => entry[0]);
+        }
+
+        else if(challengeObj.gameMode == "Team-Mode")
+        {
+            const placementTeams = getLeaderboard(getHowManyTasksEachTeamHasCompleted(challengeObj));
+
+            placements = [];
+
+            for(let placementIndex of placementTeams)
+            {
+                placements.push(`Team ${placementIndex+1}`);
+            }
+        }
+        return placements //= ["idplacement1", "idplacement2", ...] //In case of teams: ["Team 2", "Team 1", "Team 3"...]
+    }
+
+    function determineWhetherChallengeIsComplete(challengeObj, getAmountOfChallengesComplete = false)
+    {
+        if(challengeObj.gameMode == "Long List")
+        {
+            return calculateTimeLeft(challengeObj, true) < 0;
+        } 
+        
+        else if(challengeObj.gameMode == "Bingo" || challengeObj.gameMode == "Fastest Wins")
+        {
+            const map = mapOfHowManyTasksEachPlayerHasCompleted(challengeObj);
+            
+            if(getAmountOfChallengesComplete){return map;}
+
+            //Check wether anyone has completed all challenges:
+            for(let amountOfCompletedTasks in map)
+            {
+                const amountCompleted = map[amountOfCompletedTasks];
+                if(amountCompleted == challengeObj.tasks.length)
+                {
+                    return true;
+                }
+            }
+            return false;
+        } 
+        
+        else if(challengeObj.gameMode == "Team-Mode")
+        {
+            const amountOfTasksEachTeamHasCompleted = getHowManyTasksEachTeamHasCompleted(challengeObj);
+
+            //check whether any team has completed all tasks 
+            for(let teamKeys in amountOfTasksEachTeamHasCompleted)
+            {
+                const amountCompleted = amountOfTasksEachTeamHasCompleted[teamKeys];
+                
+                if(amountCompleted >= challengeObj.tasks.length){
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    async function setIsStillActiveFalse(challengeObj)
+    {
+        try{
+            await addSingleValueToDocument("Challenges", challengeObj.id, "isStilActive", false);
+            setHasFinishedChallenge(challengeObj);
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+
+    async function giveChallengeFinishedStats(participant, obj, placement)
+    {
+        try{
+            await addToDocument("Users", participant, "Stats", obj, true, 0, "AveragePlacement");                                
+            await addToDocument("Users", participant, "Stats", false, false, 1, "TimesParticipated");
+        }catch(err){
+            console.log(err);
+        }
+        
+        //If player came 1st place updated amount of challenges won!
+        if(placement == 1)
         {
             try{
-                //? This very next line should maybe first happen when clicking continue of view leaderboard
-                await addToDocument("Challenges", challengeObj.id, "peopleSeenFinishScreen", global.userInformation.id, true); 
-                setHasFinishedChallenge(challengeObj);
+                await addToDocument("Users", participant, "Stats", false, false, 1, "ChallengesWon");
+                // console.log("Winners score was increased: " + participant);
+
             }catch(err){
                 console.log(err);
             }
         }
+    }
 
+    async function checkIfChallengeIsDone(challengeObj)
+    {
         //Setting inital values
-        const isChallengeComplete = determineWhetherChallengeIsComplete();
+        const isChallengeComplete = determineWhetherChallengeIsComplete(challengeObj); //Works for every Game Mode
         const shouldGiveAwardsToEveryone = Boolean(!challengeObj.peopleSeenFinishScreen);
         const shouldDisplayFinishScreen = lookAtFinishScreen(challengeObj);
 
         if(isChallengeComplete)
         {
+            console.log("Challenge is complete: " + challengeObj.challengeName);
             if(shouldDisplayFinishScreen)
             {
 
-                const placementOfAllPlayers = getPlacementOfAllPlayers(); // = ["IDplacement1", "IDplacement2", ...]
+                const placementOfAllPlayers = getPlacementOfAllPlayers(challengeObj); // = ["IDplacement1", "IDplacement2", ...]
+
+                //If 2D-arr change how its being done
                 setLeaderboard(placementOfAllPlayers);
-                setImagesAndNames(placementOfAllPlayers);
-                screenHasNowBeenSeen();
+                setImagesAndNames(placementOfAllPlayers, challengeObj);
+                // screenHasNowBeenSeen();
+                setHasFinishedChallenge(challengeObj);
+
     
                 if(shouldGiveAwardsToEveryone) //Meaning its the first time its seen complete
                 {
                     //Set challenge is complete:
-                    setIsStillActiveFalse();
+                    setIsStillActiveFalse(challengeObj);
                                     
                     //Give stats to everyone
                     for(let participant of challengeObj.joinedMembers)
                     {
                         //Calculate placement and stats
-                        const placement = calculatePlacement(challengeObj, placementOfAllPlayers, participant);
+                        const placement = calculatePlacementFromSortedArr(challengeObj, placementOfAllPlayers, participant);
                         const amountOfMembers = challengeObj.joinedMembers.length;
                         const obj = {placement : placement, amountOfMembers : amountOfMembers, challengeID : challengeObj.id};
                         
@@ -374,22 +425,33 @@ export default function Home({navigation})
         }
     }
 
-    const [hasFinnishedChallenge, setHasFinishedChallenge] = useState(false);
+    const [hasFinishedChallenge, setHasFinishedChallenge] = useState(false);
     const [leaderboard, setLeaderboard] = useState(false);
     const [topThreeInformation, setTopThreeInformation] = useState(false);
     const [shouldStillSeeLeaderboard, setShouldStillSeeLeaderboard] = useState(true);
 
-    async function setImagesAndNames(ids)
+    async function setImagesAndNames(ids, challenge ) //!! If Team-mode then it should be different
     {
-        let arr = [] // [[n1, i1], [n2, i2], [n3, i3]]
-        for(let id of ids.slice(0, 3))
+        if(challenge.gameMode == "Team-Mode") //In this case there is currently no images being added to leaderboard
         {
-            const values = await returnImageAndNameFromID(id);
-            arr.push(values);
-        }
+            let remakeTo2dArr = [];
+            for(let values of ids)
+            {
+                remakeTo2dArr.push([values]);
+            }
+            setTopThreeInformation(remakeTo2dArr) // [["Team 2"], ["Team 1"], ["Team 3"]];
 
-        setTopThreeInformation(arr);
-        // console.log(arr);
+        }else {
+            let arr = [] // [[n1, i1], [n2, i2], [n3, i3]]
+            for(let id of ids.slice(0, 3))
+            {
+                const values = await returnImageAndNameFromID(id);
+                arr.push(values);
+            }
+    
+            setTopThreeInformation(arr);
+            // console.log(arr);
+        }
     }
     
     async function returnImageAndNameFromID(id) //! Can diffently be improved (useState)
@@ -453,7 +515,7 @@ export default function Home({navigation})
             </View>
 
 
-            {!hasFinnishedChallenge?.id ? (
+            {!hasFinishedChallenge?.id ? (
                 <></>
                 ): (
                     <>
@@ -461,27 +523,35 @@ export default function Home({navigation})
                     <View style={{ position: "absolute", left: 0, top: 0, right: 0, bottom: 0, backgroundColor: "#001D34", opacity: 0.95 }}>
                         {leaderboard && topThreeInformation && (
                             <View style={{ position: "absolute", bottom: "57%", left: 0, right: 0, alignItems: "flex-end", flexDirection: "row", justifyContent: "center" }}>
-                                {topThreeInformation.length >= 1 && (
-                                    <View>
-                                        <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[0][1]} />
-                                        <View style={{ justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#D0E4FF", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 174, width: 84 }}>
-                                            <Text style={[styles.blackFontSize25, { textAlign: "center" }]}>#1</Text>
-                                            <Text style={[styles.blackFontSize13, { marginBottom: 23, textAlign: "center", numberOfLines: 1, ellipsizeMode: "tail" }]}>{topThreeInformation[0][0]}</Text>
-                                        </View>
-                                    </View>
-                                )}
                                 {topThreeInformation.length >= 2 && (
                                     <View>
-                                        <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[1][1]} />
+                                        {topThreeInformation[1][1] && (
+                                            <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[1][1]} />
+                                        )}
                                         <View style={{ justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#FFDF9D", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 126, width: 84 }}>
                                             <Text style={[styles.blackFontSize25, { textAlign: "center" }]}>#2</Text>
                                             <Text style={[styles.blackFontSize13, { marginBottom: 23, textAlign: "center", numberOfLines: 1, ellipsizeMode: "tail" }]}>{topThreeInformation[1][0]}</Text>
                                         </View>
                                     </View>
                                 )}
+                                
+                                {topThreeInformation.length >= 1 && (
+                                    <View>
+                                        {topThreeInformation[0][1] && (
+                                            <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[0][1]} />
+                                        )}
+                                        <View style={{ justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#D0E4FF", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 174, width: 84 }}>
+                                            <Text style={[styles.blackFontSize25, { textAlign: "center" }]}>#1</Text>
+                                            <Text style={[styles.blackFontSize13, { marginBottom: 23, textAlign: "center", numberOfLines: 1, ellipsizeMode: "tail" }]}>{topThreeInformation[0][0]}</Text>
+                                        </View>
+                                    </View>
+                                )}
+                                
                                 {topThreeInformation.length >= 3 && (
                                     <View>
-                                        <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[2][1]} />
+                                        {topThreeInformation[2][1] && (
+                                            <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[2][1]} />
+                                        )}
                                         <View style={{ justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#FFDAD2", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 93, width: 84 }}>
                                             <Text style={[styles.blackFontSize25, { textAlign: "center" }]}>#3</Text>
                                             <Text style={[styles.blackFontSize13, { marginBottom: 23, textAlign: "center", numberOfLines: 1, ellipsizeMode: "tail" }]}>{topThreeInformation[2][0]}</Text>
@@ -496,21 +566,21 @@ export default function Home({navigation})
                             <Text style={[styles.whiteFontSize16Reg, { letterSpacing: 1.5, numberOfLines: 1, ellipsizeMode: "tail" }]}>
                                 You Finished{' '}
                                 <Text style={[styles.whiteFontSize16ExtraBold, { letterSpacing: 1.5 }]}>
-                                    #{calculatePlacement(hasFinnishedChallenge, global.userInformation.id, false)}
+                                    #{calculatePlacementFromSortedArr(hasFinishedChallenge, getPlacementOfAllPlayers(hasFinishedChallenge), global.userInformation.id)}
                                 </Text>
                                 {' '}in{' '}
                                 <Text style={[styles.whiteFontSize16ExtraBold, { letterSpacing: 1.5 }]}>
-                                    {hasFinnishedChallenge.challengeName}
+                                    {hasFinishedChallenge.challengeName}
                                 </Text>
                             </Text>
                         </View>
 
                         <View style={{ position: "absolute", bottom: 90, left: 0, right: 0, marginHorizontal: 30 }}>
-                            <Pressable onPress={() => { setShouldStillSeeLeaderboard(false); }} style={[styles.roundedCornersSmall, { borderWidth: 5, borderColor: "#D0E4FF", backgroundColor: "#FFF", height: 40, justifyContent: "center" }]}>
+                            <Pressable onPress={() => { setShouldStillSeeLeaderboard(false); screenHasNowBeenSeen(hasFinishedChallenge); }} style={[styles.roundedCornersSmall, { borderWidth: 5, borderColor: "#D0E4FF", backgroundColor: "#FFF", height: 40, justifyContent: "center" }]}>
                                 <Text style={[styles.blackFontSize16, { textAlign: "center", }]}>Continue</Text>
                             </Pressable>
 
-                            <Pressable onPress={() => { setShouldStillSeeLeaderboard(false); navigation.navigate("LeaderboardWhenChallengeIsFinished", { challenge: hasFinnishedChallenge }); }} style={{ backgroundColor: "#D3EC9E", borderRadius: 5, width: 150, marginTop: 20, alignSelf: "center" }}>
+                            <Pressable onPress={() => { setShouldStillSeeLeaderboard(false); screenHasNowBeenSeen(hasFinishedChallenge); navigation.navigate("LeaderboardWhenChallengeIsFinished", { challenge: hasFinishedChallenge }); }} style={{ backgroundColor: "#D3EC9E", borderRadius: 5, width: 150, marginTop: 20, alignSelf: "center" }}>
                                 <Text style={[styles.blackFontSize16, { textAlign: "center", }]}>View Leaderboard</Text>
                             </Pressable>
                         </View>

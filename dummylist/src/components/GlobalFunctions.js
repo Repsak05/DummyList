@@ -227,4 +227,58 @@ function getAllMembersWhoFinnishedTheTask(task) {
     return allFriendsIDWhoFinnished;
 }
 
-export {hasTeamCompletedTask, getAllMembersWhoFinnishedTheTask, getRandomNumber, getTeams, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}
+function getAllTeams(challenge) // [[p1, p2], [p3,p4,p5], [p6]...]
+{
+    let allTeams = [];
+    if(challenge.teams) //Could be removed if wrongful created values in DB is removed
+    {
+        for(let team of challenge.teams)
+        {
+            allTeams.push(team.members);
+        }
+    }
+
+    return allTeams;
+}
+
+function getHowManyTasksEachTeamHasCompleted(challenge) // {0: 7, 1 : 4, 2 : 9} //TeamIndex : amountOfTaskComplete
+{
+    const teams = getAllTeams(challenge);
+    let map = {};
+    let index = 0;
+
+    for(let team of teams)
+    {
+
+        for(let task of challenge.tasks)
+        {
+            if(hasTeamCompletedTask(task, team))
+            {
+                if(map[index]){
+                    map[index] += 1;
+                }else{
+                    map[index] = 1;
+                }
+            }
+        }
+
+        if(!map[index]){
+            map[index] = 0;
+        }
+
+        index += 1;
+    }
+
+    return map;
+}
+
+function getLeaderboard(obj) //Output e.g.: [2, 0, 1] //gets index of teamNum-1 in order of placement 
+{
+    const entries = Object.entries(obj);
+    const sortedEntries = entries.sort((a, b) => b[1] - a[1]);
+    const sortedKeys = sortedEntries.map(entry => parseInt(entry[0]));
+
+    return sortedKeys;
+}
+
+export {getLeaderboard, getAllTeams, getHowManyTasksEachTeamHasCompleted, hasTeamCompletedTask, getAllMembersWhoFinnishedTheTask, getRandomNumber, getTeams, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { View, Image, Text, Pressable, ScrollView } from 'react-native';
 import style from "../style";
-import { calculateTimeLeft, hasTeamCompletedTask } from "../components/GlobalFunctions";
+import { calculateTimeLeft, hasTeamCompletedTask, getHowManyTasksEachTeamHasCompleted, getAllTeams, getLeaderboard } from "../components/GlobalFunctions";
 import Header from "../components/Header";
 import GoToTasks from "../components/GoToTasks";
 import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderboardTitleInformation";
@@ -12,9 +12,9 @@ export default function TeamModeLeaderboard({route, navigation})
 {
     const { challenge } = route.params;
 
-    const allTeams = getAllTeams();
-    const teamAmountOfCompletedTasks = getHowManyTasksEachTeamHasCompleted();
-    const leaderboard = getLeaderboard();
+    const allTeams = getAllTeams(challenge);
+    const teamAmountOfCompletedTasks = getHowManyTasksEachTeamHasCompleted(challenge);
+    const leaderboard = getLeaderboard(teamAmountOfCompletedTasks);
     const indexOfYourTeam = getYourTeamIndex();
 
     function getYourTeamIndex()
@@ -32,58 +32,6 @@ export default function TeamModeLeaderboard({route, navigation})
 
             i++;
         }
-    }
-
-    function getAllTeams() // [[p1, p2], [p3,p4,p5], [p6]...]
-    {
-        let allTeams = [];
-        for(let team of challenge.teams)
-        {
-            allTeams.push(team.members);
-        }
-
-        return allTeams;
-    }
-
-    function getHowManyTasksEachTeamHasCompleted() // {0: 7, 1 : 4, 2 : 9} //TeamIndex : amountOfTaskComplete
-    {
-        const teams = getAllTeams();
-        let map = {};
-        let index = 0;
-
-        for(let team of teams)
-        {
-
-            for(let task of challenge.tasks)
-            {
-                if(hasTeamCompletedTask(task, team))
-                {
-                    if(map[index]){
-                        map[index] += 1;
-                    }else{
-                        map[index] = 1;
-                    }
-                }
-            }
-
-            if(!map[index]){
-                map[index] = 0;
-            }
-
-            index += 1;
-        }
-
-        return map;
-    }
-
-    function getLeaderboard() //Output e.g.: [2, 0, 1] //gets index of teamNum-1 in order of placement 
-    {
-        const obj = teamAmountOfCompletedTasks;
-        const entries = Object.entries(obj);
-        const sortedEntries = entries.sort((a, b) => b[1] - a[1]);
-        const sortedKeys = sortedEntries.map(entry => parseInt(entry[0]));
-
-        return sortedKeys;
     }
 
     return(
