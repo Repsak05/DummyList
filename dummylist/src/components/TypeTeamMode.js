@@ -3,6 +3,7 @@ import { View, Image, Text, ScrollView } from 'react-native';
 import style from "../style";
 
 import TaskComponent from "./TaskComponent";
+import { hasTeamCompletedTask } from "./GlobalFunctions";
 
 export default function TypeTeamMode({navigation, challenge})
 {
@@ -31,19 +32,6 @@ export default function TypeTeamMode({navigation, challenge})
         return yourTeam; //Should never happen here
     }
 
-    function hasTeamCompletedTask(task, team = yourTeam)
-    {
-        for(let teamMember of team)
-        {
-            for(let challengeMember of task.friendsTask)
-            {
-                if(challengeMember.hasCompletedTask && challengeMember.friendID == teamMember){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     function howManyTeamsHasCompletedChallenge(task)
     {
@@ -71,7 +59,7 @@ export default function TypeTeamMode({navigation, challenge})
                     <TaskComponent 
                         description={task.taskDescription} 
                         alternativeText={howManyTeamsHasCompletedChallenge(task)}
-                        isCompleted={hasTeamCompletedTask(task)} 
+                        isCompleted={hasTeamCompletedTask(task, yourTeam)} 
                         onPress={() => handleImageClick(task)}
                     />
                 </View>

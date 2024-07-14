@@ -4,7 +4,7 @@ import style from "../style";
 import { readSingleUserInformation } from "../../firebase";
 import { getProfilePic } from "../components/GlobalFunctions";
 
-export default function LeaderboardPlacement({username, placement, challengesCompleted, amountOfChallenges, userID, profileImage = false, specialColor = false})
+export default function LeaderboardPlacement({username, placement, challengesCompleted, amountOfChallenges, userID, profileImage = false, specialColor = false, withoutAt = false, extraStyle = false})
 {
     const backgroundColorPlacement = [
         "#3F96E0",
@@ -33,10 +33,10 @@ export default function LeaderboardPlacement({username, placement, challengesCom
         }
     }, [])
     return (
-        <View style={[style.taskContainer, {height: 94, alignSelf: "center", backgroundColor: specialColor ? specialColor : backgroundColorPlacement[placement - 1] || backgroundColorPlacement[backgroundColorPlacement.length - 1]}]}>
+        <View style={[style.taskContainer, extraStyle, {height: 94, alignSelf: "center", backgroundColor: specialColor ? specialColor : backgroundColorPlacement[placement - 1] || backgroundColorPlacement[backgroundColorPlacement.length - 1]}]}>
             <Image style={[style.taskImg,{marginRight: 15, width: 50, height: 50, borderRadius: 15}]} source={profilePic} />
             <View style={style.taskTextContainer}>
-                <Text style={style.taskMainText}>@{username}</Text>
+                <Text style={style.taskMainText}>{withoutAt ? username : "@" + username}</Text>
                 <Text style={style.taskSmallText}>Done {challengesCompleted}/{amountOfChallenges} Challenges</Text>
             </View>
             <Text style={style.whiteFontSize31}>{placement}</Text>

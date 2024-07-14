@@ -17,6 +17,7 @@ export default function Home({navigation})
     //!BINGO: End placement: Same amount of rows completed, then they should be sorted by total amount of tasks completed
     //!Long List placement, should depend on (in case that multipe has completed the challenge before time has run out) who finished all tasks first
     //Usage of task.friendsTask.length is not correct in TaskComponent
+    //?Should following be removed in leaderbord: .splice(0,5)
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()

@@ -199,6 +199,20 @@ function getTeams(theChosenTeamNum = chosenTeam, maxNumberOfTeams)
     return teams;
 }
 
+function hasTeamCompletedTask(task, team = yourTeam)
+{
+    for(let teamMember of team)
+    {
+        for(let challengeMember of task.friendsTask)
+        {
+            if(challengeMember.hasCompletedTask && challengeMember.friendID == teamMember){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 function getRandomNumber(x, y) {
     return Math.floor(Math.random() * (y - x + 1)) + x;
 }
@@ -213,4 +227,4 @@ function getAllMembersWhoFinnishedTheTask(task) {
     return allFriendsIDWhoFinnished;
 }
 
-export {getAllMembersWhoFinnishedTheTask, getRandomNumber, getTeams, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}
+export {hasTeamCompletedTask, getAllMembersWhoFinnishedTheTask, getRandomNumber, getTeams, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}

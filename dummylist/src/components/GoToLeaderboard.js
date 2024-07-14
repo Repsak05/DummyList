@@ -2,14 +2,19 @@ import React from "react";
 import { View, Image, Text, StyleSheet, Pressable } from 'react-native';
 import style from "../style";
 
-export default function GoToLeaderboard({placement, navigation, propsToleaderboard})
+export default function GoToLeaderboard({placement, navigation, propsToleaderboard, isTeamMode = false})
 {
     const rightArrowPicture = require("../assets/icons/rightArrow.svg")
 
     //The component itself
     function onClickGoToLeaderBoard(){
-        console.log("Should go to Leaderboard page now")
-        navigation.navigate('LeaderboardPage', {challenge: propsToleaderboard})
+        if(isTeamMode){
+            navigation.navigate("TeamModeLeaderboard", {challenge : propsToleaderboard});
+
+        }else {
+            console.log("Should go to Leaderboard page now")
+            navigation.navigate('LeaderboardPage', {challenge: propsToleaderboard})
+        }
     }
 
     return(

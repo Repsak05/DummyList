@@ -25,6 +25,7 @@ import AllFriendsPage from './src/screens/AllFriendsPage.js';
 import CameraPage from './src/screens/CameraPage.js';
 import ChallengePage from './src/screens/ChallengePage.js';
 import LeaderboardPage from './src/screens/LeaderboardPage.js';
+import TeamModeLeaderboard from './src/screens/TeamModeLeaderboard.js';
 import SignUpPage from './src/screens/SignUpPage.js';
 import LogInPage from './src/screens/LogInPage.js';
 import CalendarPage from './src/screens/CalendarPage.js';
@@ -224,6 +225,11 @@ export default function App() {
         <Stack.Screen
           name="LeaderboardPage"
           component={LeaderboardPage}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TeamModeLeaderboard"
+          component={TeamModeLeaderboard}
           options={{ headerShown: false }}
         />
         <Stack.Screen

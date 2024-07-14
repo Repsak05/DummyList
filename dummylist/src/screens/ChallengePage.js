@@ -27,7 +27,11 @@ export default function ChallengesPage({navigation})
                 </View>
 
                 <View style={{marginVertical: 21}}>
-                    <GoToLeaderboard propsToleaderboard={challenge} navigation={navigation}placement={calculatePlacement(challenge)}/>
+                    {challenge?.gameMode == "Team-Mode" ? (
+                        <GoToLeaderboard navigation={navigation} isTeamMode={true} propsToleaderboard={challenge} placement={calculatePlacement(challenge)}/>
+                    ): (
+                        <GoToLeaderboard propsToleaderboard={challenge} navigation={navigation} placement={calculatePlacement(challenge)}/>
+                    )}
                 </View>
             </View>
 

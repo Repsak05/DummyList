@@ -28,7 +28,7 @@ export default function LeaderboardPage({navigation})
             let namesToFind = [];
             for(let friend of challenge.joinedMembers)
             {
-                namesToFind.push(friend); //Might want to make sure that friend has joined first?
+                namesToFind.push(friend); 
             }
             try{
                 const res = await getUsernamesByIds(namesToFind);
