@@ -11,13 +11,14 @@ import { defaultImage } from "../defaultValues.js";
 
 export default function Home({navigation})  
 {
-    //PageTwo : If no friends: Display ability to add friends?
-    //TODO: Create placement icon with just 1/2 and 2/2
-    // ? Check what happens if multiple un-seen finished challenges  
+    //?CreateChallengePageTwo : If no friends: Display ability to add friends?
+    //TODO: Placement icons for 1/2 and 2/2 should be opposite (Carousel)
     //!BINGO: End placement: Same amount of rows completed, then they should be sorted by total amount of tasks completed
     //!Long List placement, should depend on (in case that multipe has completed the challenge before time has run out) who finished all tasks first
     //Usage of task.friendsTask.length is not correct in TaskComponent
+    //Usage of Leaderboard in Home.js is not needed?
     //?Should following be removed in leaderbord: .splice(0,5)
+
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()
@@ -319,7 +320,6 @@ export default function Home({navigation})
             console.log("Challenge is complete: " + challengeObj.challengeName);
             if(shouldDisplayFinishScreen)
             {
-
                 const placementOfAllPlayers = getPlacementOfAllPlayers(challengeObj); // = ["IDplacement1", "IDplacement2", ...]
 
                 //If 2D-arr change how its being done
@@ -339,7 +339,7 @@ export default function Home({navigation})
                     {
                         //Calculate placement and stats
                         const placement = calculatePlacementFromSortedArr(challengeObj, placementOfAllPlayers, participant);
-                        const amountOfMembers = challengeObj.joinedMembers.length;
+                        const amountOfMembers = challengeObj.gameMode == "Team-Mode" ? challengeObj.teams.length : challengeObj.joinedMembers.length;
                         const obj = {placement : placement, amountOfMembers : amountOfMembers, challengeID : challengeObj.id};
                         
                         //Update stats
@@ -430,7 +430,7 @@ export default function Home({navigation})
     const [topThreeInformation, setTopThreeInformation] = useState(false);
     const [shouldStillSeeLeaderboard, setShouldStillSeeLeaderboard] = useState(true);
 
-    async function setImagesAndNames(ids, challenge ) //!! If Team-mode then it should be different
+    async function setImagesAndNames(ids, challenge )
     {
         if(challenge.gameMode == "Team-Mode") //In this case there is currently no images being added to leaderboard
         {
@@ -517,78 +517,77 @@ export default function Home({navigation})
 
             {!hasFinishedChallenge?.id ? (
                 <></>
-                ): (
-                    <>
-                {shouldStillSeeLeaderboard && (
-                    <View style={{ position: "absolute", left: 0, top: 0, right: 0, bottom: 0, backgroundColor: "#001D34", opacity: 0.95 }}>
-                        {leaderboard && topThreeInformation && (
-                            <View style={{ position: "absolute", bottom: "57%", left: 0, right: 0, alignItems: "flex-end", flexDirection: "row", justifyContent: "center" }}>
-                                {topThreeInformation.length >= 2 && (
-                                    <View>
-                                        {topThreeInformation[1][1] && (
-                                            <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[1][1]} />
-                                        )}
-                                        <View style={{ justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#FFDF9D", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 126, width: 84 }}>
-                                            <Text style={[styles.blackFontSize25, { textAlign: "center" }]}>#2</Text>
-                                            <Text style={[styles.blackFontSize13, { marginBottom: 23, textAlign: "center", numberOfLines: 1, ellipsizeMode: "tail" }]}>{topThreeInformation[1][0]}</Text>
+            ): (
+                <>
+                    {shouldStillSeeLeaderboard && (
+                        <View style={{ position: "absolute", left: 0, top: 0, right: 0, bottom: 0, backgroundColor: "#001D34", opacity: 0.95 }}>
+                            {leaderboard && topThreeInformation && (
+                                <View style={{ position: "absolute", bottom: "57%", left: 0, right: 0, alignItems: "flex-end", flexDirection: "row", justifyContent: "center" }}>
+                                    {topThreeInformation.length >= 2 && (
+                                        <View>
+                                            {topThreeInformation[1][1] && (
+                                                <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[1][1]} />
+                                            )}
+                                            <View style={{ justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#FFDF9D", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 126, width: 84 }}>
+                                                <Text style={[styles.blackFontSize25, { textAlign: "center" }]}>#2</Text>
+                                                <Text style={[styles.blackFontSize13, { marginBottom: 23, textAlign: "center", numberOfLines: 1, ellipsizeMode: "tail" }]}>{topThreeInformation[1][0]}</Text>
+                                            </View>
                                         </View>
-                                    </View>
-                                )}
-                                
-                                {topThreeInformation.length >= 1 && (
-                                    <View>
-                                        {topThreeInformation[0][1] && (
-                                            <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[0][1]} />
-                                        )}
-                                        <View style={{ justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#D0E4FF", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 174, width: 84 }}>
-                                            <Text style={[styles.blackFontSize25, { textAlign: "center" }]}>#1</Text>
-                                            <Text style={[styles.blackFontSize13, { marginBottom: 23, textAlign: "center", numberOfLines: 1, ellipsizeMode: "tail" }]}>{topThreeInformation[0][0]}</Text>
+                                    )}
+                                    
+                                    {topThreeInformation.length >= 1 && (
+                                        <View>
+                                            {topThreeInformation[0][1] && (
+                                                <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[0][1]} />
+                                            )}
+                                            <View style={{ justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#D0E4FF", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 174, width: 84 }}>
+                                                <Text style={[styles.blackFontSize25, { textAlign: "center" }]}>#1</Text>
+                                                <Text style={[styles.blackFontSize13, { marginBottom: 23, textAlign: "center", numberOfLines: 1, ellipsizeMode: "tail" }]}>{topThreeInformation[0][0]}</Text>
+                                            </View>
                                         </View>
-                                    </View>
-                                )}
-                                
-                                {topThreeInformation.length >= 3 && (
-                                    <View>
-                                        {topThreeInformation[2][1] && (
-                                            <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[2][1]} />
-                                        )}
-                                        <View style={{ justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#FFDAD2", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 93, width: 84 }}>
-                                            <Text style={[styles.blackFontSize25, { textAlign: "center" }]}>#3</Text>
-                                            <Text style={[styles.blackFontSize13, { marginBottom: 23, textAlign: "center", numberOfLines: 1, ellipsizeMode: "tail" }]}>{topThreeInformation[2][0]}</Text>
+                                    )}
+                                    
+                                    {topThreeInformation.length >= 3 && (
+                                        <View>
+                                            {topThreeInformation[2][1] && (
+                                                <Image style={{ marginBottom: 6, borderRadius: 7, width: 40, height: 40, alignSelf: "center" }} source={topThreeInformation[2][1]} />
+                                            )}
+                                            <View style={{ justifyContent: "flex-end", flexDirection: "column", backgroundColor: "#FFDAD2", borderTopLeftRadius: 42, borderTopRightRadius: 42, height: 93, width: 84 }}>
+                                                <Text style={[styles.blackFontSize25, { textAlign: "center" }]}>#3</Text>
+                                                <Text style={[styles.blackFontSize13, { marginBottom: 23, textAlign: "center", numberOfLines: 1, ellipsizeMode: "tail" }]}>{topThreeInformation[2][0]}</Text>
+                                            </View>
                                         </View>
-                                    </View>
-                                )}
+                                    )}
+                                </View>
+                            )}
+
+                            <View style={{ flex: 1, alignItems: "center", marginTop: "100%" }}>
+                                <Text style={[styles.whiteFontSize25, {}]}>Congrats!</Text>
+                                <Text style={[styles.whiteFontSize16Reg, { letterSpacing: 1.5, numberOfLines: 1, ellipsizeMode: "tail" }]}>
+                                    You Finished{' '}
+                                    <Text style={[styles.whiteFontSize16ExtraBold, { letterSpacing: 1.5 }]}>
+                                        #{calculatePlacementFromSortedArr(hasFinishedChallenge, getPlacementOfAllPlayers(hasFinishedChallenge), global.userInformation.id)}
+                                    </Text>
+                                    {' '}in{' '}
+                                    <Text style={[styles.whiteFontSize16ExtraBold, { letterSpacing: 1.5 }]}>
+                                        {hasFinishedChallenge.challengeName}
+                                    </Text>
+                                </Text>
                             </View>
-                        )}
 
-                        <View style={{ flex: 1, alignItems: "center", marginTop: "100%" }}>
-                            <Text style={[styles.whiteFontSize25, {}]}>Congrats!</Text>
-                            <Text style={[styles.whiteFontSize16Reg, { letterSpacing: 1.5, numberOfLines: 1, ellipsizeMode: "tail" }]}>
-                                You Finished{' '}
-                                <Text style={[styles.whiteFontSize16ExtraBold, { letterSpacing: 1.5 }]}>
-                                    #{calculatePlacementFromSortedArr(hasFinishedChallenge, getPlacementOfAllPlayers(hasFinishedChallenge), global.userInformation.id)}
-                                </Text>
-                                {' '}in{' '}
-                                <Text style={[styles.whiteFontSize16ExtraBold, { letterSpacing: 1.5 }]}>
-                                    {hasFinishedChallenge.challengeName}
-                                </Text>
-                            </Text>
+                            <View style={{ position: "absolute", bottom: 90, left: 0, right: 0, marginHorizontal: 30 }}>
+                                <Pressable onPress={() => { setShouldStillSeeLeaderboard(false); screenHasNowBeenSeen(hasFinishedChallenge); }} style={[styles.roundedCornersSmall, { borderWidth: 5, borderColor: "#D0E4FF", backgroundColor: "#FFF", height: 40, justifyContent: "center" }]}>
+                                    <Text style={[styles.blackFontSize16, { textAlign: "center", }]}>Continue</Text>
+                                </Pressable>
+
+                                <Pressable onPress={() => { setShouldStillSeeLeaderboard(false); screenHasNowBeenSeen(hasFinishedChallenge); navigation.navigate("LeaderboardWhenChallengeIsFinished", { challenge: hasFinishedChallenge }); }} style={{ backgroundColor: "#D3EC9E", borderRadius: 5, width: 150, marginTop: 20, alignSelf: "center" }}>
+                                    <Text style={[styles.blackFontSize16, { textAlign: "center", }]}>View Leaderboard</Text>
+                                </Pressable>
+                            </View>
                         </View>
-
-                        <View style={{ position: "absolute", bottom: 90, left: 0, right: 0, marginHorizontal: 30 }}>
-                            <Pressable onPress={() => { setShouldStillSeeLeaderboard(false); screenHasNowBeenSeen(hasFinishedChallenge); }} style={[styles.roundedCornersSmall, { borderWidth: 5, borderColor: "#D0E4FF", backgroundColor: "#FFF", height: 40, justifyContent: "center" }]}>
-                                <Text style={[styles.blackFontSize16, { textAlign: "center", }]}>Continue</Text>
-                            </Pressable>
-
-                            <Pressable onPress={() => { setShouldStillSeeLeaderboard(false); screenHasNowBeenSeen(hasFinishedChallenge); navigation.navigate("LeaderboardWhenChallengeIsFinished", { challenge: hasFinishedChallenge }); }} style={{ backgroundColor: "#D3EC9E", borderRadius: 5, width: 150, marginTop: 20, alignSelf: "center" }}>
-                                <Text style={[styles.blackFontSize16, { textAlign: "center", }]}>View Leaderboard</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                )}
-            </>
-                )
-            }
+                    )}
+                </>
+            )}
         </View>
     )
 }

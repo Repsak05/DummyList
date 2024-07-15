@@ -19,7 +19,7 @@ export default function TeamModeLeaderboard({route, navigation})
 
     function getYourTeamIndex()
     {
-        const i = 0;
+        let i = 0;
 
         for(let team of allTeams)
         {
@@ -32,6 +32,8 @@ export default function TeamModeLeaderboard({route, navigation})
 
             i++;
         }
+
+        console.log("Doesn't seem to be a part of any team");
     }
 
     return(

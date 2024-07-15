@@ -5,6 +5,7 @@ import style from "../style";
 import Notification from "./Notification";
 import { readSingleUserInformation } from "../../firebase";
 import colors from "../colors";
+import { defaultImage } from "../defaultValues";
 
 export default function Header({pageName, navigation, isOnHomePage = false, isOnProfilePage = false, hasNotifications = 0, navigateToPage})
 {
@@ -18,7 +19,7 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
             if (global.userInformation && global.userInformation.id) {
                 console.log(global.userInformation.id);
                 clearInterval(interval);
-                isOnProfilePage ? setProfilePicture(require("../assets/icons/settingsIcon.png")) : setProfilePicture({uri: global.userInformation.ProfilePicture} || setProfilePicture(require("../assets/icons/exampleProfilePicture.svg")));
+                isOnProfilePage ? setProfilePicture(require("../assets/icons/settingsIcon.png")) : setProfilePicture({uri: global.userInformation.ProfilePicture} || setProfilePicture({uri: defaultImage}));
             }
         }, 300);
 

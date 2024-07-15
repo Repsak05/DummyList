@@ -4,7 +4,7 @@ import style from "../style";
 import { readSingleUserInformation } from "../../firebase";
 import { getProfilePic } from "../components/GlobalFunctions";
 
-export default function LeaderboardPlacement({username, placement, challengesCompleted, amountOfChallenges, userID, profileImage = false, specialColor = false, withoutAt = false, extraStyle = false})
+export default function LeaderboardPlacement({username, placement, challengesCompleted, amountOfChallenges, userID, profileImage = false, specialColor = false, withoutAt = false, extraStyle = false, teamText = false})
 {
     const backgroundColorPlacement = [
         "#3F96E0",
@@ -39,6 +39,9 @@ export default function LeaderboardPlacement({username, placement, challengesCom
                 <Text style={style.taskMainText}>{withoutAt ? username : "@" + username}</Text>
                 <Text style={style.taskSmallText}>Done {challengesCompleted}/{amountOfChallenges} Challenges</Text>
             </View>
+            {teamText && (
+                <Text style={[style.whiteFontSize16, {marginRight: 20}]}>{teamText}</Text>
+            )}
             <Text style={style.whiteFontSize31}>{placement}</Text>
         </View>
     );
