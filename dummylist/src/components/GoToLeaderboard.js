@@ -2,13 +2,16 @@ import React from "react";
 import { View, Image, Text, StyleSheet, Pressable } from 'react-native';
 import style from "../style";
 
-export default function GoToLeaderboard({placement, navigation, propsToleaderboard, isTeamMode = false})
+export default function GoToLeaderboard({placement, navigation, propsToleaderboard, differentPlacementText = false, isTeamMode = false, tasksShouldNavigateBackTo = false, tasksPageIsFinished = false})
 {
     const rightArrowPicture = require("../assets/icons/rightArrow.svg")
 
     //The component itself
     function onClickGoToLeaderBoard(){
-        if(isTeamMode){
+        if(tasksShouldNavigateBackTo){
+            navigation.navigate("TeamModeLeaderboard", { challenge: propsToleaderboard, tasksShouldNavigateBackTo : tasksShouldNavigateBackTo, challengeIsFinished : tasksPageIsFinished });
+
+        }else if(isTeamMode){
             navigation.navigate("TeamModeLeaderboard", {challenge : propsToleaderboard});
 
         }else {
@@ -24,7 +27,7 @@ export default function GoToLeaderboard({placement, navigation, propsToleaderboa
             <Image style={[style.widthHeight70,{ marginRight: 10, borderRadius: 15}]} source={global.userInformation.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: "https://lh4.googleusercontent.com/proxy/XZjBQs671YZjpKSHu4nOdgKygc5oteGGQ4nznFtymv2Vr1t6lHDdhqPe-Pk-8IJe7pW4AhhKOTWRVt_b6G4qHF92n7Z1QCMVCNXCP2yayQrC-6Fichft"}} />
 
             <View style={[style.displayColumn, {marginRight: 40}]}>
-                <Text style={style.blackFontSize20}>Your Placement:</Text>
+                <Text style={style.blackFontSize20}>{differentPlacementText ? differentPlacementText : "Your Placement:"}</Text>
                 <Text style={style.greyFontSize16}>{placement || propsToleaderboard.joinedMembers.length}/{propsToleaderboard.joinedMembers.length}</Text>
             </View>
 

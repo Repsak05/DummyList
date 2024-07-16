@@ -12,6 +12,10 @@ export default function TeamModeLeaderboard({route, navigation})
 {
     const { challenge } = route.params;
 
+    //Following to values are being used for Finished Result Leaderboard
+    const { tasksShouldNavigateBackTo } = route.params || false;
+    const { challengeIsFinished } = route.params || false;
+
     const allTeams = getAllTeams(challenge);
     const teamAmountOfCompletedTasks = getHowManyTasksEachTeamHasCompleted(challenge);
     const leaderboard = getLeaderboard(teamAmountOfCompletedTasks);
@@ -45,13 +49,19 @@ export default function TeamModeLeaderboard({route, navigation})
             </View>
 
             <View style={{marginVertical: 21}}>
-                <GoToTasks navigation={navigation} propsToTask={challenge} completeChallenges={teamAmountOfCompletedTasks[indexOfYourTeam]} allChallenges={challenge.tasks.length}/>
+                <GoToTasks 
+                    navigation={navigation}
+                    shouldNavigateTo={tasksShouldNavigateBackTo} 
+                    propsToTask={challenge} 
+                    completeChallenges={teamAmountOfCompletedTasks[indexOfYourTeam]} 
+                    allChallenges={challenge.tasks.length}
+                />
             </View>
 
 
             <View style={{flex: 1, borderTopLeftRadius: 30, borderTopRightRadius: 30, backgroundColor: "#D3EC9E"}}>
                 <View style={{paddingTop: 45}}>
-                    <ChallengeLeaderboardTitleInformation otherText={calculateTimeLeft(challenge)} isChallengeOrLeaderboard={"Leaderboard"}/>
+                    <ChallengeLeaderboardTitleInformation otherText={challengeIsFinished ? "Finished Result" : calculateTimeLeft(challenge)} isChallengeOrLeaderboard={challengeIsFinished ? false : "Leaderboard"}/>
                 </View>
 
                 <ScrollView style={{ marginTop: 21 }}>

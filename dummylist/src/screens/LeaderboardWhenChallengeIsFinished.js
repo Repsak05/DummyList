@@ -10,8 +10,9 @@ import LeaderboardPlacement from "../components/LeaderboardPlacement";
 
 import { calculatePlacement, getAllTeams } from "../components/GlobalFunctions";
 import { getUsernamesByIds, readSingleUserInformation } from "../../firebase"
+import GoToLeaderboard from "../components/GoToLeaderboard";
 
-export default function LeaderboardWhenChallengeIsFinished({navigations})
+export default function LeaderboardWhenChallengeIsFinished({navigation})
 {
     //TODO Missing to set deafult image if value is empty in DB
     //! Leaderboard should be dependent on gameMode (e.g. Bingo vs. Fastest Wins)
@@ -39,6 +40,20 @@ export default function LeaderboardWhenChallengeIsFinished({navigations})
             }
         }
     }
+
+    function getSpecialColor(id)
+    {
+        if(id == global.userInformation.id && challenge.gameMode == "Team-Mode"){ //Your color
+            return "#F9BD14";
+        }else if (calculatePlacement(challenge, id, true) == 0){ //Amount of challenges completed == 0
+            return false;
+            return "#555";
+        }else{ //Get placement color
+            return false
+        }
+    }
+
+    
 
     const [usernamesInChallenges, setUsernamesInChallenges] = useState([]);
     const [yourInformation, setYourInformation] = useState();
@@ -81,7 +96,7 @@ export default function LeaderboardWhenChallengeIsFinished({navigations})
     }, [challenge])
 
     return(
-        <View style={{flex: 1, flexDirection: "column", backgroundColor: "#f8f9ff"}}>
+        <View style={{flex: 1, flexDirection: "column", backgroundColor: challenge.gameMode == "Team-Mode" ? "#FFDF9D" : "#f8f9ff"}}>
             <View>
                 <View style={{marginTop: 55,}}>
                     <Header navigation={navigation} pageName={challenge?.challengeName}/>
@@ -89,18 +104,33 @@ export default function LeaderboardWhenChallengeIsFinished({navigations})
             </View>
 
             <View style={{marginVertical: 21}}>
-                {yourInformation && (
+                {challenge.gameMode == "Team-Mode" ? (
+                    <GoToLeaderboard 
+                        navigation={navigation} 
+                        isTeamMode={true} 
+                        propsToleaderboard={challenge} 
+                        placement={calculatePlacement(challenge)} 
+                        tasksShouldNavigateBackTo={"LeaderboardWhenChallengeIsFinished"}
+                        tasksPageIsFinished={true}
+                        differentPlacementText={"Team Placement:"}
+                    />
+                    
+                ) : (
                     <>
-                        <Text style={[style.blackFontSize25, {marginLeft: 40, marginBottom: 10}]}>Your Placement: </Text>
-                        <LeaderboardPlacement
-                            username={yourInformation.username}
-                            placement={yourInformation.placement}
-                            challengesCompleted={calculatePlacement(challenge, yourInformation.id, true)}
-                            amountOfChallenges={challenge?.tasks.length}
-                            profileImage={yourInformation.profileImage}
-                            specialColor={"#F9BD14"}
-                            teamText={challenge.gameMode == "Team-Mode" ? getTeamNumberFromPlayerID(global.userInformation.id) : false}
-                        />
+                        {yourInformation && (
+                            <>
+                                <Text style={[style.blackFontSize25, {marginLeft: 40, marginBottom: 10}]}>Your Placement: </Text>
+                                <LeaderboardPlacement
+                                    username={yourInformation.username}
+                                    placement={yourInformation.placement}
+                                    challengesCompleted={calculatePlacement(challenge, yourInformation.id, true)}
+                                    amountOfChallenges={challenge?.tasks.length}
+                                    profileImage={yourInformation.profileImage}
+                                    specialColor={"#F9BD14"}
+                                    teamText={challenge.gameMode == "Team-Mode" ? getTeamNumberFromPlayerID(global.userInformation.id) : false}
+                                />
+                            </>
+                        )}
                     </>
                 )}
             </View>
@@ -117,9 +147,11 @@ export default function LeaderboardWhenChallengeIsFinished({navigations})
                                 username={participant.username}
                                 placement={participant.placement}
                                 challengesCompleted={calculatePlacement(challenge, participant.id, true)}
+                                specialColor={getSpecialColor(participant.id)}
                                 amountOfChallenges={challenge?.tasks.length}
                                 profileImage={participant.profileImage}
                                 teamText={challenge.gameMode == "Team-Mode" ? getTeamNumberFromPlayerID(participant.id) : false}
+                                extraStyle={participant.id == global.userInformation.id ? {borderWidth: 5, borderColor : "#111"} : false}
 
                             />
                         </View>

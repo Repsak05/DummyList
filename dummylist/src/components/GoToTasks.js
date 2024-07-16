@@ -3,12 +3,17 @@ import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 import ProgressBarTemplate from "./ProgressBarTemplate"
 
-export default function GoToTasks({completeChallenges, allChallenges, propsToTask, navigation})
+export default function GoToTasks({completeChallenges, allChallenges, propsToTask, navigation, shouldNavigateTo = false})
 {
-
     function onClickGoToTasks(){
         console.log("Should go to Task page now")
-        navigation.navigate('ChallengePage', {challenge: propsToTask})
+        if(shouldNavigateTo){
+            navigation.navigate(shouldNavigateTo, {challenge : propsToTask})
+
+        }else{
+
+            navigation.navigate('ChallengePage', {challenge: propsToTask})
+        }
     }
 
     return(
