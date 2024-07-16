@@ -8,7 +8,7 @@ import Header from "../components/Header";
 import ChallengeLeaderboardTitleInformation from "../components/ChallengeLeaderboardTitleInformation";
 import LeaderboardPlacement from "../components/LeaderboardPlacement";
 
-import { calculatePlacement, getAllTeams } from "../components/GlobalFunctions";
+import { calculatePlacement, getAllTeams, getYourTeamPlacement } from "../components/GlobalFunctions";
 import { getUsernamesByIds, readSingleUserInformation } from "../../firebase"
 import GoToLeaderboard from "../components/GoToLeaderboard";
 
@@ -52,8 +52,6 @@ export default function LeaderboardWhenChallengeIsFinished({navigation})
             return false
         }
     }
-
-    
 
     const [usernamesInChallenges, setUsernamesInChallenges] = useState([]);
     const [yourInformation, setYourInformation] = useState();
@@ -109,7 +107,7 @@ export default function LeaderboardWhenChallengeIsFinished({navigation})
                         navigation={navigation} 
                         isTeamMode={true} 
                         propsToleaderboard={challenge} 
-                        placement={calculatePlacement(challenge)} 
+                        placement={challenge.gameMode == "Team-Mode" ? getYourTeamPlacement(challenge, global.userInformation.id) : calculatePlacement(challenge)} 
                         tasksShouldNavigateBackTo={"LeaderboardWhenChallengeIsFinished"}
                         tasksPageIsFinished={true}
                         differentPlacementText={"Team Placement:"}

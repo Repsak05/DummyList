@@ -49,7 +49,7 @@ export default function TypeTeamMode({navigation, challenge})
     function handleImageClick(task)
     {
         console.log("Challenge clicked -> Go to take photo/video!")
-        navigation.navigate('CameraPage', { task: task, challengeID : challenge.id });
+        navigation.navigate('CameraPage', { task: task, challengeID : challenge.id, challengeName : challenge.challengeName });
     }
     
     return(

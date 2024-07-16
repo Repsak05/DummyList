@@ -272,7 +272,7 @@ function getHowManyTasksEachTeamHasCompleted(challenge) // {0: 7, 1 : 4, 2 : 9} 
     return map;
 }
 
-function getLeaderboard(obj) //Output e.g.: [2, 0, 1] //gets index of teamNum-1 in order of placement 
+function getLeaderboard(obj) //Output e.g.: [2, 0, 1] from input: {0: 7, 1 : 4, 2 : 9} //gets index of teamNum-1 in order of placement 
 {
     const entries = Object.entries(obj);
     const sortedEntries = entries.sort((a, b) => b[1] - a[1]);
@@ -281,4 +281,28 @@ function getLeaderboard(obj) //Output e.g.: [2, 0, 1] //gets index of teamNum-1 
     return sortedKeys;
 }
 
-export {getLeaderboard, getAllTeams, getHowManyTasksEachTeamHasCompleted, hasTeamCompletedTask, getAllMembersWhoFinnishedTheTask, getRandomNumber, getTeams, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}
+function getYourTeamPlacement(challenge, id) //Use this function rather than calculatePlacementFromSortedArr in Home
+{
+    let placement = challenge.teams.length;
+    const teams = getAllTeams(challenge);
+    let incrementingPlacement = 1;
+    
+    const playerPlacement = getLeaderboard(getHowManyTasksEachTeamHasCompleted(challenge));
+    for(let teamValue of playerPlacement)
+    {
+        const indexTeam = teamValue;
+        
+        for(let member of teams[indexTeam])
+        {
+            if(member == id){
+                placement = incrementingPlacement;
+                return placement;
+            }
+        }
+        incrementingPlacement++;
+    }
+
+    return placement;
+}
+
+export {getYourTeamPlacement, getLeaderboard, getAllTeams, getHowManyTasksEachTeamHasCompleted, hasTeamCompletedTask, getAllMembersWhoFinnishedTheTask, getRandomNumber, getTeams, calculateTimeLeft, differenceInTime, calculatePlacement, getAllChallenges, calculateLevel, calculateXPNeeded, getProfilePic}

@@ -42,7 +42,7 @@ export default function TypeFastestWins({navigation, challenge})
         if(!checkIfTaskIsCompleted(task))
         {
             console.log("Challenge clicked -> Go to take photo/video!")
-            navigation.navigate('CameraPage', { task: task, challengeID : challenge.id });
+            navigation.navigate('CameraPage', { task: task, challengeID : challenge.id, challengeName : challenge.challengeName });
         }else {
             console.log("This task has alredy been done!")
         }

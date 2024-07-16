@@ -289,6 +289,11 @@ export default StyleSheet.create({
     color: "#9e9e9e",
     fontSize: 10,
   },
+  whiteFontSize10Reg: {
+    fontFamily: "Oswald_400Regular", 
+    color: "#F6F6F6",
+    fontSize: 10,
+  },
   whiteFontSize25: {
     fontFamily: "Oswald_500Medium", 
     color: "#F6F6F6",

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, Text, Pressable } from 'react-native';
 import style from "../style";
 
-export default function FeedInformation({title, profileImage, username})
+export default function FeedInformation({title, profileImage, username, challengeName})
 {
     return(
         <View style={{flexDirection: "row"}}>
@@ -10,6 +10,9 @@ export default function FeedInformation({title, profileImage, username})
             <View style={{flexDirection: "column", marginLeft: 10}}>
                 <Text style={style.whiteFontSize16}>"{title}"</Text>
                 <Text style={style.greyFontSize10}>{username}</Text>
+                {challengeName && (
+                    <Text style={style.whiteFontSize10Reg}>{challengeName}</Text>
+                )}
             </View>
         </View>
     )

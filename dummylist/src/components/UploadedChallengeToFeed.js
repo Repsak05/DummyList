@@ -7,9 +7,9 @@ import FeedLikedBy from "../components/FeedLikedBy";
 
 import { addToDocument, readSingleUserInformation, removeFromDocumentInArr } from "../../firebase";
 
-export default function UploadedChallengeToFeed({navigation, username, profilePicture, description, postUri, likedBy, postID, challengeID}) //arr looks like this: //[username, profilepic, title, Uri, likedBy]
+export default function UploadedChallengeToFeed({navigation, username, profilePicture, description, postUri, likedBy, postID, challengeID, challengeName }) //arr looks like this: //[username, profilepic, title, Uri, likedBy]
 {    
-    const [hasCompleteChallenge, setHasCompletedChallenge] = useState({value : false});
+    const [hasCompleteChallenge, setHasCompletedChallenge] = useState({value : false, task : null});
     const [isLiked, setIsLiked] = useState(null);
     const [allLikedBy, setAllLikedBy] = useState(likedBy);
     
@@ -24,24 +24,20 @@ export default function UploadedChallengeToFeed({navigation, username, profilePi
             }
             setIsLiked(false);
         }
-
-       
-    }, [])
+    }, [likedBy])
 
 
     useEffect(() => {
-         //Determine wether you've finished the task
-         if(challengeID) //Problem: Only seems to be running for the first? - look from another acc
-         {
-             async function getChallenge()
-             {
-                 try
-                 {
+        //Determine wether you've finished the task
+        async function getChallenge()
+        {
+            if(challengeID)
+            {
+                try{
                     const res = await readSingleUserInformation("Challenges", challengeID);
- 
-                    //Find the task which was referenced
-                    console.log(res.isStilActive);
-                    
+                    console.log("Challenge response: ", res);
+
+                    //Find the task which was referenced                    
                     for(let task of res.tasks)
                     {
                         if(task.taskDescription == description)
@@ -51,51 +47,42 @@ export default function UploadedChallengeToFeed({navigation, username, profilePi
                                 //Determine whether you've completed the task
                                 if(friend.friendID == global.userInformation.id && friend.hasCompletedTask)
                                 {
-                                    console.log("Has set true");
+                                    console.log("User has completed the task");
                                     setHasCompletedChallenge({value : true});
                                     return;
                                 }
                             }
 
-                            console.log(task);
-                            if(res.isStilActive)
+                            if(res.isStilActive) //If challenge is not complete, and you haven't finished the task
                             {
                                 setHasCompletedChallenge({value: false, task : task});
+                                
                             }else {
                                 console.log("Challenge Complete - can't complete task | Maybe show it as an icon");
-                                setHasCompletedChallenge({value: "Invalid"})
+                                setHasCompletedChallenge({value: "Invalid", task : null})
                             }
                             return;
                         }
                     }
 
                     console.log("No tasks seems to match :(");
- 
-                 }catch(err){
-                     console.log(err);
-                 }
-             }
- 
-             getChallenge();
-            //  setHasCompletedChallenge(prev => ({...prev, hasGottenValue: true}));
-         }else{
-            console.log("No challengeID available | From postID: " + postID);
-         }
-
+                }catch(err){
+                    console.log(err);
+                }
+            } else {
+                console.log("No challengeID available | From postID: " + postID);
+            }            
+        }
+        
+        getChallenge();
     }, [postID, challengeID, description, allLikedBy])
 
-    useEffect(() => {
-        console.log(hasCompleteChallenge);
-
-    }, [hasCompleteChallenge])
 
     function takePic()
     {
-        console.log(`Value: ${hasCompleteChallenge.value} | Task : ${hasCompleteChallenge.task}`);
-        console.log(hasCompleteChallenge);
         if(!hasCompleteChallenge.value && hasCompleteChallenge.task)
         {
-                navigation.navigate('CameraPage', { task: hasCompleteChallenge.task, challengeID : challengeID })
+            navigation.navigate('CameraPage', { task: hasCompleteChallenge.task, challengeID : challengeID, challengeName : challengeName})
         }
     }
 
@@ -109,13 +96,13 @@ export default function UploadedChallengeToFeed({navigation, username, profilePi
             console.log("Should remove the user from the db")
 
             await removeFromDocumentInArr("Posts", postID, "LikedBy", global.userInformation.id)
-            setAllLikedBy(getCorrectLiked(likedBy)); //! Need to do something liked this though with usestate()
+            setAllLikedBy(getCorrectLiked(likedBy));
             setIsLiked(false);
 
         }
     }
 
-    function getCorrectLiked(arr)
+    function getCorrectLiked(arr) //Used to: get copy of likedBy without your ID
     {
         //If isliked:
         let copy = [];
@@ -127,7 +114,7 @@ export default function UploadedChallengeToFeed({navigation, username, profilePi
                 copy.push(id);
             }
         }
-        return copy
+        return copy;
     }
 
     return(
@@ -158,7 +145,7 @@ export default function UploadedChallengeToFeed({navigation, username, profilePi
     
                 <View style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 80, backgroundColor: 'rgba(0,0,0,0.5)' }} />
                 <View style={{ position: "absolute", bottom: 15, left: 20 }}>
-                    <FeedInformation username={username} profileImage={profilePicture} title={description} />
+                    <FeedInformation username={username} profileImage={profilePicture} title={description} challengeName={challengeName} />
                 </View>
             </ImageBackground>
     

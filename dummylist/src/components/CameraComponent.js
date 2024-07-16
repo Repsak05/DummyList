@@ -10,7 +10,7 @@ import ButtonCamera from './ButtonCamera';
 import { addToCollection, addToDocument, getPositionInSortedCollection, readSingleUserInformation, updateHasCompletedTask } from '../../firebase';
 import { calculateLevel } from './GlobalFunctions';
 
-export default function CameraComponent({taskRef, challengeID, navigation}) 
+export default function CameraComponent({taskRef, challengeID, challengeName, navigation, }) 
 { //TODO: Rewards should be depending on taskDifficulty
     //DB: Reads/writes can be done more efficiently
     //! Possible to update values in challenge immediately?
@@ -91,6 +91,7 @@ export default function CameraComponent({taskRef, challengeID, navigation})
                     LikedBy: [],
                     TimePosted : new Date(),
                     FromChallenge : challengeID,
+                    ChallengeName : challengeName,
                 });
 
                 await updateHasCompletedTask(challengeID, eachPlayer, taskRef, gottenPostID); //Heavy

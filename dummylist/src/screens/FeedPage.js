@@ -12,10 +12,7 @@ import { defaultImage } from "../defaultValues";
 export default function FeedPage({ navigation }) 
 {   //TODO: Replace Loading... with correct loading screen
     //! Only load a few posts at a time - load more on scroll
-
-    //Change this to the user's profilepicture in users db
-    const exampleURI = "https://as1.ftcdn.net/v2/jpg/05/68/23/98/1000_F_568239815_8NB11CB6LT2D3lBhDVa10jQ6qMYJKCzh.jpg"
-       
+           
     const [allPostsYourShouldSee, setAllPostsYourShouldSee] = useState();
 
     useEffect(() => {
@@ -72,6 +69,7 @@ export default function FeedPage({ navigation })
                             likedBy={post.LikedBy}
                             postID={post.id}
                             challengeID={post.FromChallenge || false}
+                            challengeName={post.ChallengeName}
                             navigation={navigation}
                         />
                     </View>
