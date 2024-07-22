@@ -8,7 +8,8 @@ import NextPreviousButton from "../components/NextPreviousButton.js";
 import SliderComponent from "../components/SliderComponent.js";
 import NumberWheel from "../components/NumberWheel.js";
 
-import { addToCollection } from "../../firebase.js";
+import { addToCollection, getRandomDocument } from "../../firebase.js";
+import { defaultChallengeIcon } from "../defaultValues.js";
 
 export default function CreateChallengePageThree({ navigation, route }) {
     const { allCurrentChallengeValues } = route.params;
@@ -37,6 +38,8 @@ export default function CreateChallengePageThree({ navigation, route }) {
                 return { taskDescription: task, friendsTask: friendTasks };
             });
 
+            const icon = await getRandomDocument("ChallengeBackgrounds");
+
             const res = await addToCollection("Challenges", {
                 ...allChallengeValues,
                 createdBy: global.userInformation?.id || "GuestUser#404",
@@ -44,6 +47,7 @@ export default function CreateChallengePageThree({ navigation, route }) {
                 tasks: tasksWithFriends,
                 amountOfTasks: exactNumberOfTasks,
                 taskDifficulty: taskDifficulty,
+                challengeIcon : icon.url || defaultChallengeIcon,
             });
         }
 

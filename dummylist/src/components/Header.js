@@ -24,6 +24,7 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
         }, 300);
 
     }, [])
+    
     function goBack()
     {
         if(isOnHomePage){

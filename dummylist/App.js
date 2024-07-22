@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useFonts, Oswald_400Regular, Oswald_500Medium } from '@expo-google-fonts/oswald';
 import { onAuthStateChanged } from 'firebase/auth';
-import { readData, addToCollection, readSingleUserInformation, firebaseAuth, firestore } from './firebase.js';
+import { readData, addToCollection, readSingleUserInformation, firebaseAuth, firestore, getRandomDocument, addSingleValueToDocument } from './firebase.js';
 
 
 // Import your screen components
@@ -58,10 +58,23 @@ export default function App() {
       {
         const gottenUserInformation = await retrieveUserInformation(user.uid)
 
+        //Set default profile picture
+        async function setDefaultProfilePicture()
+        {
+          if(!gottenUserInformation.ProfilePicture){
+            const newProfilePicture = await getRandomDocument("ProfilePictures");
+            await addSingleValueToDocument("Users", gottenUserInformation.id, "ProfilePicture", newProfilePicture.url);
+
+            gottenUserInformation.ProfilePicture = newProfilePicture.url;
+          }
+        }
+        setDefaultProfilePicture();
+
         //Probably not viable in the long run  
         global.userInformation = gottenUserInformation 
         global.loggedInID = gottenUserInformation.id
         global.userUID = user.uid
+
       }
     });
 

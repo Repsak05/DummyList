@@ -101,6 +101,7 @@ export default function InvitedChallengesPage({navigation})
                     <View key={index}>
                         {differenceInTime(challenge.challenge.startingTime) > 0 && (
                             <CarouselItem 
+                                challengeIcon={challenge.challenge.challengeIcon}
                                 title={challenge.challenge.challengeName} 
                                 extraStylesToBackground={!challenge.isOwner ? { backgroundColor: 'rgba(0, 0, 0, 0.5)' } : null} //Should be changed
                                 extraText={!tHaveYourAccepted(challenge) ? "Not Accepted" : (differenceInTime(challenge.challenge.startingTime)).toFixed(2) + " h  "}

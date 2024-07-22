@@ -18,7 +18,9 @@ export default function Home({navigation})
     //Usage of task.friendsTask.length is not correct in TaskComponent
     //Usage of Leaderboard in Home.js is not needed?
     //?Should following be removed in leaderbord: .splice(0,5)
-
+    //?Creating support page to write feedback to on Settings page
+    //Replace your information by using global. (If not done alredy)
+    //!Insert correct image on feedPage from home screen
 
     const [amountOfNotifications, setAmountOfNotifications] = useState(0);
     const [allChallenges, setAllChallenges] = useState()
@@ -285,7 +287,6 @@ export default function Home({navigation})
         }
     }
 
-
     async function giveChallengeFinishedStats(participant, obj, placement)
     {
         try{
@@ -492,7 +493,7 @@ export default function Home({navigation})
                             <View>
                                 {challenge.isStilActive && (
                                         <View style={{width: "100%",}} key={index}>
-                                            <CarouselItem title={challenge.challengeName} amountOfComponents={allChallenges?.length + 1 || 3} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
+                                            <CarouselItem challengeIcon={challenge.challengeIcon} title={challenge.challengeName} amountOfComponents={allChallenges?.length + 1 || 3} isPlacedInTheMiddle={index != (allChallenges.length -1)} onPressFunction={() => navigateToChallenge(challenge)} navigation={navigation}/>
                                         </View>
                                     )
                                 }

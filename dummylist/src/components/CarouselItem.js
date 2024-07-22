@@ -1,7 +1,8 @@
 import { View, Text, ImageBackground, Pressable, Image   } from 'react-native';
 import styles from '../style.js'; 
+import { defaultChallengeIcon } from '../defaultValues.js';
 
-export default function CarouselItem({navigation, amountOfComponents = 3, isPlacedInTheMiddle = false, title = "De Ekstreme Bananer", hasPlacement = true, extraStylesToBackground, extraText, onPressFunction})
+export default function CarouselItem({navigation, challengeIcon, amountOfComponents = 3, isPlacedInTheMiddle = false, title = "De Ekstreme Bananer", hasPlacement = true, extraStylesToBackground, extraText, onPressFunction})
 {
     let indicationImage = require("../assets/icons/placedInTheMiddle.svg");
     if(amountOfComponents ==  1){
@@ -16,7 +17,7 @@ export default function CarouselItem({navigation, amountOfComponents = 3, isPlac
         <View style={[{justifyContent: 'flex-start', alignItems: 'center', alignSelf: 'center', width: "95%",  backgroundColor: "#f8f9ff"}]}>
             <Pressable onPress={() => onPressFunction()} style={[{width: "100%", height: "100%", marginBottom: 12}]}>
                 <View style={styles.carouselContainer}>
-                    <ImageBackground source={require('../assets/images/Dims.png')} style={[styles.carouselItem, extraStylesToBackground, {position: "relative"}]}>
+                    <ImageBackground source={challengeIcon ? {uri: challengeIcon} : defaultChallengeIcon} style={[styles.carouselItem, extraStylesToBackground, {position: "relative"}]}>
                         {title && (
                             <>
                                 <View style={[styles.carouselTextBox, {position: "absolute", bottom: 20, left: 0}]}>

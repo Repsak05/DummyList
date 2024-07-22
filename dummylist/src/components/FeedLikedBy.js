@@ -9,7 +9,7 @@ export default function FeedLikedBy({peopleWhoLikedThePost})
 {   //TODO: Change from ID to ID's user: shownLikedPosts should contain ID's???
     const showAmountOfLikedBy = 5;
 
-    function returnNumberOfElementsFromArray(arr, num)
+    function returnNumberOfElementsFromArray(arr, num = showAmountOfLikedBy)
     {
         if(arr){
 

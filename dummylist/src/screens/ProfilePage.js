@@ -63,7 +63,7 @@ export default function ProfilePage({navigation})
 
     return(
         <View style={{flex: 1, flexDirection: "column", backgroundColor: "#D0E4FF", position: "relative"}}>
-            <Image style={{ width: "100%", height: 341}} source={global.userInformation?.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: defaultImage}}/>
+            <Image style={{height: 341, width: "auto"}} source={global.userInformation?.ProfilePicture ? {uri: global.userInformation.ProfilePicture} : {uri: defaultImage}}/>
             
             <View style={{position: "absolute", top: 55, left: 0, width: "100%"}}>
                 <Header pageName={" "} navigation={navigation} isOnProfilePage={true}/>

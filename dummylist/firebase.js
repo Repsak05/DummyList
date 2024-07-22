@@ -2,7 +2,7 @@
 import "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy, where, documentId, setDoc  } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, orderBy, where, documentId, setDoc, limit, count, getCountFromServer   } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 
@@ -20,6 +20,8 @@ const firebaseConfig = {
   appId: "1:23063983562:web:ffb339c50aa21c53068b33",
   measurementId: "G-ZSG7XBHZ65"
 };
+
+//!Improve DB usage effecientcy: 1 snapsnot = 1 read (In most cases)
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -422,10 +424,47 @@ async function addUserToTeam(challengeID, teamNumber, userId) {
     }
 }
 
+async function getCollectionCount(collectionName){
+    try {
+        const collectionRef = collection(firestore, collectionName);
+        const q = query(collectionRef);
+        const snapshot = await getCountFromServer(q);
+    
+        return snapshot.data().count;
+      } catch (error) {
+        console.error('Error getting document count: ', error);
+        return 0;
+      }
+}
+
+async function getRandomDocument(collectionName){
+    try {
+      const collectionCount = await getCollectionCount(collectionName);
+  
+      if (collectionCount === 0) {
+        console.log('No documents found in the collection.');
+        return null;
+      }
+  
+      const randomIndex = Math.floor(Math.random() * collectionCount);
+  
+      const collectionRef = collection(firestore, collectionName);
+      const q = query(collectionRef, limit(randomIndex + 1));
+      const snapshot = await getDocs(q);
+  
+      const randomDoc = snapshot.docs[randomIndex];
+      return { ...randomDoc.data(), id: randomDoc.id };
+    } catch (error) {
+      console.error('Error fetching random document: ', error);
+      return null;
+    }
+}
+
 export {
     firestore,
     firebaseApp,
     firebaseAuth,
+    getRandomDocument,
     addUserToTeam,
     createOrUpdateDocument,
     updateArrayFieldInDocument,
