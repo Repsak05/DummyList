@@ -4,9 +4,9 @@ const defaultAmountOfMutualFriends = 404;
 const defaultName = "Invalid";
 const defaultLevel = 1337;
 const defaultEmail = "example@gmail.com";
+
+//other values
 const defaultChallengeIcon = require('./assets/images/Dims.png');
-
-
 
 export {
     defaultImage,

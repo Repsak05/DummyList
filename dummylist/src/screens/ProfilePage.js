@@ -6,42 +6,21 @@ import Header from "../components/Header";
 import ProfileUserInformation from "../components/ProfileUserInformation";
 import ProfileAchievements from "../components/ProfileAchievements";
 import ProfileChallengesOverview from "../components/ProfileChallengesOverview";
-import { readSingleUserInformation } from "../../firebase";
 import { calculateXPNeeded } from "../components/GlobalFunctions";
 import { defaultEmail, defaultImage, defaultLevel, defaultName } from "../defaultValues";
 
 export default function ProfilePage({navigation})
 { //TODO: Change achievements to db values (Add xp instead of level, and add achievements)
-    //Stats can be handled more effectively - in when challenge finished
+    
+    const currentXP = (global.userInformation.XP || 0) - calculateXPNeeded(global.userInformation.Level - 1 || 0); //LeftOverXP
+    const currentLevel = global.userInformation.Level || 1;
+    const xpNeededToLevelUp = calculateXPNeeded(global.userInformation.Level || 1) - calculateXPNeeded(global.userInformation.Level - 1 || 0);
+    const stats = global.userInformation.Stats || false;
 
-    const [currentXP, setCurrentXP] = useState(0); //LeftOverXP
-    const [currentLevel, setCurrentLevel] = useState();
-    const [xpNeededToLevelUp, setXpNeededToLevelUp] = useState();
-
-    const [stats, setStats] = useState();
     const [avgPlacement, setAvgPlacement] = useState();
 
 
     useEffect(() => {
-        async function getPersonalInformation()
-        {
-            try{
-                const res = await readSingleUserInformation("Users", global.userInformation.id);
-                setCurrentLevel(res.Level || 1);
-                setCurrentXP((res.XP || 0) - calculateXPNeeded(res.Level - 1 || 0));
-                setXpNeededToLevelUp(calculateXPNeeded(res.Level || 1) - calculateXPNeeded(res.Level - 1 || 0));
-                setStats(res.Stats || false);
-
-            }catch(err){
-                console.error(err)
-            }
-        }
-
-        getPersonalInformation();
-    }, [])
-
-    useEffect(() => {
-        
         if(stats)
         {
             let totalPlacement = 0;
@@ -54,7 +33,7 @@ export default function ProfilePage({navigation})
             }
     
             const avgPlacementNum = totalPlacement/stats.AveragePlacement.length;
-            const avgPlacementProcent = totalPlacement/totalMembers * 100; //Doesnt rlly makes sense if this format
+            const avgPlacementProcent = totalPlacement/totalMembers * 100; //Value in % doesn't rlly makes sense if this format
     
             setAvgPlacement(avgPlacementNum);
         }

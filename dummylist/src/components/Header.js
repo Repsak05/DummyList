@@ -21,7 +21,7 @@ export default function Header({pageName, navigation, isOnHomePage = false, isOn
                 clearInterval(interval);
                 isOnProfilePage ? setProfilePicture(require("../assets/icons/settingsIcon.png")) : setProfilePicture({uri: global.userInformation.ProfilePicture} || setProfilePicture({uri: defaultImage}));
             }
-        }, 300);
+        }, 100);
 
     }, [])
     
