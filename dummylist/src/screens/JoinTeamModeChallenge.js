@@ -10,33 +10,45 @@ import { addUserToTeam } from "../../firebase.js";
 
 export default function JoinTeamModeChallenge({navigation, route})
 {
-    //TODO: Need to replace: textTopRight
     //TODO: Missing to add id to chosen team
-    //TODO: Needs to be conditions to check if teams can be joined
-    //TOP right text is not int
+    //! Replace recursion in function challengeJoined()
 
     const preChal = route.params || {}; //Is apprently needed
     const chal = preChal.challenge || {}; //{isOwner: boolean, challenge : {x: y, z: n, ...}}
     let challenge = chal.challenge || {}; //Only challenge obj
     const [chosenTeam, setChosenTeam] = useState(false);
+    const amountOfPeopleWhoCanJoinEachTeam = 1 + Math.floor(challenge.joinedMembers.length / challenge.teams.length);
     
     async function challengeJoined()
     {
         //Local creation of teams
-        const teamNum = chosenTeam ? chosenTeam : getRandomNumber(1, challenge.teams.length);
-        challenge.teams = getTeams(teamNum, challenge.teams.length);
+        const teamNum = chosenTeam || getRandomNumber(1, challenge.teams.length);
         
-        //Add values to DB
-        await addUserToTeam(challenge.id, teamNum, global.userInformation.id);
+        if(!determineIfCanChooseTeam(teamNum)){
+            challengeJoined(); //! this can be maybe way more efficient;
+            console.log("Handling wrong placement case");
+            return;
 
-        console.log("Joining Challenge");
-        navigation.navigate("AcceptChallengeOverviewPage", {
-            chal : {
-                ...chal,
-                challenge : challenge,
-                isAccepted : true,
-            }
-        });
+        }else{
+            challenge.teams = getTeams(teamNum, challenge.teams.length);
+            
+            //Add values to DB
+            await addUserToTeam(challenge.id, teamNum, global.userInformation.id);
+    
+            navigation.navigate("AcceptChallengeOverviewPage", {
+                chal : {
+                    ...chal,
+                    challenge : challenge,
+                    isAccepted : true,
+                }
+            });
+    
+            console.log("Joining Team... Team chosen: " + teamNum);
+        }
+    }
+
+    function determineIfCanChooseTeam(teamIndex){ 
+        return (challenge.teams[teamIndex - 1].members.length < amountOfPeopleWhoCanJoinEachTeam);
     }
 
     return(
@@ -52,10 +64,15 @@ export default function JoinTeamModeChallenge({navigation, route})
                         <ChooseTeamButton
                             key={index}
                             index={index}
-                            onPress={() => setChosenTeam(index + 1)}
+                            onPress={() => {
+                                if(determineIfCanChooseTeam(index + 1))
+                                {
+                                    setChosenTeam(index + 1);
+                                }
+                            }}
                             valueToCheckIfEqualIndex={chosenTeam}
                             
-                            textTopRight={`${chosenTeam === index + 1 ? challenge.teams[index].members.length + 1  : challenge.teams[index].members.length}/${Math.max(challenge.invitedMembers.length / challenge.teams.length)}`}
+                            textTopRight={`${chosenTeam === index + 1 ? challenge.teams[index].members.length + 1  : challenge.teams[index].members.length}/${amountOfPeopleWhoCanJoinEachTeam}`}
                         />
                     ))}
 
@@ -67,7 +84,7 @@ export default function JoinTeamModeChallenge({navigation, route})
                 </View>
             </View>
 
-            <View style={{marginTop: 17}}>
+            <View style={{paddingHorizontal: 30, justifyContent: "space-between", flexDirection: "row", marginTop: 20}}>
                 <NextPreviousButton text={"Join Challenge"} onPress={challengeJoined}/>
             </View>
         </View>
